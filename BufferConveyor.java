@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 class BufferConveyor {
 
-    protected enum BufferType { BA, BB, BC };
-    protected Part.PartType conveyorPartType;
-    int n;
+//    protected enum BufferType { BA, BB, BC };
+//    protected Part.PartType conveyorPartType;
+    int n1;
     ArrayList<Part> list;
     int capacity;
 
