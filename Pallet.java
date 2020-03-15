@@ -1,6 +1,6 @@
 
 class Pallet {
-    private int index2; 
+    private int index; 
     private boolean isMoving;
     private boolean isProcessed;
     private Part part;

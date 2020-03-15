@@ -24,20 +24,20 @@ class Initialise //extends ScheduledAction
 
 	public void actionEvent() 
 	{
-	  for(id=C1; id<=C8; id++)
+	  for(int id=C1; id<=C8; id++)
 	  {
 		  R.Cell[id].busy = false;
 		  R.Cell[id].previousPartType = A;
-		  if (id = C2 || id = C7) 
+		  if (int id = C2 || id = C7) 
 		     R.Cell[id].automated = false;
 		     else 
 		     R.Cell[id].automated = true;
-	      for (pos=0; pos<=8; pos++)
+	      for (int pos=0; pos<=8; pos++)
 	         RQ.PowerAndFreeConveyor[id].position[pos]=NOPALLET;  
 	  }
 	  Q.InputConveyor.n=0;
 	  Q.InputConveyor.capacity=40;
-	  for(id=BA; id<=BC; id++)
+	  for(int id=BA; id<=BC; id++)
 	  {
 		  Q.BuffConveyor[id].n=0;
 		  Q.BuffConveyor[id].capacity=10;
@@ -48,11 +48,11 @@ class Initialise //extends ScheduledAction
 		  else
 			  Q.BuffConveyor[id].conveyorPartType=C;
 	  }
-	  cellid=C8;
-	  pos=0;
-	  for(id=0; id<numPallets; id++) {
+	 int cellid=C8;
+	 int pos=0;
+	  for(int id=0; id<numPallets; id++) {
 		  PowerAndFreeConveyor[cellid].position[pos]=id;
-		  pos++
+		  pos++;
 		  if(pos==9)
 			 cellid++;
 		     pos=0;
