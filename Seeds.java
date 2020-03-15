@@ -11,11 +11,11 @@ public class Seeds
 
 	public Seeds()//RandomSeedGenerator rsg)
 	{
-		cArr=rsg.nextSeed();
-		type=rsg.nextSeed();
-		ptM1A=rsg.nextSeed();
-		ptM1B=rsg.nextSeed();
-		ptM2=rsg.nextSeed();
-		ptM3=rsg.nextSeed();
+//		cArr=rsg.nextSeed();
+//		type=rsg.nextSeed();
+//		ptM1A=rsg.nextSeed();
+//		ptM1B=rsg.nextSeed();
+//		ptM2=rsg.nextSeed();
+//		ptM3=rsg.nextSeed();
 	}
 }

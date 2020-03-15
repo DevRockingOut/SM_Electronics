@@ -1,17 +1,18 @@
+
+
 import java.util.ArrayList;
 
-class InputConveyor {
-	
-	//protected enum IPConveyorType { A, B, C };
-	
+class BuffConveyor {
     int n;
     ArrayList<Part> list;
     int capacity;
+    Part conveyorPartType;
     
-    InputConveyor(){
+    BuffConveyor(Part type){
         this.n = 0;
         this.list = new ArrayList<Part>();
-        this.capacity = 40;
+        this.capacity = 10;
+        this.conveyorPartType= type;
     }
 
 }

@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 
 class InputConveyor {
-	
-	//protected enum IPConveyorType { A, B, C };
-	
     int n;
     ArrayList<Part> list;
     int capacity;
