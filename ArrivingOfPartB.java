@@ -3,7 +3,7 @@
 import cern.jet.random.engine.MersenneTwister;
 import simulationModelling.ScheduledAction;
 
-class ArrivingOfPartA extends ScheduledAction {
+class ArrivingOfPartB extends ScheduledAction {
 
 	class CompArrivals extends ScheduledAction
 	{
@@ -19,33 +19,33 @@ class ArrivingOfPartA extends ScheduledAction {
 		@Override
 		protected void actionEvent()
 		{
-			Part partA = new Part();
-			partA.uType = Part.PartType.A;
+			Part partB = new Part();
+			partA.uType = Part.PartType.B;
 			if(model.addBufferConveyor=false && InputConveyor.n<InputConveyor.capacity)
-				model.InputConveyor.spInsertQue(partA);
+				model.InputConveyor.spInsertQue(partB);
 			else 
-				Output.nLossA++;
-			if (model.addBufferConveyor=false && BufferConveyor[BA].n<BufferConveyor[BA].capacity)
-				model.BufferConveyor[BA].spInsertQue(partA);
+				Output.nLossB++;
+			if (model.addBufferConveyor=false && BufferConveyor[BB].n<BufferConveyor[BB].capacity)
+				model.BufferConveyor[BB].spInsertQue(partB);
 			else
-				Output.nLossA++;
+				Output.nLossB++;
 		}
 		
 		static void initRvps(Seeds sd)
 		{
 			// Initialise Internal modules, user modules and input variables
-		    delayOfA = new TriangularVariate(5,15,60, new MersenneTwister(sd.cArr));
+		    delayOfB = new TriangularVariate(5,20,55, new MersenneTwister(sd.cArr));
 	        typeDM = new MersenneTwister(sd.type);	
 		}
 		
 		// RVP for interarrival times.
-		static public TriangularVariate delayOfA;
+		static public TriangularVariate delayOfB;
 		static public MersenneTwister typeDM;
 		
 		static protected double duCArr( )
 		{
 		   double nxtTime=0.0;	   
-		   nxtTime = model.getClock()+2.8*60+delayOfA.nextDouble();
+		   nxtTime = model.getClock()+1.4*60+delayOfB.nextDouble();
 		   return(nxtTime);
 		}	
 

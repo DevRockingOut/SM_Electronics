@@ -24,13 +24,20 @@ public class ElectronicsProject extends AOSimulationModel
     Output output = new Output();
     
     // DSOVs
-    public double getPercentTimeDown() { return output.percentTimeDown(); }
-    public double getTimeC2Full() { return output.timeC2Full(); }
-    public double getTimeC3Full() { return output.timeC3Full(); }
+//    public double getPercentTimeDown() { return output.percentTimeDown(); }
+//    public double getTimeC2Full() { return output.timeC2Full(); }
+//    public double getTimeC3Full() { return output.timeC3Full(); }
+    public double lostcost()
+    {
+    	return output.lostcost();
+    }
    
     // Constructor
-	public ConveyorProject(double tftime, int lc2, int lc3, Seeds sd, boolean log)
+	public ElectronicsProject(double tftime, int lc2, int lc3, Seeds sd, boolean log)
 	{
+		
+		//Doubt on how this function can be used
+		
 		// Adding references to model object to classes
 		initialiseClasses(sd);
 		
