@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="electronicsProject/" kind="src" path=""/>
+	<classpathentry kind="src" path="electronicsProject"/>
+	<classpathentry kind="lib" path="absmodjV3_20171114.jar"/>
+	<classpathentry kind="lib" path="colt.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
