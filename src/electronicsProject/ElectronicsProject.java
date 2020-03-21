@@ -6,15 +6,15 @@ import simulationModelling.Behaviour;
 public class ElectronicsProject extends AOSimulationModel
 {
 	// Entities
-	BuffConveyor[] qBuffConveyor = new BuffConveyor[3];
+	BuffConveyor[] qBuffConveyor;
 	InputConveyor qInputConveyor = new InputConveyor();
 	PowerAndFreeConveyor[] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
 	//Pallet[] crPallet = new Pallet[8];
 	Cell[] rCell = new Cell[8];
 	
 	// Parameters
-	int numPallets = 40;
-	int batchSize = 10;
+	int numPallets;
+	int batchSize;
 	
 	// Random variate procedures
 	RVP rvp;
@@ -36,11 +36,8 @@ public class ElectronicsProject extends AOSimulationModel
     }
    
     // Constructor
-	public ElectronicsProject(double tftime, int lc2, int lc3, Seeds sd, boolean log)
+	public ElectronicsProject(double tftime, int _numPallets, int _batchSize, Seeds sd, boolean log)
 	{
-		
-		//Doubt on how this function can be used
-		
 		// Adding references to model object to classes
 		initialiseClasses(sd);
 		
@@ -51,10 +48,13 @@ public class ElectronicsProject extends AOSimulationModel
 		rvp = new RVP(sd);
 		
 		// Initialise parameters
-		// Need to create the entities/objects here instead of the intialise action
-		//for(int id = Constants.M1; id <= Constants.M3; id++) qConveyors[id] = new Conveyors();
-		//qConveyors[Constants.M2].length = lc2;
-		//qConveyors[Constants.M3].length = lc3;
+		// [WTF_QUESTION] ??? Need to create the entities/objects here instead of the intialise action
+		numPallets = _numPallets;
+		batchSize = _batchSize;
+		
+		if(batchSize > 0) {
+			qBuffConveyor = new BuffConveyor[3];
+		}
 		
 		this.initAOSimulModel(0, tftime);
 		
@@ -65,7 +65,7 @@ public class ElectronicsProject extends AOSimulationModel
 		//CompArrivals aArr = new CompArrivals();
 		//scheduleAction(aArr);
 		
-		//printDebug("At Start");
+		printDebug();
 	}
 	
 	// Initialize static components of model classes
@@ -73,13 +73,16 @@ public class ElectronicsProject extends AOSimulationModel
 	{
 		// Add reference to standard classes
 		Initialise.model = this;
-		//Output.model = this;
+		Output.model = this;
 		RVP.model = this;
 		UDP.model = this;
 		// Add reference to activity/action classes
-		//CompArrivals.model = this;
-		//CompProcessing.model = this;
-		//MoveCOutOfM1.model = this;
+		ArrivingOfPartA.model = this;
+		ArrivingOfPartB.model = this;
+		ArrivingOfPartC.model = this;
+		MovePallets.model = this;
+		UnLoadLoad.model = this;
+		Processing.model = this;
 		// Initialize RVPs in the classes
 		//CompProcessing.initRvp(sd);
 		//CompArrivals.initRvps(sd);
@@ -126,21 +129,7 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
-		/*System.out.printf("Clock = %10.4f\n", getClock());
-		// Machine M1
-		System.out.print("   M1: qConveyor[].n= "+qConveyors[Constants.M1].getN()+
-			             ", R.Machines[].busy="+rMachines[Constants.M1].busy +
-			             ", R.Machines[].component=");
-		if(rMachines[Constants.M1].component == Machines.NO_COMP) System.out.println("NO_COMP");
-		else System.out.println(rMachines[Constants.M1].component.uType);
-		// Machine M2
-		System.out.println("   M2: qConveyor[].n= "+qConveyors[Constants.M2].getN()+
-	             ", R.Machines[].busy="+rMachines[Constants.M2].busy);
-		//Machine M3
-		System.out.println("   M3: qConveyor[].n= "+qConveyors[Constants.M3].getN()+
-	             ", R.Machines[].busy="+rMachines[Constants.M3].busy);		
-		showSBL();
-		System.out.println(">-----------------------------------------------<");*/
+		
 	}
 
 }

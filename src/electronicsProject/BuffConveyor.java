@@ -13,16 +13,22 @@ class BuffConveyor {
     
     // assigning integer values to each enum member
     protected enum BufferType { 
-    	BA(0), BB(1), BC(2);
+    	BA(0, "BA"), BB(1, "BB"), BC(2, "BC");
     	
 		private final int value;
+		private final String svalue;
 
-	    private BufferType(int value) {
+	    private BufferType(int value, String svalue) {
 	        this.value = value;
+	        this.svalue = svalue;
 	    }
 
 	    public int getInt() {
 	        return value;
+	    }
+	    
+	    public String getString() {
+	    	return svalue;
 	    }
 	};
     

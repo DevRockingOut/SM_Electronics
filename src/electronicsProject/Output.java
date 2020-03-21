@@ -1,7 +1,7 @@
 package electronicsProject;
 
 public class Output {
-
+	 static ElectronicsProject model;
      private int nLossA;
      private int nLossB;
      private int nLossC;

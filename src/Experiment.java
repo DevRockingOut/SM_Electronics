@@ -8,10 +8,12 @@ public class Experiment {
 		double endTime = 30 * 24 * 60; // run for 30 days
 		Seeds[] sds = new Seeds[NUMRUNS];
 		ElectronicsProject mnf; //Simulation object
-		int lc2 = 3;
-		int lc3 = 3;
+		int numPallets = 40;
+		int batchSize = 0;
 		
-		mnf = new ElectronicsProject(endTime, lc2, lc3, sds[0], false);
-		System.out.print(2);
+		batchSize = 5;
+		
+		mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], false);
+		mnf.runSimulation();
 	}
 }
