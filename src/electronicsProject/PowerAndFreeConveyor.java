@@ -4,23 +4,15 @@ import java.util.ArrayList;
 
 class PowerAndFreeConveyor {
     protected enum PFConveyorType { C1, C2, C3, C4, C5, C6, C7, C8 };
-    protected PFConveyorType type;
-    protected int n;
-    protected ArrayList<Pallet> position;  //changed from list to position
-    protected int capacity;
+    protected PFConveyorType type;  // [Update_CM]   I think we should add this attribute to CM
+    protected ArrayList<Pallet> position; // [WTF_QUESTION]    This should store pallet id not the pallets themselves
     
     /* * 
-    
-    int[] PowerndFreeConv=new int[8];
     int[] Pos=new int[8];
     int pid;
-     
      * */
 
-    PowerAndFreeConveyor(PFConveyorType type){
-        this.type = type;
-        this.n = 0;
+    PowerAndFreeConveyor(){
         this.position = new ArrayList<Pallet>();
-        this.capacity = 8;
     }
 }

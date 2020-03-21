@@ -7,11 +7,10 @@ public class ElectronicsProject extends AOSimulationModel
 {
 	// Entities
 	BuffConveyor [] qBuffConveyor = new BuffConveyor[3];
-	//InputConveyor [] qInputConveyor = new InputConveyor[3];
+	InputConveyor [] qInputConveyor = new InputConveyor[3];
 	PowerAndFreeConveyor [] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
 	Pallet [] crPallet = new Pallet[8];
 	Cell [] rCell = new Cell[8];
-	InputConveyor inputConveyor = new InputConveyor();
 	
 	
 	// Parameters

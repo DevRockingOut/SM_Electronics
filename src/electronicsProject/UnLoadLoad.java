@@ -9,7 +9,7 @@ class UnLoadLoad extends ConditionalAction
 	public static boolean precondition(ElectronicsProject md)
 	{
 		boolean retVal = false;
-		if(conveyorReadyForComp() != Constants.NONE) retVal = true;
+		//if(conveyorReadyForComp() != BuffConveyor.NO_BUFF_CONVEYOR) retVal = true;
 		return(retVal);
 	}
 	@Override
@@ -24,7 +24,7 @@ class UnLoadLoad extends ConditionalAction
 	// Conveyor M2 or M3 is ready to receive the component in Machine M1
 	 static protected int conveyorReadyForComp()
 	 {
-		 int convId = Constants.NONE;
+		 //int convId = Constants.NONE;
 		 // Check all conveyors
 		 /*if(!model.rMachines[Constants.M1].busy && model.rMachines[Constants.M1].component != Machines.NO_COMP)
 		 {
@@ -35,7 +35,7 @@ class UnLoadLoad extends ConditionalAction
 			 if(model.rMachines[Constants.M1].component.uType == Component.CompType.B &&
 			    model.qConveyors[Constants.M3].getN() < model.qConveyors[Constants.M3].length)  convId = Constants.M3;			 
 		 }*/
-		 return(convId);
+		 return(0);//convId);
 	 }
 	 
 
