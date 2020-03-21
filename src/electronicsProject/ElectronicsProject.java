@@ -1,3 +1,5 @@
+package electronicsProject;
+
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
@@ -9,16 +11,17 @@ public class ElectronicsProject extends AOSimulationModel
 	PowerAndFreeConveyor [] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
 	Pallet [] crPallet = new Pallet[8];
 	Cell [] rCell = new Cell[8];
+	InputConveyor inputConveyor = new InputConveyor();
 	
 	
 	// Parameters
 	// Implemented as attributes of qConveyors[M2].length and qConveyors[M3].length
 	
 	// Random variate procedures
-	RVPs rvp;
+	RVP rvp;
 	
 	// User Defined Procedures
-	UDPs udp = new UDPs();
+	UDP udp = new UDP();
 	
 	// Outputs
     Output output = new Output();
@@ -27,9 +30,10 @@ public class ElectronicsProject extends AOSimulationModel
 //    public double getPercentTimeDown() { return output.percentTimeDown(); }
 //    public double getTimeC2Full() { return output.timeC2Full(); }
 //    public double getTimeC3Full() { return output.timeC3Full(); }
-    public double lostcost()
+    public double lostCost()
     {
-    	return output.lostcost();
+    	//output.lostCost(nLossA, nLossB, nLossC);
+    	return output.lostCost(0,0,0);
     }
    
     // Constructor
@@ -45,22 +49,22 @@ public class ElectronicsProject extends AOSimulationModel
 		logFlag = log;
 		
 		// Set up RVPs
-		rvp = new RVPs(sd);
+		rvp = new RVP(sd);
 		
 		// Initialise parameters
 		// Need to create the entities/objects here instead of the intialise action
-		for(int id = Constants.M1; id <= Constants.M3; id++) qConveyors[id] = new Conveyors();
-		qConveyors[Constants.M2].length = lc2;
-		qConveyors[Constants.M3].length = lc3;
+		//for(int id = Constants.M1; id <= Constants.M3; id++) qConveyors[id] = new Conveyors();
+		//qConveyors[Constants.M2].length = lc2;
+		//qConveyors[Constants.M3].length = lc3;
 		
 		this.initAOSimulModel(0, tftime);
 		
 		// Schedule Initialise action
 		Initialise init = new Initialise();
-		scheduleAction(init);  // Should always be first one scheduled.
+		//scheduleAction(init);  // Should always be first one scheduled.
 		// Start arrivals
-		CompArrivals aArr = new CompArrivals();
-		scheduleAction(aArr);
+		//CompArrivals aArr = new CompArrivals();
+		//scheduleAction(aArr);
 		
 		//printDebug("At Start");
 	}
@@ -70,16 +74,16 @@ public class ElectronicsProject extends AOSimulationModel
 	{
 		// Add reference to standard classes
 		Initialise.model = this;
-		Output.model = this;
-		RVPs.model = this;
-		UDPs.model = this;
+		//Output.model = this;
+		RVP.model = this;
+		UDP.model = this;
 		// Add reference to activity/action classes
-		CompArrivals.model = this;
-		CompProcessing.model = this;
-		MoveCOutOfM1.model = this;
+		//CompArrivals.model = this;
+		//CompProcessing.model = this;
+		//MoveCOutOfM1.model = this;
 		// Initialize RVPs in the classes
-		CompProcessing.initRvp(sd);
-		CompArrivals.initRvps(sd);
+		//CompProcessing.initRvp(sd);
+		//CompArrivals.initRvps(sd);
 	}
 	
 	@Override
@@ -95,7 +99,7 @@ public class ElectronicsProject extends AOSimulationModel
 	{
 		boolean statusChanged = false;
 		// Conditional Actions
-		if (MoveCOutOfM1.precondition(this) == true)
+		/*if (MoveCOutOfM1.precondition(this) == true)
 		{
 			MoveCOutOfM1 act = new MoveCOutOfM1(); // Generate instance																// instance
 			act.actionEvent();
@@ -108,13 +112,13 @@ public class ElectronicsProject extends AOSimulationModel
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}
+		}*/
 		return (statusChanged);
 	}
 		
 	public void eventOccured()
 	{		
-		output.updateSequences(); // for updating trajectory sets	
+		//output.updateSequences(); // for updating trajectory sets	
 		if(logFlag) printDebug();
 	}
 	
@@ -123,7 +127,7 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
-		System.out.printf("Clock = %10.4f\n", getClock());
+		/*System.out.printf("Clock = %10.4f\n", getClock());
 		// Machine M1
 		System.out.print("   M1: qConveyor[].n= "+qConveyors[Constants.M1].getN()+
 			             ", R.Machines[].busy="+rMachines[Constants.M1].busy +
@@ -137,7 +141,7 @@ public class ElectronicsProject extends AOSimulationModel
 		System.out.println("   M3: qConveyor[].n= "+qConveyors[Constants.M3].getN()+
 	             ", R.Machines[].busy="+rMachines[Constants.M3].busy);		
 		showSBL();
-		System.out.println(">-----------------------------------------------<");
+		System.out.println(">-----------------------------------------------<");*/
 	}
 
 }

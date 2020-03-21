@@ -1,4 +1,4 @@
-//import cern.jet.random.engine.RandomSeedGenerator;
+package electronicsProject;
 
 public class Seeds
 {

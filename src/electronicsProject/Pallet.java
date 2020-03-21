@@ -1,3 +1,5 @@
+package electronicsProject;
+
 class Pallet {
     private int index;
     private boolean isMoving;

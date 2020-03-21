@@ -1,3 +1,5 @@
+package electronicsProject;
+
 class Cell {
     private boolean busy;
 //    private Pallet pallet;

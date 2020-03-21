@@ -1,4 +1,4 @@
-package conveyorProject;
+package electronicsProject;
 
 import simulationModelling.ConditionalAction;
 
@@ -16,8 +16,8 @@ class UnLoadLoad extends ConditionalAction
 	public void actionEvent()
 	{
 		int qid = conveyorReadyForComp();
-	    model.qConveyors[qid].spInsertQue(model.rMachines[Constants.M1].component);
-	    model.rMachines[Constants.M1].component = Machines.NO_COMP;
+	    //model.qBuffConveyor[qid].spInsertQue(model.rMachines[Constants.M1].component);
+	    //model.rMachines[Constants.M1].component = Machines.NO_COMP;
 	}
 	
 	// UDP
@@ -26,7 +26,7 @@ class UnLoadLoad extends ConditionalAction
 	 {
 		 int convId = Constants.NONE;
 		 // Check all conveyors
-		 if(!model.rMachines[Constants.M1].busy && model.rMachines[Constants.M1].component != Machines.NO_COMP)
+		 /*if(!model.rMachines[Constants.M1].busy && model.rMachines[Constants.M1].component != Machines.NO_COMP)
 		 {
 			 // Check conveyor to Machine M2
 			 if(model.rMachines[Constants.M1].component.uType == Component.CompType.A &&
@@ -34,7 +34,7 @@ class UnLoadLoad extends ConditionalAction
 			 // Check Conveyor to Machine M3
 			 if(model.rMachines[Constants.M1].component.uType == Component.CompType.B &&
 			    model.qConveyors[Constants.M3].getN() < model.qConveyors[Constants.M3].length)  convId = Constants.M3;			 
-		 }
+		 }*/
 		 return(convId);
 	 }
 	 

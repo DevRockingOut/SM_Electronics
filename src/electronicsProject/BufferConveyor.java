@@ -1,3 +1,5 @@
+package electronicsProject;
+
 import java.util.ArrayList;
 
 class BufferConveyor {
