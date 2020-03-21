@@ -6,15 +6,15 @@ import simulationModelling.Behaviour;
 public class ElectronicsProject extends AOSimulationModel
 {
 	// Entities
-	BuffConveyor [] qBuffConveyor = new BuffConveyor[3];
-	InputConveyor [] qInputConveyor = new InputConveyor[3];
-	PowerAndFreeConveyor [] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
-	Pallet [] crPallet = new Pallet[8];
-	Cell [] rCell = new Cell[8];
-	
+	BuffConveyor[] qBuffConveyor = new BuffConveyor[3];
+	InputConveyor qInputConveyor = new InputConveyor();
+	PowerAndFreeConveyor[] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
+	//Pallet[] crPallet = new Pallet[8];
+	Cell[] rCell = new Cell[8];
 	
 	// Parameters
-	// Implemented as attributes of qConveyors[M2].length and qConveyors[M3].length
+	int numPallets = 40;
+	int batchSize = 10;
 	
 	// Random variate procedures
 	RVP rvp;
@@ -60,7 +60,7 @@ public class ElectronicsProject extends AOSimulationModel
 		
 		// Schedule Initialise action
 		Initialise init = new Initialise();
-		//scheduleAction(init);  // Should always be first one scheduled.
+		scheduleAction(init);  // Should always be first one scheduled.
 		// Start arrivals
 		//CompArrivals aArr = new CompArrivals();
 		//scheduleAction(aArr);
