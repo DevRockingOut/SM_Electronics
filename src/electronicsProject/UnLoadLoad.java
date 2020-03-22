@@ -1,8 +1,8 @@
 package electronicsProject;
 
-import simulationModelling.ConditionalAction;
+import simulationModelling.Activity;
 
-class UnLoadLoad extends ConditionalAction
+class UnLoadLoad extends Activity
 {
 	static ElectronicsProject model;
 
@@ -12,13 +12,7 @@ class UnLoadLoad extends ConditionalAction
 		//if(conveyorReadyForComp() != BuffConveyor.NO_BUFF_CONVEYOR) retVal = true;
 		return(retVal);
 	}
-	@Override
-	public void actionEvent()
-	{
-		int qid = conveyorReadyForComp();
-	    //model.qBuffConveyor[qid].spInsertQue(model.rMachines[Constants.M1].component);
-	    //model.rMachines[Constants.M1].component = Machines.NO_COMP;
-	}
+
 	
 	// UDP
 	// Conveyor M2 or M3 is ready to receive the component in Machine M1
@@ -37,6 +31,23 @@ class UnLoadLoad extends ConditionalAction
 		 }*/
 		 return(0);//convId);
 	 }
+	@Override
+	protected double duration() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void startingEvent() {
+		// TODO Auto-generated method stub
+		int qid = conveyorReadyForComp();
+	    //model.qBuffConveyor[qid].spInsertQue(model.rMachines[Constants.M1].component);
+	    //model.rMachines[Constants.M1].component = Machines.NO_COMP;
+	}
+	@Override
+	protected void terminatingEvent() {
+		// TODO Auto-generated method stub
+		
+	}
 	 
 
 }
