@@ -28,7 +28,7 @@ class Initialise extends ScheduledAction
 			
 			model.rCell[id] = new Cell();
 			model.rCell[id].busy = false;
-			model.rCell[id].previousPartType = null; //Part.NO_PART.uType;
+			model.rCell[id].previousPartType = Part.NO_PART_TYPE;
 		}
 		
 		model.qInputConveyor.n = 0;
@@ -58,7 +58,7 @@ class Initialise extends ScheduledAction
 			}
 		}
 		
-		int pid = 0;
+		int pid = 1;
 		int cellid = 0; // C8
 		int pos = 0; // start at the head of the power-and-free conveyor
 		PFConveyorType[] pfID = PowerAndFreeConveyor.PFConveyorType.values();
@@ -68,7 +68,7 @@ class Initialise extends ScheduledAction
 			model.rqPowerAndFreeConveyor[i].type = pfID[i];
 		}
 		
-		for(int i = 0; i < (model.numPallets -1); i++) {  // [WTF_QUESTION]  if we have 40 pallets then we have 32 free positions, so power-and-free conveyors with no pallets at initialization
+		for(int i = 0; i < model.numPallets; i++) {  // [WTF_QUESTION]  if we have 40 pallets then we have 32 free positions, so power-and-free conveyors with no pallets at initialization
 			Pallet crPallet = new Pallet();
 			crPallet.id = pid;
 			crPallet.index = pos;
@@ -82,6 +82,8 @@ class Initialise extends ScheduledAction
 			if(pos == (model.rqPowerAndFreeConveyor[cellid].position.length -1)) { // pos == 8
 				cellid += 1; // go to next power-and-free conveyor
 				pos = 0;
+			}else {
+				pos += 1;
 			}
 			
 			pid += 1;
@@ -99,9 +101,9 @@ class Initialise extends ScheduledAction
 		// Cells
 		for(int i = 0; i < model.rCell.length; i++) {
 			if(model.rCell[i].previousPartType == null) {
-				System.out.print("C" + String.valueOf(i) + " (busy,previousPart): " + "(" + String.valueOf(model.rCell[i].busy) + ",null)");
+				System.out.print("C" + String.valueOf(i) + " (busy, previousPartType): " + "(" + String.valueOf(model.rCell[i].busy) + ", null)");
 			}else {
-				System.out.print("C" + String.valueOf(i) + " (busy,previousPart): " + "(" + String.valueOf(model.rCell[i].busy) + ",not null)");
+				System.out.print("C" + String.valueOf(i) + " (busy, previousPartType): " + "(" + String.valueOf(model.rCell[i].busy) + ", not null)");
 			}
 			System.out.print("\n");
 		}
@@ -125,7 +127,13 @@ class Initialise extends ScheduledAction
 			String pids = "";
 			//System.out.print("i == " + i + "\n");
 			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
-				pids += String.valueOf(model.rqPowerAndFreeConveyor[i].position[j]) + " ";
+				int id = model.rqPowerAndFreeConveyor[i].position[j];
+				
+				if(id < 10) {
+					pids += String.valueOf(id) + "  ";
+				}else {
+					pids += String.valueOf(id) + " ";
+				}
 			}
 			System.out.print("Power-and-free conveyor " + model.rqPowerAndFreeConveyor[i].type.getString() + ": ");
 			System.out.print(pids + "\n");
