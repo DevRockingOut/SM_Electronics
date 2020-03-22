@@ -11,7 +11,7 @@ public class Experiment {
 		int numPallets = 40;
 		int batchSize = 0;
 		
-		batchSize = 5;
+		batchSize = 5; 
 		
 		mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], false);
 		mnf.runSimulation();
