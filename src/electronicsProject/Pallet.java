@@ -6,5 +6,5 @@ class Pallet {
     protected boolean isMoving;
     protected boolean isProcessed;
     protected Part part;
-    protected static final Pallet NO_PALLET = null;
+    protected static final int NO_PALLET_ID = -1; //[UPDATE_CM]
 }
