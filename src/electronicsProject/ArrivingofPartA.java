@@ -7,49 +7,34 @@ import simulationModelling.ScheduledAction;
 class ArrivingOfPartA extends ScheduledAction {
 
 	static ElectronicsProject model;
-
+	static public TriangularVariate delayOfA;
+	
 	
 	@Override
 	protected double timeSequence()
 	{
-		return duCArr();
+		return RVP.DuArrA();
 	}
 
 	@Override
 	protected void actionEvent()
 	{
-		Part partA = new Part();
-		partA.uType = Part.PartType.A;
+		Part partA = RVP.uArrA();
 		
-		/*if(model.addBufferConveyor == false && model.inputConveyor.n < model.inputConveyor.capacity) {
-			//model.inputConveyor.spInsertQue(partA);
-		}else { 
-			Output.nLossA++;
-		}
+		int BA = BuffConveyor.BufferType.BA.getInt();
 		
-		if (model.addBufferConveyor == false && model.qBuffConveyor[BufferConveyor.BufferType.BA].n < model.qBuffConveyor[BufferConveyor.BufferType.BA].capacity) {
-			model.qBuffConveyor[BufferConveyor.BufferType.BA].spInsertQue(partA);
+		if(model.batchSize != 0 && model.qBuffConveyor[BA].n < model.qBuffConveyor[BA].capacity) {
+			SP.spInsertQue(model.qBuffConveyor[BA], partA);
+		}else if(model.batchSize == 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
+			SP.spInsertQue(model.qInputConveyor, partA);
 		}else {
-			Output.nLossA++;
-		}*/
+			model.nLossA++;
+		}
 	}
 	
 	static void initRvps(Seeds sd)
 	{
-		// Initialise Internal modules, user modules and input variables
-	    delayOfA = new TriangularVariate(5,15,60, new MersenneTwister(sd.cArr));
-        typeDM = new MersenneTwister(sd.type);	
+	    delayOfA = new TriangularVariate(5,15,60, new MersenneTwister(sd.uArrA));
 	}
-	
-	// RVP for interarrival times.
-	static public TriangularVariate delayOfA;
-	static public MersenneTwister typeDM;
-	
-	static protected double duCArr()
-	{
-	   double nxtTime=0.0;	   
-	   nxtTime = model.getClock() + 2.8*60 + delayOfA.next();
-	   return(nxtTime);
-	}	
 
 }

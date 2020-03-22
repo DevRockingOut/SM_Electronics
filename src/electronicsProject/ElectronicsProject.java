@@ -25,14 +25,14 @@ public class ElectronicsProject extends AOSimulationModel
 	// Outputs
     Output output = new Output();
     
-    // DSOVs
-//    public double getPercentTimeDown() { return output.percentTimeDown(); }
-//    public double getTimeC2Full() { return output.timeC2Full(); }
-//    public double getTimeC3Full() { return output.timeC3Full(); }
+    // SSOV
+    int nLossA = 0;
+	int nLossB = 0;
+	int nLossC = 0;
+	
     public double lostCost()
     {
-    	//output.lostCost(nLossA, nLossB, nLossC);
-    	return output.lostCost(0,0,0);
+    	return output.lostCost(nLossA, nLossB, nLossC);
     }
    
     // Constructor
@@ -48,7 +48,6 @@ public class ElectronicsProject extends AOSimulationModel
 		rvp = new RVP(sd);
 		
 		// Initialise parameters
-		// [WTF_QUESTION] ??? Need to create the entities/objects here instead of the intialise action
 		numPallets = _numPallets;
 		batchSize = _batchSize;
 		

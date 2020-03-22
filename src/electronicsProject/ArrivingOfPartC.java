@@ -7,49 +7,35 @@ import simulationModelling.ScheduledAction;
 class ArrivingOfPartC extends ScheduledAction {
 
 	static ElectronicsProject model;
-
+	static public TriangularVariate delayOfC;
+	
 	
 	@Override
 	protected double timeSequence()
 	{
-		return duCArr();
+		return RVP.DuArrC();
 	}
 
 	@Override
 	protected void actionEvent()
 	{
-		Part partC = new Part();
-		partC.uType = Part.PartType.C;
+		Part partC = RVP.uArrC();
 		
-		/*if(model.addBufferConveyor=false && model.inputConveyor.n < model.inputConveyor.capacity) {
-			model.inputConveyor.spInsertQue(partC);
-		}else { 
-			Output.nLossC++;
-		}
+		int BC = BuffConveyor.BufferType.BC.getInt();
 		
-		if (model.addBufferConveyor = false && BufferConveyor[BC].n < model.qBuffConveyor[BC].capacity) {
-			model.qBuffConveyor[BC].spInsertQue(partC);
+		if(model.batchSize != 0 && model.qBuffConveyor[BC].n < model.qBuffConveyor[BC].capacity) {
+			SP.spInsertQue(model.qBuffConveyor[BC], partC);
+		}else if(model.batchSize == 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
+			SP.spInsertQue(model.qInputConveyor, partC);
 		}else {
-			Output.nLossC++;
-		}*/
+			model.nLossC++;
+		}
 	}
 	
 	static void initRvps(Seeds sd)
 	{
 		// Initialise Internal modules, user modules and input variables
-	    delayOfC = new TriangularVariate(5,20,65, new MersenneTwister(sd.cArr));
-        typeDM = new MersenneTwister(sd.type);	
+	    delayOfC = new TriangularVariate(5,20,65, new MersenneTwister(sd.uArrC));
 	}
-	
-	// RVP for interarrival times.
-	static public TriangularVariate delayOfC;
-	static public MersenneTwister typeDM;
-	
-	static protected double duCArr( )
-	{
-	   double nxtTime=0.0;	   
-	   nxtTime = model.getClock()+2.0*60 + delayOfC.next();
-	   return(nxtTime);
-	}	
 
 }

@@ -10,8 +10,5 @@ class InputConveyor {
     InputConveyor(){
         this.n = 0;
         this.list = new ArrayList<Part>();
-        //this.capacity = 40;  // [Initialise class]
     }
-
-    protected int getN() { return this.n; }
 }
