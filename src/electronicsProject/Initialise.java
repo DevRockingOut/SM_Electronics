@@ -69,12 +69,14 @@ class Initialise extends ScheduledAction
 		}
 		
 		for(int i = 0; i < model.numPallets; i++) {  // [WTF_QUESTION]  if we have 40 pallets then we have 32 free positions, so power-and-free conveyors with no pallets at initialization
-			Pallet crPallet = new Pallet();
-			crPallet.id = pid;
-			crPallet.index = pos;
-			crPallet.isMoving = false;
-			crPallet.isProcessed = false;
-			crPallet.part = Part.NO_PART;
+			Pallet pallet = new Pallet();
+			pallet.id = pid;
+			pallet.index = pos;
+			pallet.isMoving = false;
+			pallet.isProcessed = false;
+			pallet.part = Part.NO_PART;
+			
+			model.crPallet[i] = pallet;
 			
 			// put the pallets in the power-and-free conveyors
 			model.rqPowerAndFreeConveyor[cellid].position[pos] = pid;
