@@ -1,11 +1,10 @@
 package electronicsProject;
 
 import java.util.List;
-
 import javafx.util.Pair;
-import simulationModelling.Activity;
+import simulationModelling.ConditionalActivity;
 
-class MovePallets extends Activity {
+class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model;
 	static int conveyorID = 0;

@@ -3,10 +3,13 @@ package electronicsProject;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.util.Pair;
+import electronicsProject.BuffConveyor.BufferType;
+
 
 public class UDP 
 {
-	static ElectronicsProject model;   
+	static ElectronicsProject model; 
+	static BufferType lastBuffConveyor = BuffConveyor.BUFF_TYPE_NONE;
 	
 
     // returns the operation time at the work cell
@@ -14,7 +17,31 @@ public class UDP
         return 0;
     }
     
-    // returns a list of pallets ready to move <palletsPos, power-and-free conveyorPos>
+    // returns the buffer conveyor id that is ready to release the batch of parts
+    static int BatchReadyForRelease() {
+    	
+    	// check if there is available space in the input conveyor [UPDATE_CM]
+    	if(model.qInputConveyor.capacity > (model.qInputConveyor.n - model.batchSize)) {
+    		
+    		// try releasing the batch from a different buffer conveyor each time
+    		if(lastBuffConveyor != BufferType.BA) {
+    			lastBuffConveyor = BufferType.BA;
+    		}else if(lastBuffConveyor != BufferType.BB) {
+    			lastBuffConveyor = BufferType.BB;
+    		}else if(lastBuffConveyor != BufferType.BC) {
+    			lastBuffConveyor = BufferType.BC;
+    		}
+    		
+    		// check if there are enough parts in the buffer conveyor to be released
+    		if(model.qBuffConveyor[lastBuffConveyor.getInt()].n >= model.batchSize) {
+    			return lastBuffConveyor.getInt();
+    		}
+    	}
+    	
+    	return Constants.NONE;
+    }
+    
+    // returns a list of pallets ready to move <palletsPos, power-and-free conveyorPos> [UPDATE_CM]
     static Object PalletReadyToMove() {
     	List<Pair<Integer,Integer>> pallets = new ArrayList<Pair<Integer, Integer>>();
     	
@@ -41,8 +68,8 @@ public class UDP
     	
     	if(pallets.size() > 0) {
     		return pallets;
-    	}else {
-			return Constants.NONE;
-		}
+    	}
+    	
+		return Constants.NONE;	
 	}
 }

@@ -10,6 +10,7 @@ class BuffConveyor {
     protected PartType conveyorPartType; // ?? [WTF_QUESTION]   I think we should store bufferType instead
     protected BufferType type;
     protected static final BuffConveyor NO_BUFF_CONVEYOR = null;
+    protected static final BufferType BUFF_TYPE_NONE = null;
     
     // assigning integer values to each enum member
     protected enum BufferType { 
