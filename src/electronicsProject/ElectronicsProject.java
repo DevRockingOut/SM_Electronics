@@ -95,11 +95,11 @@ public class ElectronicsProject extends AOSimulationModel
 		Processing.model = this;
 		
 		// Initialize RVPs in the classes
-		ArrivingOfPartA.initRvp(sd);
-		ArrivingOfPartB.initRvp(sd);
-		ArrivingOfPartC.initRvp(sd);
+		ArrivingOfPartA.initRvps(sd);
+		ArrivingOfPartB.initRvps(sd);
+		ArrivingOfPartC.initRvps(sd);
 		Processing.initRvp(sd);
-		UnLoadLoad.initRvps(sd);
+		UnLoadLoad.initRvp(sd);
 	}
 	
 	@Override
