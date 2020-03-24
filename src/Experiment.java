@@ -1,3 +1,4 @@
+import cern.jet.random.engine.RandomSeedGenerator;
 import electronicsProject.ElectronicsProject;
 import electronicsProject.Seeds;
 
@@ -12,6 +13,11 @@ public class Experiment {
 		int batchSize = 0;
 		
 		batchSize = 5; 
+		// Lets get a set of uncorrelated seeds, different seeds for each run
+		RandomSeedGenerator rsg = new RandomSeedGenerator();
+		for (i = 0; i < NUMRUNS; i++) {
+			sds[i] = new Seeds(rsg);
+		}
 		
 		mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], false);
 		mnf.runSimulation();

@@ -62,15 +62,17 @@ public class ElectronicsProject extends AOSimulationModel
 		// Schedule Initialise action
 		Initialise init = new Initialise();
 		scheduleAction(init);  // Should always be first one scheduled.
+		
+		System.out.print("testing seed (random number) : " + sd.uArrA + "\n\n");
 		// Start arrivals
-		ArrivingOfPartA arrPA = new ArrivingOfPartA();
+		/*ArrivingOfPartA arrPA = new ArrivingOfPartA();
 		scheduleAction(arrPA);
 		
 		ArrivingOfPartB arrPB = new ArrivingOfPartB();
 		scheduleAction(arrPB);
 		
 		ArrivingOfPartC arrPC = new ArrivingOfPartC();
-		scheduleAction(arrPC);
+		scheduleAction(arrPC);*/
 		
 		printDebug();
 	}
