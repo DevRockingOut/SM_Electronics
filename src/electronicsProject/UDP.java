@@ -1,8 +1,10 @@
 package electronicsProject;
 
-import java.util.ArrayList;
-import java.util.List;
-import javafx.util.Pair;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import electronicsProject.BuffConveyor.BufferType;
 
 
@@ -43,7 +45,7 @@ public class UDP
     
     // returns a list of pallets ready to move <palletsPos, power-and-free conveyorPos> [UPDATE_CM]
     static Object PalletReadyToMove() {
-    	List<Pair<Integer,Integer>> pallets = new ArrayList<Pair<Integer, Integer>>();
+    	Set<Map<Integer,Integer>> pallets = new HashSet<>();
     	
     	for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
     		int last = model.rqPowerAndFreeConveyor[i].position.length -1;
@@ -54,7 +56,7 @@ public class UDP
     			for(int k = 0; k < model.crPallet.length; k++) {
     				if(model.crPallet[k].id == pid) {
     					int pos = j;
-    					pallets.add(new Pair<Integer,Integer>(k, pos));
+    					pallets.add(new HashMap<Integer,Integer>(k, pos));
     				}
     			}
     		}
