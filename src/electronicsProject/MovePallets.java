@@ -1,64 +1,59 @@
 package electronicsProject;
 
-import simulationModelling.Activity;
+import java.util.List;
+import javafx.util.Pair;
+import simulationModelling.ConditionalActivity;
 
-class MovePallets extends Activity {
-	static ElectronicsProject model;
-	//model.totalPallets
-	static int[] canMovePosi = new int[40];
-	static int[] canMovePosj = new int[40];
-	static int m = 0;
-	//check if there is available space ahead of the pallets
-	/*for(int i=Initialise.C1; i<=Initialise.C8; i++) {
-	   for(int j=0; j<=8; j++) {
-		   
-		  if (model.rqPowerAndFreeConveyor.position[i].pos[j]==null)
-		  {
-			  canMovePosi[m]=i;
-		      canMovePosj[m]=j;
-		      m++;
-		  }
-		}
-	}*/
-   public static boolean precondition() {
-	   //as long as there is available space, logically pallets can move
-	   return (canMovePosi!=null && canMovePosj!=null);
-   }
+class MovePallets extends ConditionalActivity {
 	
-	int prei=0;
-	int prej=0;
+	static ElectronicsProject model;
+	static int conveyorID = 0;
+	private static List<Pair<Integer,Integer>> palletsMove; // list of pallets <palletsPos, power-and-free conveyorPos>
+	
+    public static boolean precondition() {
+    	Object pallets = UDP.PalletReadyToMove();
+    	
+    	if(pallets instanceof Integer && (Integer) pallets == Constants.NONE) {
+    		return (Integer) pallets != Constants.NONE; 
+    	}else {
+    		palletsMove = (List<Pair<Integer,Integer>>) pallets;// store the array of pallets to move
+    		return true;
+    	}
+    }
+    
+   	@Override
+	protected double duration() {
+		return DVP.uPalletMoving(); // duration of the activity to simulate time to move a pallet   
+	}
+   
+	
 	@Override
 	public void startingEvent() {
-	     for(int i=0; i<=m; i++) {
-	         /*if (canMovePosi[i]==Initialise.C1)
-	        	 prei=Initialise.C8;
-	         else 
-	        	 prei=canMovePosi[i]-1;*/
-	         
-	         if (canMovePosj[i]==0) 
-	        	 prej=8;
-	         else 
-	        	 prej=canMovePosj[i]-1;
-	         //all pallets could move one step forward as long as its processing is finished.
-	         for(int j=0;j<=prei;j++) {
-	        	for(int k=0; k<=prej; k++) {
-	                //if (PowerAndFreeConveyor.PowerndFreeConv[j].pos[k].Pallet[pid].processing=false)
-	    	        //PowerAndFreeConveyor.PowerndFreeConv[j+1].pos[k+1]
-	    	        //=PowerAndFreeConveyor.PowerndFreeConv[i].pos[j].Pallet[pid];
-	        	}
-	         }
-	     }
+		for(int i = 0; i < palletsMove.size(); i++) {
+			int palletPos = palletsMove.get(i).getKey();
+			model.crPallet[palletPos].isMoving = true;
+		}
 	}
 	
-	@Override
-	protected double duration() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 	@Override
 	protected void terminatingEvent() {
-		// TODO Auto-generated method stub
-		
+		for(int i = 0; i < palletsMove.size(); i++) {
+			// move each pallet to next position
+			int palletPos = palletsMove.get(i).getKey();
+			int pos = palletsMove.get(i).getValue();
+			int lastPos = model.rqPowerAndFreeConveyor[conveyorID].position.length - 1;
+			
+			if(pos == lastPos) {
+				model.crPallet[palletPos].isProcessed = false; // [WTF_QUESTION] shouldn't this be done in the processing terminating event???
+				model.rqPowerAndFreeConveyor[conveyorID +1].position[0] = model.crPallet[palletPos].id;
+			}else {
+				model.rqPowerAndFreeConveyor[conveyorID].position[pos+1] = model.rqPowerAndFreeConveyor[conveyorID].position[pos];
+			}
+			
+			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
+	    	model.crPallet[i].isMoving = false;
+	     }
 	}
 	        
 }
