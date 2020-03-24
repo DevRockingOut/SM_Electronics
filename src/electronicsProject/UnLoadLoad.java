@@ -2,16 +2,17 @@ package electronicsProject;
 
 import cern.jet.random.engine.MersenneTwister;
 import dataModelling.TriangularVariate;
-import simulationModelling.Activity;
+import simulationModelling.ConditionalActivity;
 
-class UnLoadLoad extends Activity
+class UnLoadLoad extends ConditionalActivity
 {
 	static ElectronicsProject model;
     static public TriangularVariate UNLOAD_LOAD_TIME;
 
 
-	public static boolean precondition(ElectronicsProject md)
+	public static boolean precondition()
 	{
+		
 		boolean retVal = false;
 		if(CellReadyForUnloadLoad() == true )
 			retVal = true;
@@ -21,24 +22,35 @@ class UnLoadLoad extends Activity
 	
 	@Override
 	public void startingEvent() {
-		SP.spRemoveQue(model.qInputConveyor, model.rCell[0]);
-		model.rCell[0].busy = true;
+		Part icPart = SP.RemoveQue(model.qInputConveyor);
+		
+		if(icPart != Part.NO_PART) {
+			int last = model.rqPowerAndFreeConveyor[0].position.length -1;
+			int pid = model.rqPowerAndFreeConveyor[0].position[last];
+			
+			for(int i = 0; i < model.crPallet.length; i++) {
+				if(model.crPallet[i].id == pid) {
+					model.crPallet[i].part = icPart;
+					model.rCell[0].busy = true;
+				}
+			}
+		}
+		
 	}
 
 
 	@Override
 	protected void terminatingEvent() {
 
-		if (model.crPallet[pid].part != Part.NO_PART
+		if (model.crPallet[model.rqPowerAndFreeConveyor[1].position[0]].part != Part.NO_PART
 		&& model.rqPowerAndFreeConveyor[1].position[0] == Pallet.NO_PALLET_ID )
 
-// It was originally like this:
-//(RQ.PowerAndFreeConveyor[C1].n < RQ.PowerAndFreeConveyor[C1].capacity) 
-// so I changed it because I'm not sure if we have an array or not??
-
-			SP.spRemoveQue(model.qInputConveyor, model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].part);		
+			{
+			model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].part = SP.RemoveQue(model.qInputConveyor);
 		    model.rCell[0].busy = false;
 		    model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].isProcessed = false;
+			}
+
 	}
 	 
 
@@ -59,19 +71,22 @@ class UnLoadLoad extends Activity
 	private static boolean CellReadyForUnloadLoad() {
 		
 		// A pallet is available at work cell 8
-		if (model.rqPowerAndFreeConveyor[0].position[0] != Pallet.NO_PALLET_ID
+		int last = model.rqPowerAndFreeConveyor[0].position.length -1;
+		
+		if (model.rqPowerAndFreeConveyor[0].position[last] != Pallet.NO_PALLET_ID
 		// A part is available in the input conveyor
 			&& model.qInputConveyor.n != 0 
 		// Work cell 8 not busy
 			&& model.rCell[0].busy == false 
 		// Processing not done on pallet
-           && model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].isProcessed == false)
+           && model.crPallet[model.rqPowerAndFreeConveyor[0].position[last]].isProcessed == false)
 
 		return true;
 		else
 		return false;
 	}
-	
+
+
 
 
 }

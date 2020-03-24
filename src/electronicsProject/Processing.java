@@ -7,9 +7,9 @@ import dataModelling.TriangularVariate;
 import electronicsProject.Constants;
 import electronicsProject.Cell.CellID;
 import electronicsProject.Part.PartType;
-import simulationModelling.Activity;
+import simulationModelling.ConditionalActivity;
 
-class Processing extends Activity {
+class Processing extends ConditionalActivity {
 	
 	static ElectronicsProject model;
 	static int CellID; // identifiers for Cell and PowerAndFreeConveyors

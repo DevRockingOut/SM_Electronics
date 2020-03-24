@@ -1,5 +1,6 @@
 package electronicsProject;
 
+
 import simulationModelling.ConditionalAction;
 
 public class BatchRelease extends ConditionalAction {
@@ -8,7 +9,7 @@ public class BatchRelease extends ConditionalAction {
 	static ElectronicsProject model;
 	
 	
-	protected static boolean precondition() {
+	public static boolean precondition(ElectronicsProject md) {
 		id = UDP.BatchReadyForRelease();
 		return id != Constants.NONE;
 	}

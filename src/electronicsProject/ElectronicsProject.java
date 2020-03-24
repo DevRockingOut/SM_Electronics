@@ -1,5 +1,7 @@
 package electronicsProject;
 
+import conveyorProject.CompProcessing;
+import conveyorProject.MoveCOutOfM1;
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
@@ -63,8 +65,14 @@ public class ElectronicsProject extends AOSimulationModel
 		Initialise init = new Initialise();
 		scheduleAction(init);  // Should always be first one scheduled.
 		// Start arrivals
-		//CompArrivals aArr = new CompArrivals();
-		//scheduleAction(aArr);
+		ArrivingOfPartA arrPA = new ArrivingOfPartA();
+		scheduleAction(arrPA);
+		
+		ArrivingOfPartB arrPB = new ArrivingOfPartB();
+		scheduleAction(arrPB);
+		
+		ArrivingOfPartC arrPC = new ArrivingOfPartC();
+		scheduleAction(arrPC);
 		
 		printDebug();
 	}
@@ -81,12 +89,17 @@ public class ElectronicsProject extends AOSimulationModel
 		ArrivingOfPartA.model = this;
 		ArrivingOfPartB.model = this;
 		ArrivingOfPartC.model = this;
+		BatchRelease.model = this;
 		MovePallets.model = this;
 		UnLoadLoad.model = this;
 		Processing.model = this;
+		
 		// Initialize RVPs in the classes
-		//CompProcessing.initRvp(sd);
-		//CompArrivals.initRvps(sd);
+		ArrivingOfPartA.initRvp(sd);
+		ArrivingOfPartB.initRvp(sd);
+		ArrivingOfPartC.initRvp(sd);
+		Processing.initRvp(sd);
+		UnLoadLoad.initRvps(sd);
 	}
 	
 	@Override
@@ -102,21 +115,45 @@ public class ElectronicsProject extends AOSimulationModel
 	{
 		boolean statusChanged = false;
 		// Conditional Actions
-		/*if (MoveCOutOfM1.precondition(this) == true)
+		
+		if (BatchRelease.precondition(this) == true)
 		{
-			MoveCOutOfM1 act = new MoveCOutOfM1(); // Generate instance																// instance
+			BatchRelease act = new BatchRelease(); // Generate instance																// instance
 			act.actionEvent();
 			statusChanged = true;
 		}
+		
+		
 		// Conditional Activities
-		if (CompProcessing.precondition() == true)
+		
+		if (Processing.precondition() == true)
 		{
-			CompProcessing act = new CompProcessing(); // Generate instance
+			Processing act = new Processing(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}*/
+		}
+		
+		
+		if (UnLoadLoad.precondition() == true)
+		{
+			UnLoadLoad act = new UnLoadLoad(); // Generate instance
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		
+		
+		if (MovePallets.precondition() == true)
+		{
+			MovePallets act = new MovePallets(); // Generate instance
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		
 		return (statusChanged);
+		
 	}
 		
 	public void eventOccured()
