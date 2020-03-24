@@ -3,8 +3,6 @@ package electronicsProject;
 // [WTF_QUESTION]  Where are original standard procedures defined???
 public class SP {
 	
-	
-	
 	// add a part to input conveyor
 	static void InsertQue(InputConveyor conveyor, Part part) {
 		conveyor.list.add(part);

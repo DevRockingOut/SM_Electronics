@@ -1,14 +1,13 @@
 package electronicsProject;
 
-import java.util.List;
-import javafx.util.Pair;
+import java.util.Map;
 import simulationModelling.ConditionalActivity;
 
 class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model;
 	static int conveyorID = 0;
-	private static List<Pair<Integer,Integer>> palletsMove; // list of pallets <palletsPos, power-and-free conveyorPos>
+	private static Map<Integer,Integer> palletsMove; // list of pallets <palletsPos, power-and-free conveyorPos>
 	
     public static boolean precondition() {
     	Object pallets = UDP.PalletReadyToMove();
@@ -16,7 +15,7 @@ class MovePallets extends ConditionalActivity {
     	if(pallets instanceof Integer && (Integer) pallets == Constants.NONE) {
     		return (Integer) pallets != Constants.NONE; 
     	}else {
-    		palletsMove = (List<Pair<Integer,Integer>>) pallets;// store the array of pallets to move
+    		palletsMove = (Map<Integer,Integer>) pallets;// store the array of pallets to move
     		return true;
     	}
     }
@@ -29,8 +28,8 @@ class MovePallets extends ConditionalActivity {
 	
 	@Override
 	public void startingEvent() {
-		for(int i = 0; i < palletsMove.size(); i++) {
-			int palletPos = palletsMove.get(i).getKey();
+		for (Map.Entry<Integer, Integer> entry : palletsMove.entrySet()) {
+			int palletPos = entry.getKey();
 			model.crPallet[palletPos].isMoving = true;
 		}
 	}
@@ -38,10 +37,10 @@ class MovePallets extends ConditionalActivity {
 	
 	@Override
 	protected void terminatingEvent() {
-		for(int i = 0; i < palletsMove.size(); i++) {
+		for (Map.Entry<Integer, Integer> entry : palletsMove.entrySet()) {
 			// move each pallet to next position
-			int palletPos = palletsMove.get(i).getKey();
-			int pos = palletsMove.get(i).getValue();
+			int palletPos = entry.getKey();
+			int pos = entry.getValue();
 			int lastPos = model.rqPowerAndFreeConveyor[conveyorID].position.length - 1;
 			
 			if(pos == lastPos) {
@@ -52,7 +51,7 @@ class MovePallets extends ConditionalActivity {
 			}
 			
 			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
-	    	model.crPallet[i].isMoving = false;
+	    	model.crPallet[palletPos].isMoving = false;
 	     }
 	}
 	        

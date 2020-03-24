@@ -1,7 +1,5 @@
 package electronicsProject;
 
-import conveyorProject.CompProcessing;
-import conveyorProject.MoveCOutOfM1;
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
