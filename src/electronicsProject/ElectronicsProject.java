@@ -9,7 +9,7 @@ public class ElectronicsProject extends AOSimulationModel
 	BuffConveyor[] qBuffConveyor;
 	InputConveyor qInputConveyor = new InputConveyor();
 	PowerAndFreeConveyor[] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
-	//Pallet[] crPallet = new Pallet[8];
+	Pallet[] crPallet = new Pallet[8];
 	Cell[] rCell = new Cell[8];
 	
 	// Parameters

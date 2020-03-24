@@ -9,21 +9,31 @@ public class Seeds
 	int uArrC;  // part C arrivals
 	
 	int type;   // for types
-	int ptM1A;   // process times M1, A
-	int ptM1B;   // process times M1, B
-	int ptM2;   // process times M2
-	int ptM3;   // process times M3
+	int ptC2A;   // process times C2, A
+	int ptC2B;   // process times C2, B
+	int ptC2C;   // process times C2, C
+	int ptC7A;   // process times C7, A
+	int ptC7B;   // process times C7, B
+	int ptC7C;   // process times C7, C
+	int ultC8;   // unload/Load times C8
+
 
 	public Seeds(RandomSeedGenerator rsg)
 	{
 		uArrA = rsg.nextSeed();
 		uArrB = rsg.nextSeed();
 		uArrC = rsg.nextSeed();
+		ptC2A=rsg.nextSeed();
+		ptC2B=rsg.nextSeed();
+		ptC2C=rsg.nextSeed();
+		ptC7A=rsg.nextSeed();
+		ptC7B=rsg.nextSeed();
+		ptC7C=rsg.nextSeed();
+		ultC8=rsg.nextSeed();
+
+
 //		cArr=rsg.nextSeed();
 //		type=rsg.nextSeed();
-//		ptM1A=rsg.nextSeed();
-//		ptM1B=rsg.nextSeed();
-//		ptM2=rsg.nextSeed();
-//		ptM3=rsg.nextSeed();
+
 	}
 }

@@ -12,6 +12,7 @@ class RVP
 	{ 
 	}
 
+	
 	// returns a Part A which arrived
 	public static Part uArrA(){ 
 		Part partA = new Part();
@@ -57,5 +58,11 @@ class RVP
 	   return (nxtTime);
 	}
 
-	public static long uUnloadLoadTime(){ return 0; }
+	public static long uUnloadLoadTime(){
+		
+		double nxtTime = 0.0;	   
+		   nxtTime = model.getClock() + (25*3.75) + UnLoadLoad.UNLOAD_LOAD_TIME.next();
+		   return (long) (nxtTime);
+		   
+	}
 }
