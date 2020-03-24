@@ -1,53 +1,77 @@
 package electronicsProject;
 
+import cern.jet.random.engine.MersenneTwister;
+import dataModelling.TriangularVariate;
 import simulationModelling.Activity;
 
 class UnLoadLoad extends Activity
 {
 	static ElectronicsProject model;
+    static public TriangularVariate UNLOAD_LOAD_TIME;
+
 
 	public static boolean precondition(ElectronicsProject md)
 	{
 		boolean retVal = false;
-		//if(conveyorReadyForComp() != BuffConveyor.NO_BUFF_CONVEYOR) retVal = true;
+		if(CellReadyForUnloadLoad() == true )
+			retVal = true;
 		return(retVal);
 	}
 
 	
-	// UDP
-	// Conveyor M2 or M3 is ready to receive the component in Machine M1
-	 static protected int conveyorReadyForComp()
-	 {
-		 //int convId = Constants.NONE;
-		 // Check all conveyors
-		 /*if(!model.rMachines[Constants.M1].busy && model.rMachines[Constants.M1].component != Machines.NO_COMP)
-		 {
-			 // Check conveyor to Machine M2
-			 if(model.rMachines[Constants.M1].component.uType == Component.CompType.A &&
-			    model.qConveyors[Constants.M2].getN() < model.qConveyors[Constants.M2].length)  convId = Constants.M2;
-			 // Check Conveyor to Machine M3
-			 if(model.rMachines[Constants.M1].component.uType == Component.CompType.B &&
-			    model.qConveyors[Constants.M3].getN() < model.qConveyors[Constants.M3].length)  convId = Constants.M3;			 
-		 }*/
-		 return(0);//convId);
-	 }
-	@Override
-	protected double duration() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	@Override
 	public void startingEvent() {
-		// TODO Auto-generated method stub
-		int qid = conveyorReadyForComp();
-	    //model.qBuffConveyor[qid].spInsertQue(model.rMachines[Constants.M1].component);
-	    //model.rMachines[Constants.M1].component = Machines.NO_COMP;
+		SP.spRemoveQue(model.qInputConveyor, model.rCell[0]);
+		model.rCell[0].busy = true;
 	}
+
+
 	@Override
 	protected void terminatingEvent() {
-		// TODO Auto-generated method stub
-		
+
+		if (model.crPallet[pid].part != Part.NO_PART
+		&& model.rqPowerAndFreeConveyor[1].position[0] == Pallet.NO_PALLET_ID )
+
+// It was originally like this:
+//(RQ.PowerAndFreeConveyor[C1].n < RQ.PowerAndFreeConveyor[C1].capacity) 
+// so I changed it because I'm not sure if we have an array or not??
+
+			SP.spRemoveQue(model.qInputConveyor, model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].part);		
+		    model.rCell[0].busy = false;
+		    model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].isProcessed = false;
 	}
 	 
+
+
+	
+	static void initRvp(Seeds sd)
+	{
+		UNLOAD_LOAD_TIME = new TriangularVariate(5, 15, 75, new MersenneTwister(sd.ultC8));
+	}	
+	
+	@Override
+	public double duration() {
+		
+		return (model.rvp.uUnloadLoadTime());
+
+	}
+
+	private static boolean CellReadyForUnloadLoad() {
+		
+		// A pallet is available at work cell 8
+		if (model.rqPowerAndFreeConveyor[0].position[0] != Pallet.NO_PALLET_ID
+		// A part is available in the input conveyor
+			&& model.qInputConveyor.n != 0 
+		// Work cell 8 not busy
+			&& model.rCell[0].busy == false 
+		// Processing not done on pallet
+           && model.crPallet[model.rqPowerAndFreeConveyor[0].position[0]].isProcessed == false)
+
+		return true;
+		else
+		return false;
+	}
+	
+
 
 }
