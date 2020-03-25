@@ -58,6 +58,7 @@ public class ElectronicsProject extends AOSimulationModel
 		}
 		
 		this.initAOSimulModel(0, tftime);
+		//System.out.println("Simulation endtime: " + tftime + "\n");
 		
 		// Schedule Initialise action
 		Initialise init = new Initialise();
@@ -74,7 +75,7 @@ public class ElectronicsProject extends AOSimulationModel
 		ArrivingOfPartC arrPC = new ArrivingOfPartC();
 		scheduleAction(arrPC);
 		
-		printDebug();
+		//printDebug();
 	}
 	
 	// Initialize static components of model classes
@@ -106,7 +107,7 @@ public class ElectronicsProject extends AOSimulationModel
 	public void testPreconditions(Behaviour behObj)
 	{
 		reschedule(behObj);
-		while (scanPreconditions() == true) /* repeat */;
+		//while (scanPreconditions() == true) /* repeat */;
 	}
 
 	// Single scan of all preconditions
@@ -167,7 +168,66 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
+		System.out.printf("Clock = %10.4f\n", getClock());
+		System.out.print("\n");
 		
+		for(int i = 0; i < qBuffConveyor.length; i++) {
+			if(qBuffConveyor[i] != null && qBuffConveyor[i].n > 0) {
+				System.out.println("Number of parts in BuffConveyor: " + qBuffConveyor[i].n);
+				for(int j = 0; j < qBuffConveyor[i].n; j++) {
+					Part p = qBuffConveyor[i].list.get(j);
+					System.out.print("Part " + p.uType + "  ");
+				}
+				System.out.print("\n\n");
+			}
+		}
+		
+		System.out.println("Number of parts in Input Conveyor is " + qInputConveyor.n + " and its capacity is " + qInputConveyor.capacity);
+		
+		for(int i = 0; i < qInputConveyor.n; i++) {
+			Part p = qInputConveyor.list.get(i);
+			System.out.print("Part " + p.uType + "  ");
+		}
+		
+		System.out.print("\n\n");
+		
+		for(int i = 0; i < rCell.length; i++) {
+			if(rCell[i] != null) {
+				if(rCell[i].previousPartType == null) {
+					System.out.print("C" + String.valueOf(i) + " (busy, previousPartType): " + "(" + String.valueOf(rCell[i].busy) + ", null)");
+				}else {
+					System.out.print("C" + String.valueOf(i) + " (busy, previousPartType): " + "(" + String.valueOf(rCell[i].busy) + ", not null)");
+				}
+			
+				System.out.print("\n");
+			}
+		}
+		
+		System.out.print("\n\n");
+		
+		// Power-and-free conveyors
+		for(int i = 0; i < rqPowerAndFreeConveyor.length; i++) {
+			String pids = "";
+
+			if(rqPowerAndFreeConveyor[i] != null) {
+				for(int j = 0; j < rqPowerAndFreeConveyor[i].position.length; j++) {
+					int id = rqPowerAndFreeConveyor[i].position[j];
+					
+					if(id < 10) {
+						pids += String.valueOf(id) + "  ";
+					}else {
+						pids += String.valueOf(id) + " ";
+					}
+				}
+				System.out.print("Power-and-free conveyor " + rqPowerAndFreeConveyor[i].type.getString() + ": ");
+				System.out.print(pids + "\n");
+			}
+		}
+		
+		System.out.print("\n\n");
+		
+		showSBL();
+		System.out.println(">-----------------------------------------------<");
 	}
 
 }

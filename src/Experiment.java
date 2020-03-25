@@ -19,7 +19,7 @@ public class Experiment {
 			sds[i] = new Seeds(rsg);
 		}
 		
-		mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], false);
+		mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], true);
 		mnf.runSimulation();
 	}
 }

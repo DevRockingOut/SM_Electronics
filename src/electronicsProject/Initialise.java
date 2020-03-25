@@ -91,7 +91,7 @@ class Initialise extends ScheduledAction
 			pid += 1;
 		}
 		
-		printDebug();
+		//printDebug();
 	}
 	
 	private void printDebug()

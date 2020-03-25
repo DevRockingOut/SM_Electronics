@@ -1,5 +1,7 @@
 package electronicsProject;
 
+import java.io.PrintStream;
+
 import cern.jet.random.engine.MersenneTwister;
 import dataModelling.TriangularVariate;
 import simulationModelling.ScheduledAction;
@@ -8,7 +10,7 @@ class ArrivingOfPartC extends ScheduledAction {
 
 	static ElectronicsProject model;
 	static public TriangularVariate delayOfC;
-	
+	static private PrintStream so = System.out;
 	
 	@Override
 	protected double timeSequence()
@@ -30,6 +32,8 @@ class ArrivingOfPartC extends ScheduledAction {
 		}else {
 			model.nLossC++;
 		}
+		
+		//so.println("Part " + partC.uType.toString() + " created at time: " + model.getClock());
 	}
 	
 	static void initRvps(Seeds sd)
