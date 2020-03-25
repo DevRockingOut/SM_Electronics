@@ -45,7 +45,6 @@ public class UDP
     	Map<Integer,Integer> pallets = new HashMap<>();
     	
     	for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
-    		int last = model.rqPowerAndFreeConveyor[i].position.length -1;
     		
     		for(int j = 0; j < model.rqPowerAndFreeConveyor.length; j++) {
     			int pid = model.rqPowerAndFreeConveyor[i].position[j];
@@ -58,7 +57,7 @@ public class UDP
     			}
     		}
     		
-    		if(MovePallets.conveyorID == last) {
+    		if(MovePallets.conveyorID == (model.rqPowerAndFreeConveyor.length -1)) {
     			MovePallets.conveyorID = 0;
     		}else if(MovePallets.conveyorID == i) {
     			MovePallets.conveyorID += 1;

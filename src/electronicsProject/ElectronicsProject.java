@@ -107,7 +107,7 @@ public class ElectronicsProject extends AOSimulationModel
 	public void testPreconditions(Behaviour behObj)
 	{
 		reschedule(behObj);
-		//while (scanPreconditions() == true) /* repeat */;
+		while (scanPreconditions() == true) /* repeat */;
 	}
 
 	// Single scan of all preconditions
@@ -152,7 +152,7 @@ public class ElectronicsProject extends AOSimulationModel
 			scheduleActivity(act);
 			statusChanged = true;
 		}
-		
+		statusChanged = false;
 		return (statusChanged);
 		
 	}
@@ -168,7 +168,7 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
-		System.out.printf("Clock = %10.4f\n", getClock());
+		/*System.out.printf("Clock = %10.4f\n", getClock());
 		System.out.print("\n");
 		
 		for(int i = 0; i < qBuffConveyor.length; i++) {
@@ -224,7 +224,7 @@ public class ElectronicsProject extends AOSimulationModel
 			}
 		}
 		
-		System.out.print("\n\n");
+		System.out.print("\n\n");*/
 		
 		showSBL();
 		System.out.println(">-----------------------------------------------<");
