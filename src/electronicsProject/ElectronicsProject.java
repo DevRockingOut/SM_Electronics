@@ -58,7 +58,7 @@ public class ElectronicsProject extends AOSimulationModel
 		}
 		
 		this.initAOSimulModel(0, tftime);
-		//System.out.println("Simulation endtime: " + tftime + "\n");
+		System.out.println("Simulation endtime: " + tftime + "\n");
 		
 		// Schedule Initialise action
 		Initialise init = new Initialise();
@@ -115,8 +115,8 @@ public class ElectronicsProject extends AOSimulationModel
 	private boolean scanPreconditions()
 	{
 		boolean statusChanged = false;
-		// Conditional Actions
 		
+		// Conditional Actions
 		if (BatchRelease.precondition(this) == true)
 		{
 			BatchRelease act = new BatchRelease(); // Generate instance																// instance
@@ -126,8 +126,7 @@ public class ElectronicsProject extends AOSimulationModel
 		
 		
 		// Conditional Activities
-		
-		if (Processing.precondition() == true)
+		/*if (Processing.precondition() == true)
 		{
 			Processing act = new Processing(); // Generate instance
 			act.startingEvent();
@@ -151,8 +150,8 @@ public class ElectronicsProject extends AOSimulationModel
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}
-		statusChanged = false;
+		}*/
+		//statusChanged = false;
 		return (statusChanged);
 		
 	}
@@ -168,20 +167,25 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
-		/*System.out.printf("Clock = %10.4f\n", getClock());
+		System.out.printf("Clock = %10.4f\n", getClock());
 		System.out.print("\n");
 		
-		for(int i = 0; i < qBuffConveyor.length; i++) {
-			if(qBuffConveyor[i] != null && qBuffConveyor[i].n > 0) {
-				System.out.println("Number of parts in BuffConveyor: " + qBuffConveyor[i].n);
-				for(int j = 0; j < qBuffConveyor[i].n; j++) {
-					Part p = qBuffConveyor[i].list.get(j);
-					System.out.print("Part " + p.uType + "  ");
+		if(batchSize > 0) {
+			for(int i = 0; i < qBuffConveyor.length; i++) {
+				if(qBuffConveyor[i] != null && qBuffConveyor[i].n > 0) {
+					System.out.println("Number of parts in BuffConveyor " + qBuffConveyor[i].conveyorPartType + ": " + qBuffConveyor[i].n);
+					for(int j = 0; j < qBuffConveyor[i].n; j++) {
+						Part p = qBuffConveyor[i].list.get(j);
+						System.out.print("Part " + p.uType + "  ");
+					}
+					System.out.print("\n\n");
 				}
-				System.out.print("\n\n");
 			}
+		}else {
+			System.out.println("No buffer conveyors created due to batch size of 0");
 		}
 		
+		/*
 		System.out.println("Number of parts in Input Conveyor is " + qInputConveyor.n + " and its capacity is " + qInputConveyor.capacity);
 		
 		for(int i = 0; i < qInputConveyor.n; i++) {
@@ -226,7 +230,7 @@ public class ElectronicsProject extends AOSimulationModel
 		
 		System.out.print("\n\n");*/
 		
-		showSBL();
+		//showSBL();
 		System.out.println(">-----------------------------------------------<");
 	}
 

@@ -20,21 +20,20 @@ public class UDP
     static int BatchReadyForRelease() {
     	
     	// check if there is available space in the input conveyor [UPDATE_CM]
-    	if(model.qInputConveyor.capacity > (model.qInputConveyor.n - model.batchSize)) {
+    	if(model.batchSize > 0 && model.qInputConveyor.capacity > (model.qInputConveyor.n - model.batchSize)) {
     		
     		// try releasing the batch from a different buffer conveyor each time
-    		if(lastBuffConveyor != BufferType.BA) {
+    		if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BA;
-    		}else if(lastBuffConveyor != BufferType.BB) {
+    		}else if(lastBuffConveyor != BufferType.BB && model.qBuffConveyor[BufferType.BB.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BB;
-    		}else if(lastBuffConveyor != BufferType.BC) {
+    		}else if(lastBuffConveyor != BufferType.BC && model.qBuffConveyor[BufferType.BC.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BC;
+    		}else {
+    			return Constants.NONE;
     		}
     		
-    		// check if there are enough parts in the buffer conveyor to be released
-    		if(model.qBuffConveyor[lastBuffConveyor.getInt()].n >= model.batchSize) {
-    			return lastBuffConveyor.getInt();
-    		}
+    		return lastBuffConveyor.getInt();
     	}
     	
     	return Constants.NONE;

@@ -34,27 +34,29 @@ class Initialise extends ScheduledAction
 		model.qInputConveyor.n = 0;
 		model.qInputConveyor.capacity = 40;
 		
-		BufferType[] bID = BuffConveyor.BufferType.values();
-		
-		// loop BA to BC
-		for(int i = 0; i < bID.length; i++) {
-			int id = bID[i].getInt();
+		if(model.batchSize > 0) {
+			BufferType[] bID = BuffConveyor.BufferType.values();
 			
-			model.qBuffConveyor[id] = new BuffConveyor();
-			model.qBuffConveyor[id].n = 0;
-			model.qBuffConveyor[id].capacity = 10;
-			model.qBuffConveyor[id].type = bID[i];
-			
-			switch(bID[i]) {
-				case BA :
-					model.qBuffConveyor[id].conveyorPartType = Part.PartType.A;
-					break;
-				case BB :
-					model.qBuffConveyor[id].conveyorPartType = Part.PartType.B;
-					break;
-				case BC :
-					model.qBuffConveyor[id].conveyorPartType = Part.PartType.C;
-					break;
+			// loop BA to BC
+			for(int i = 0; i < bID.length; i++) {
+				int id = bID[i].getInt();
+				
+				model.qBuffConveyor[id] = new BuffConveyor();
+				model.qBuffConveyor[id].n = 0;
+				model.qBuffConveyor[id].capacity = 10;
+				model.qBuffConveyor[id].type = bID[i];
+				
+				switch(bID[i]) {
+					case BA :
+						model.qBuffConveyor[id].conveyorPartType = Part.PartType.A;
+						break;
+					case BB :
+						model.qBuffConveyor[id].conveyorPartType = Part.PartType.B;
+						break;
+					case BC :
+						model.qBuffConveyor[id].conveyorPartType = Part.PartType.C;
+						break;
+				}
 			}
 		}
 		

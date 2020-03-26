@@ -14,7 +14,7 @@ class ArrivingOfPartA extends ScheduledAction {
 	@Override
 	protected double timeSequence()
 	{
-		return RVP.DuArrA();
+		return RVP.DuArrA();  // delay is added to every part arrival, it should be between 2% of times [TO_FIX]
 	}
 
 	@Override
@@ -32,6 +32,7 @@ class ArrivingOfPartA extends ScheduledAction {
 			model.nLossA++;
 		}
 		
+		//so.println("LossA: " + model.nLossA);
 		//so.println("Part " + partA.uType.toString() + " created at time: " + model.getClock());
 	}
 	
