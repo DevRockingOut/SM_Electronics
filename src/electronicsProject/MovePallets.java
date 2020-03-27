@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.Map;
 import simulationModelling.ConditionalActivity;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+
 class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model;
@@ -40,7 +46,23 @@ class MovePallets extends ConditionalActivity {
 			int pos = palletsMove.get(i)[1];
 			int crPalletPos = palletsMove.get(i)[2];
 			
-			int lastPos = model.rqPowerAndFreeConveyor[conveyorID].position.length - 1;
+
+			if(pos < (model.rqPowerAndFreeConveyor[conveyorID].position.length -1)) {
+				model.rqPowerAndFreeConveyor[conveyorID].position[pos +1] = model.crPallet[crPalletPos].id;
+			}else {
+				if(conveyorID < (model.rqPowerAndFreeConveyor.length -1)) {
+					model.rqPowerAndFreeConveyor[conveyorID +1].position[0] = model.crPallet[crPalletPos].id;
+				}else {
+					model.rqPowerAndFreeConveyor[0].position[0] = model.crPallet[crPalletPos].id;
+					
+				}
+			}
+			
+			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
+			model.crPallet[crPalletPos].isMoving = false;
+		}
+		
+		/*int lastPos = model.rqPowerAndFreeConveyor[conveyorID].position.length - 1;
 			
 			if(pos == lastPos) {
 				if(conveyorID < model.rqPowerAndFreeConveyor.length -1) {
@@ -54,14 +76,36 @@ class MovePallets extends ConditionalActivity {
 			
 			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
 	    	model.crPallet[crPalletPos].isMoving = false;
+		}*/
+		
+		PrintWriter writer = null;
+		try {
+			//writer = new PrintWriter("trace.txt", "UTF-8");
+			FileWriter fileWriter = new FileWriter("trace.txt", true); //Set true for append mode
+		    writer = new PrintWriter(fileWriter);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		writer.println(model.getClock());
 		
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
 			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
 				int pid = model.rqPowerAndFreeConveyor[i].position[j];
-				System.out.println("power-and-free conveyor: " + i + ", pid: " + pid);
+				writer.println("power-and-free conveyor: " + i + ", pid: " + pid);
 			}
 		}
+		
+		writer.println("---------------------------------------------------------------------");
+		
+		writer.close();
 	}
 	
 	
