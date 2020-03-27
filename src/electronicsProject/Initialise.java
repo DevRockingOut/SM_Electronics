@@ -93,6 +93,16 @@ class Initialise extends ScheduledAction
 			pid += 1;
 		}
 		
+		for(int i = cellid; i < model.rqPowerAndFreeConveyor.length; i++) {
+			int j = 0;
+			if(i == cellid) {
+				j = pos;
+			}
+			for(; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
+				model.rqPowerAndFreeConveyor[i].position[j] = Pallet.NO_PALLET_ID;
+			}
+		}
+		
 		//printDebug();
 	}
 	

@@ -1,6 +1,8 @@
 package electronicsProject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import electronicsProject.BuffConveyor.BufferType;
 
@@ -39,34 +41,77 @@ public class UDP
     	return Constants.NONE;
     }
     
-    // returns a list of pallets ready to move <palletsPos, power-and-free conveyorPos> [UPDATE_CM]
+    // returns a list of pallets ready to move <conveyorID, pallet pos in conveyor, crPallet index> [UPDATE_CM]
     static Object PalletReadyToMove() {
-    	Map<Integer,Integer> pallets = new HashMap<>();
+    	//Map<Integer,Integer> pallets = new HashMap<>();
+    	List<int[]> pallets = new ArrayList<int[]>();
     	
-    	for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
-    		
-    		for(int j = 0; j < model.rqPowerAndFreeConveyor.length; j++) {
+    	// scan conveyors in reverse order
+    	for(int i = model.rqPowerAndFreeConveyor.length -1; i >= 0; i--) {
+    		// scan pallets in reverse order
+    		for(int j = model.rqPowerAndFreeConveyor[i].position.length -1; j >= 0; j--) {
     			int pid = model.rqPowerAndFreeConveyor[i].position[j];
+    			int nextPid = Pallet.NO_PALLET_ID;
+    			Pallet nextPallet = Pallet.NO_PALLET;
     			
-    			for(int k = 0; k < model.crPallet.length; k++) {
-    				if(model.crPallet[k].id == pid) {
-    					int pos = j;
-    					pallets.put(k, pos);
+    			if(j < (model.rqPowerAndFreeConveyor[i].position.length -1)) {
+    				nextPid = model.rqPowerAndFreeConveyor[i].position[j+1];
+    			}else {
+    				// get first pallet id in next power-and-free conveyor
+    				if(i < (model.rqPowerAndFreeConveyor.length -1)) {
+    					nextPid = model.rqPowerAndFreeConveyor[i+1].position[0];
+    				}else {
+    					nextPid = model.rqPowerAndFreeConveyor[0].position[0];
+    				}
+    			}
+    			
+    			nextPallet = getPallet(nextPid);
+    			
+    			// check if next position in conveyor is empty or if the pallet is moving
+    			if(nextPid == Pallet.NO_PALLET_ID || (nextPallet != Pallet.NO_PALLET && nextPallet.isMoving == true)) {
+    				int crPalletPos = getPalletPos(pid); // search for pallet in crPallet array
+    				int pos = j; // pallet position in conveyor
+    				int conveyorID = i;
+    				
+    				if(crPalletPos != Constants.NONE) {
+    					int[] p = new int[] {conveyorID, pos, crPalletPos};
+    					pallets.add(p);
+    					
+    					// have to set isMoving = true here instead of startingEvent in order to move multiple pallets at the same time
+    					model.crPallet[crPalletPos].isMoving = true; 
     				}
     			}
     		}
-    		
-    		if(MovePallets.conveyorID == (model.rqPowerAndFreeConveyor.length -1)) {
-    			MovePallets.conveyorID = 0;
-    		}else if(MovePallets.conveyorID == i) {
-    			MovePallets.conveyorID += 1;
-    		}	
     	}
     	
+    	System.out.println("pallets size: " + pallets.size());
     	if(pallets.size() > 0) {
     		return pallets;
     	}
     	
 		return Constants.NONE;	
 	}
+    
+    /**
+     * Helper functions to search for a pallet by id, note that pallet ids do not start at 0
+     **/
+    private static int getPalletPos(int pid) {
+    	for(int k = 0; k < model.crPallet.length; k++) {
+			if(model.crPallet[k].id == pid) {     
+				return k;
+			}
+		}
+    	
+    	return Constants.NONE;
+    }
+    
+    private static Pallet getPallet(int pid) {
+    	for(int k = 0; k < model.crPallet.length; k++) {
+			if(model.crPallet[k].id == pid) {     
+				return model.crPallet[k];
+			}
+		}
+    	
+    	return Pallet.NO_PALLET;
+    }
 }
