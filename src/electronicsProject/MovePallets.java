@@ -1,32 +1,22 @@
 package electronicsProject;
 
-import java.util.List;
-import java.util.Map;
 import simulationModelling.ConditionalActivity;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.io.IOException;
 
 class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model;
-	static int conveyorID = 0;
-	//private static Map<Integer,Integer> palletsMove; // list of pallets <palletsPos, power-and-free conveyorPos>
-	private static List<int[]> palletsMove;
+	private static List<int[]> palletsMove; //pid, pos
 	
     public static boolean precondition() {
-    	Object pallets = UDP.PalletReadyToMove();
-    	
-    	if(pallets instanceof Integer && (Integer) pallets == Constants.NONE) {
-    		return (Integer) pallets != Constants.NONE; 
-    	}else {
-    		//palletsMove = (Map<Integer,Integer>) pallets;// store the array of pallets to move
-    		palletsMove = (List<int[]>) pallets;
-    		return true;
-    	}
+    	palletsMove = UDP.PalletReadyToMove();
+    	return palletsMove.size() > 0;
     }
     
    	@Override
@@ -36,48 +26,37 @@ class MovePallets extends ConditionalActivity {
    
 	
 	@Override
-	public void startingEvent() {
-		/*for (Map.Entry<Integer, Integer> entry : palletsMove.entrySet()) {
-			int palletPos = entry.getKey();
-			model.crPallet[palletPos].isMoving = true;
-		}*/
+	public void startingEvent() { //later set ismoving to true
 		for(int i = 0; i < palletsMove.size(); i++) {
-			int conveyorID = palletsMove.get(i)[0];
-			int pos = palletsMove.get(i)[1];
-			int crPalletPos = palletsMove.get(i)[2];
+			int[] p = palletsMove.get(i);
+			int pid = p[0];
+			int conveyorID = p[1];
+			int pos = p[2];
 			
-
-			if(pos < (model.rqPowerAndFreeConveyor[conveyorID].position.length -1)) {
-				model.rqPowerAndFreeConveyor[conveyorID].position[pos +1] = model.crPallet[crPalletPos].id;
+			if(pos < model.rqPowerAndFreeConveyor[conveyorID].position.length -1) {
+				model.rqPowerAndFreeConveyor[conveyorID].position[pos+1] = pid;
 			}else {
-				if(conveyorID < (model.rqPowerAndFreeConveyor.length -1)) {
-					model.rqPowerAndFreeConveyor[conveyorID +1].position[0] = model.crPallet[crPalletPos].id;
+				if(conveyorID < model.rqPowerAndFreeConveyor.length -1) {
+					model.rqPowerAndFreeConveyor[conveyorID+1].position[0] = pid;
 				}else {
-					model.rqPowerAndFreeConveyor[0].position[0] = model.crPallet[crPalletPos].id;
-					
+					model.rqPowerAndFreeConveyor[0].position[0] = pid;
 				}
 			}
 			
 			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
-			model.crPallet[crPalletPos].isMoving = false;
 		}
 		
-		/*int lastPos = model.rqPowerAndFreeConveyor[conveyorID].position.length - 1;
-			
-			if(pos == lastPos) {
-				if(conveyorID < model.rqPowerAndFreeConveyor.length -1) {
-					model.rqPowerAndFreeConveyor[conveyorID +1].position[0] = model.crPallet[crPalletPos].id;
-				}else {
-					model.rqPowerAndFreeConveyor[0].position[0] = model.crPallet[crPalletPos].id;
-				}
-			}else {
-				model.rqPowerAndFreeConveyor[conveyorID].position[pos+1] = model.rqPowerAndFreeConveyor[conveyorID].position[pos];
-			}
-			
-			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
-	    	model.crPallet[crPalletPos].isMoving = false;
-		}*/
+		trace();
+	}
+	
+	
+	@Override
+	protected void terminatingEvent() {
 		
+	}
+	
+	private void trace() {
+
 		PrintWriter writer = null;
 		try {
 			//writer = new PrintWriter("trace.txt", "UTF-8");
@@ -106,29 +85,6 @@ class MovePallets extends ConditionalActivity {
 		writer.println("---------------------------------------------------------------------");
 		
 		writer.close();
-	}
-	
-	
-	@Override
-	protected void terminatingEvent() {
-		/*for (Map.Entry<Integer, Integer> entry : palletsMove.entrySet()) {
-			// move each pallet to next position
-			int palletPos = entry.getKey();
-			int pos = entry.getValue();
-			int lastPos = model.rqPowerAndFreeConveyor[conveyorID].position.length - 1;
-			
-			if(pos == lastPos) {
-				model.crPallet[palletPos].isProcessed = false; // [WTF_QUESTION] shouldn't this be done in the processing terminating event???
-				model.rqPowerAndFreeConveyor[conveyorID +1].position[0] = model.crPallet[palletPos].id;
-			}else {
-				model.rqPowerAndFreeConveyor[conveyorID].position[pos+1] = model.rqPowerAndFreeConveyor[conveyorID].position[pos];
-			}
-			
-			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
-	    	model.crPallet[palletPos].isMoving = false;
-	     }*/
-		
-		
 	}
 	        
 }
