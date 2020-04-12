@@ -73,13 +73,14 @@ public class UDP
     	return palletsMove;
 	}
     
-    private static Pallet getPallet(int pid) {
+    // This helper function returns the pallet from crPallet by pid
+    public static Pallet getPallet(int pid) {
     	for(int i = 0; i < model.crPallet.length; i++) {
     		if(model.crPallet[i].id == pid) {
-    			return model.crPallet[i];
+    			return model.crPallet[i]; // return the pallet found
     		}
     	}
     	
-    	return Pallet.NO_PALLET;
+    	return Pallet.NO_PALLET; // return Pallet.NO_PALLET (null) if pallet was not found
     }
 }

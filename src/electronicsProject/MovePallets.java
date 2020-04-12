@@ -16,12 +16,13 @@ class MovePallets extends ConditionalActivity {
 	
     public static boolean precondition() {
     	palletsMove = UDP.PalletReadyToMove();
+ //   	System.out.println();
     	return palletsMove.size() > 0;
     }
     
    	@Override
 	protected double duration() {
-		return DVP.uPalletMoving(); // duration of the activity to simulate time to move a pallet   
+		return Constants.MOVE_TIME; // duration of the activity to simulate time to move a pallet   
 	}
    
 	
@@ -35,6 +36,7 @@ class MovePallets extends ConditionalActivity {
 			
 			if(pos < model.rqPowerAndFreeConveyor[conveyorID].position.length -1) {
 				model.rqPowerAndFreeConveyor[conveyorID].position[pos+1] = pid;
+				
 			}else {
 				if(conveyorID < model.rqPowerAndFreeConveyor.length -1) {
 					model.rqPowerAndFreeConveyor[conveyorID+1].position[0] = pid;
@@ -42,10 +44,13 @@ class MovePallets extends ConditionalActivity {
 					model.rqPowerAndFreeConveyor[0].position[0] = pid;
 				}
 			}
-			
 			model.rqPowerAndFreeConveyor[conveyorID].position[pos] = Pallet.NO_PALLET_ID;
+			
+
 		}
 		
+	//	model.crPallet[pid].isMoving = true;
+
 		trace();
 	}
 	
@@ -53,6 +58,9 @@ class MovePallets extends ConditionalActivity {
 	@Override
 	protected void terminatingEvent() {
 		
+
+		//model.crPallet[pid].isMoving = false;
+
 	}
 	
 	private void trace() {

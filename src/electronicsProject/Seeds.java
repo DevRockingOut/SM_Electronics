@@ -16,7 +16,7 @@ public class Seeds
 	int ptC7B;   // process times C7, B
 	int ptC7C;   // process times C7, C
 	int ultC8;   // unload/Load times C8
-
+	int jamC8;   // Jam at cell 8
 
 	public Seeds(RandomSeedGenerator rsg)
 	{
@@ -30,6 +30,7 @@ public class Seeds
 		ptC7B=rsg.nextSeed();
 		ptC7C=rsg.nextSeed();
 		ultC8=rsg.nextSeed();
+		jamC8=rsg.nextSeed();
 
 
 //		cArr=rsg.nextSeed();

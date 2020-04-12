@@ -58,10 +58,10 @@ class RVP
 	   return (nxtTime);
 	}
 
-	public static double uUnloadLoadTime()
-	{
-		double nxtTime = 0.0;	   
-		   nxtTime = model.getClock() + (25*3.75) + UnLoadLoad.UNLOAD_LOAD_TIME.next();
-		   return (nxtTime); 
-	}
+	
+
+	
+	
+	
+
 }
