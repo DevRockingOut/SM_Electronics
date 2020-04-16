@@ -13,11 +13,11 @@ import simulationModelling.ConditionalActivity;
 class UnLoadLoad extends ConditionalActivity
 {
 	static ElectronicsProject model;
-    static public TriangularVariate UNLOAD_LOAD_TIME;
+    static public TriangularVariate TIME_RESPOND_TO_JAM;
 	static MersenneTwister JamOccur_CELL8;
     Part icPart;
     
-	public static boolean precondition() { 
+	public static boolean precondition() {
 		return UDP.CellReadyForUnloadLoad();
 	}
 
@@ -30,44 +30,40 @@ class UnLoadLoad extends ConditionalActivity
 		
 		Pallet pallet = UDP.getPallet(pid);
 		
-		// first do unload
-		if(pallet.part != Part.NO_PART) {
-			SP.Leave(pallet.part);  // parts at cell 8 leaves the system
-		}
-		
-		// now do load, why not put part in pallet here instead of terminating event ???
+		// Remove part from the input conveyor
 		icPart = SP.RemoveQue(model.qInputConveyor);
+		
+		// Load a part to a pallet
+		pallet.part = icPart;
 		model.rCell[C8].busy = true;
 					
-		//traceSTART();
+		// traceSTART();
 	}
 
 	static void initRvp(Seeds sd)
 	{
 		JamOccur_CELL8 = new MersenneTwister(sd.jamC8);
-		UNLOAD_LOAD_TIME = new TriangularVariate(5, 15, 75, new MersenneTwister(sd.ultC8));
+		TIME_RESPOND_TO_JAM = new TriangularVariate(5, 15, 75, new MersenneTwister(sd.ultC8));
 	}	
 	
 	@Override
 	public double duration() {
 		double UnloadLoadTime = uUnloadLoadTime();
-		System.out.println("##########loading time      " + UnloadLoadTime);
+		System.out.println("loading time : " + UnloadLoadTime);
 		return uUnloadLoadTime();
 	}
 	
 	private static double uUnloadLoadTime()
-	{
-		
+	{	
 		double nxtTime = 0;
-		double clearTime = 0.0;
+		double ResponseTime = 0.0;
 		
-		if (JamOccur_CELL8.nextInt() < 0.01)
+		if (JamOccur_CELL8.nextInt() < 0.01) 
 		{
-			clearTime = UNLOAD_LOAD_TIME.next();
+			ResponseTime = TIME_RESPOND_TO_JAM.next();
 		//	System.out.println("JamOccur_CELL8=    " + JamOccur_CELL8.nextInt());
 		}
-		
-		nxtTime = 25 + clearTime;
+		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
 		return nxtTime;
 	}
 	
@@ -80,13 +76,8 @@ class UnLoadLoad extends ConditionalActivity
 		
 		Pallet pallet = UDP.getPallet(pid);
 		
-		// Any existing part in the pallet is considered removed
-		if (pallet != Pallet.NO_PALLET && pallet.part != Part.NO_PART) 
-		{
-			pallet.part = icPart;
-			model.rCell[C8].busy = false;
-			pallet.isProcessed = true;
-		}
+		model.rCell[C8].busy = false;
+		pallet.isProcessed = true;
 
 		//traceEND();
 	}

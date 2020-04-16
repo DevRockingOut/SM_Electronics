@@ -26,9 +26,9 @@ class ArrivingOfPartB extends ScheduledAction {
 		int BB = BuffConveyor.BufferType.BB.getInt();
 		
 		if(model.batchSize != 0 && model.qBuffConveyor[BB].n < model.qBuffConveyor[BB].capacity) {
-			SP.InsertQue(model.qBuffConveyor[BB], partB);
+			model.qBuffConveyor[BB].spInsertQue(partB);
 		}else if(model.batchSize == 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
-			SP.InsertQue(model.qInputConveyor, partB);
+			model.qInputConveyor.spInsertQue(partB);
 		}else {
 			model.nLossB++;
 		}

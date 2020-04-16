@@ -5,7 +5,7 @@ import electronicsProject.Part.PartType;
 
 class BuffConveyor {
 	protected int n;
-    protected ArrayList<Part> list;
+    protected Part[] list;
     protected int capacity;
     protected PartType conveyorPartType; // ?? [WTF_QUESTION]   I think we should store bufferType instead
     protected BufferType type;
@@ -31,13 +31,30 @@ class BuffConveyor {
 	    public String getString() {
 	    	return svalue;
 	    }
-	};
+	}
     
-    BuffConveyor(){
+    BuffConveyor(int capacity){
         this.n = 0;
-        this.list = new ArrayList<Part>();
-        //this.capacity = 10;            [Initialise class]
-        //this.conveyorPartType = type;  [Initialise class]
+        this.list = new Part[capacity];
     }
+    
+    // add a part to buffer conveyor
+ 	public void spInsertQue(Part part) {
+ 		list[n] = part;
+ 		n += 1;
+ 	}
+    
+    // remove the part at the head from the buffer conveyor
+ 	public Part spRemoveQue() {
+ 		if(n == 0) {
+ 			return Part.NO_PART;
+ 		}
+ 		
+ 		Part part = list[0];
+ 		list[0] = null;
+ 		n -= 1;
+ 	
+ 		return part;
+ 	}
 
 }

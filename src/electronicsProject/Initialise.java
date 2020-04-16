@@ -40,10 +40,10 @@ class Initialise extends ScheduledAction
 			// loop BA to BC
 			for(int i = 0; i < bID.length; i++) {
 				int id = bID[i].getInt();
-				
-				model.qBuffConveyor[id] = new BuffConveyor();
+				int x = 10;
+				model.qBuffConveyor[id] = new BuffConveyor(x);
 				model.qBuffConveyor[id].n = 0;
-				model.qBuffConveyor[id].capacity = 10;
+				model.qBuffConveyor[id].capacity = x;
 				model.qBuffConveyor[id].type = bID[i];
 				
 				switch(bID[i]) {
@@ -60,7 +60,7 @@ class Initialise extends ScheduledAction
 			}
 		}
 		
-		int pid = 1;
+		int pid = 0;
 		int cellid = 0; // C8
 		int pos = 0; // start at the head of the power-and-free conveyor
 		PFConveyorType[] pfID = PowerAndFreeConveyor.PFConveyorType.values();
@@ -78,7 +78,7 @@ class Initialise extends ScheduledAction
 			pallet.isProcessed = false;
 			pallet.part = Part.NO_PART;
 			
-			model.crPallet[i] = pallet;
+			model.rcPallet[i] = pallet;
 			
 			// put the pallets in the power-and-free conveyors
 			model.rqPowerAndFreeConveyor[cellid].position[pos] = pid;

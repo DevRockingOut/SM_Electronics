@@ -27,7 +27,7 @@ class MovePallets extends ConditionalActivity {
    
 	
 	@Override
-	public void startingEvent() { //later set ismoving to true
+	public void startingEvent() { //later set is moving to true
 		for(int i = 0; i < palletsMove.size(); i++) {
 			int[] p = palletsMove.get(i);
 			int pid = p[0];

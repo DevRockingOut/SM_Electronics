@@ -22,16 +22,16 @@ public class BatchRelease extends ConditionalAction {
 			System.out.println("BufferConveyor " + model.qBuffConveyor[bfID[i].getInt()].type + " :" + model.qBuffConveyor[bfID[i].getInt()].n);
 		}
 		for(int i = 0; i < model.batchSize; i++) {
-			Part icPart = SP.RemoveQue(model.qBuffConveyor[id]);
+			Part icPart = model.qBuffConveyor[id].spRemoveQue();
 			
 			if(icPart != Part.NO_PART) {
-				SP.InsertQue(model.qInputConveyor, icPart);
+				model.qInputConveyor.spInsertQue(icPart);
 			}
 		}
 		
 		System.out.print("Input conveyor: ");
-		for(int i = 0; i < model.qInputConveyor.list.size(); i++) {
-			System.out.print(model.qInputConveyor.list.get(i).uType.toString() + " ");
+		for(int i = 0; i < model.qInputConveyor.list.length; i++) {
+			System.out.print(model.qInputConveyor.list[i].uType.toString() + " ");
 		}
 		System.out.println("");
 	}

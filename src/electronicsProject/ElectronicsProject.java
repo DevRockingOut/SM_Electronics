@@ -8,8 +8,8 @@ public class ElectronicsProject extends AOSimulationModel
 	// Entities
 	BuffConveyor[] qBuffConveyor;
 	InputConveyor qInputConveyor = new InputConveyor();
-	PowerAndFreeConveyor[] rqPowerAndFreeConveyor= new PowerAndFreeConveyor[8];
-	Pallet[] crPallet;
+	PowerAndFreeConveyor[] rqPowerAndFreeConveyor = new PowerAndFreeConveyor[8];
+	Pallet[] rcPallet;
 	Cell[] rCell = new Cell[8];
 	
 	// Parameters
@@ -51,7 +51,7 @@ public class ElectronicsProject extends AOSimulationModel
 		numPallets = _numPallets;
 		batchSize = _batchSize;
 		
-		crPallet = new Pallet[numPallets];
+		rcPallet = new Pallet[numPallets];
 		
 		if(batchSize > 0) {
 			qBuffConveyor = new BuffConveyor[3];

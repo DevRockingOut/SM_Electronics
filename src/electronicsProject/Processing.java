@@ -129,7 +129,7 @@ class Processing extends ConditionalActivity {
 
 	
 				if (model.rqPowerAndFreeConveyor[cid].position[pidHead] != model.rqPowerAndFreeConveyor[cid].NO_PALLET
-					&& model.crPallet[pidHead] != Pallet.NO_PALLET 
+					&& model.rcPallet[pidHead] != Pallet.NO_PALLET 
 						&&
 						// Work cell is not busy
 						model.rCell[cid].busy == false
@@ -138,7 +138,7 @@ class Processing extends ConditionalActivity {
 						pidHead != Pallet.NO_PALLET_ID 
 				        &&  
 				         // Processing on the part is not complete
-				         model.crPallet[pidHead].isProcessed == false  
+				         model.rcPallet[pidHead].isProcessed == false  
 						)
 				
 					     {CellID = cid;
