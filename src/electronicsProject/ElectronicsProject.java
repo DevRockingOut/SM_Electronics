@@ -7,7 +7,7 @@ public class ElectronicsProject extends AOSimulationModel
 {
 	// Entities
 	BuffConveyor[] qBuffConveyor;
-	InputConveyor qInputConveyor = new InputConveyor();
+	InputConveyor qInputConveyor = new InputConveyor(40);
 	PowerAndFreeConveyor[] rqPowerAndFreeConveyor = new PowerAndFreeConveyor[8];
 	Pallet[] rcPallet;
 	Cell[] rCell = new Cell[8];
@@ -179,7 +179,7 @@ public class ElectronicsProject extends AOSimulationModel
 				if(qBuffConveyor[i] != null && qBuffConveyor[i].n > 0) {
 					System.out.println("Number of parts in BuffConveyor " + qBuffConveyor[i].conveyorPartType + ": " + qBuffConveyor[i].n);
 					for(int j = 0; j < qBuffConveyor[i].n; j++) {
-						Part p = qBuffConveyor[i].list.get(j);
+						Part p = qBuffConveyor[i].list[j];
 						System.out.print("Part " + p.uType + "  ");
 					}
 					System.out.print("\n\n");

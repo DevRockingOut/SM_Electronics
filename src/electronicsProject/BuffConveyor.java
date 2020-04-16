@@ -34,7 +34,7 @@ class BuffConveyor {
 	}
     
     BuffConveyor(int capacity){
-        this.n = 0;
+        this.capacity = capacity;
         this.list = new Part[capacity];
     }
     
@@ -49,9 +49,9 @@ class BuffConveyor {
  		if(n == 0) {
  			return Part.NO_PART;
  		}
- 		
+ 	
  		Part part = list[0];
- 		list[0] = null;
+ 		//list[0] = null;
  		n -= 1;
  	
  		return part;

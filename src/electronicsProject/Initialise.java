@@ -32,7 +32,6 @@ class Initialise extends ScheduledAction
 		}
 		
 		model.qInputConveyor.n = 0;
-		model.qInputConveyor.capacity = 40;
 		
 		if(model.batchSize > 0) {
 			BufferType[] bID = BuffConveyor.BufferType.values();
@@ -40,10 +39,9 @@ class Initialise extends ScheduledAction
 			// loop BA to BC
 			for(int i = 0; i < bID.length; i++) {
 				int id = bID[i].getInt();
-				int x = 10;
-				model.qBuffConveyor[id] = new BuffConveyor(x);
+				int n = 10;
+				model.qBuffConveyor[id] = new BuffConveyor(n);
 				model.qBuffConveyor[id].n = 0;
-				model.qBuffConveyor[id].capacity = x;
 				model.qBuffConveyor[id].type = bID[i];
 				
 				switch(bID[i]) {

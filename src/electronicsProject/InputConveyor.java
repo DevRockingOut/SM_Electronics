@@ -8,8 +8,9 @@ class InputConveyor {
     protected Part[] list;  
     protected int capacity;
     
-    InputConveyor(){
+    InputConveyor(int capacity){
         this.n = 0;
+        this.capacity = capacity;
         this.list = new Part[capacity];
     }
  
@@ -20,13 +21,13 @@ class InputConveyor {
  	}
  	
  	// remove the part at the head from the input conveyor
- 	public Part RemoveQue() {
+ 	public Part spRemoveQue() {
  		if(n == 0) {
  			return Part.NO_PART;
  		}
  		
  		Part part = list[0];
- 		list[0] = null;
+ 		//list[0] = null;
  		n -= 1;
  	
  		return part;

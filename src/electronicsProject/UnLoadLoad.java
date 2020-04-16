@@ -31,7 +31,7 @@ class UnLoadLoad extends ConditionalActivity
 		Pallet pallet = UDP.getPallet(pid);
 		
 		// Remove part from the input conveyor
-		icPart = SP.RemoveQue(model.qInputConveyor);
+		icPart = model.qInputConveyor.spRemoveQue();
 		
 		// Load a part to a pallet
 		pallet.part = icPart;

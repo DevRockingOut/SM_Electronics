@@ -30,7 +30,7 @@ public class BatchRelease extends ConditionalAction {
 		}
 		
 		System.out.print("Input conveyor: ");
-		for(int i = 0; i < model.qInputConveyor.list.length; i++) {
+		for(int i = 0; i < model.qInputConveyor.n; i++) {
 			System.out.print(model.qInputConveyor.list[i].uType.toString() + " ");
 		}
 		System.out.println("");
