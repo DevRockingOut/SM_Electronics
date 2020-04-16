@@ -22,7 +22,7 @@ public class UDP
     static int BatchReadyForRelease() {
     	
     	// check if there is available space in the input conveyor [UPDATE_CM]
-    	if(model.batchSize > 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
+    	if(model.batchSize > 0 && model.qInputConveyor.n <= model.qInputConveyor.capacity - model.batchSize) {
     		
     		// try releasing the batch from a different buffer conveyor each time
     		if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
@@ -56,10 +56,12 @@ public class UDP
 		   	 && model.rCell[C8].busy == false 
 		     // Processing not done on pallet
              && pallet.isProcessed == false) {
+			System.out.println("Cell Ready To Unload/Load: " + true);
 			return true;
-		}else {
-			return false;
 		}
+		
+		System.out.println("Cell Ready To Unload/Load: " + false);
+		return false;
 	}
     
     // returns a list of pallets ready to move [UPDATE_CM]
