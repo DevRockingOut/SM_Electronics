@@ -21,30 +21,30 @@ class Processing extends ConditionalActivity {
 	static int CellID; // identifiers for Cell and PowerAndFreeConveyors
 	static PartType uType;
     int pid;
-    static public TriangularVariate PROC_TIME_C2_A;
-    static public TriangularVariate PROC_TIME_C2_B;
-    static public TriangularVariate PROC_TIME_C2_C;
-    static public TriangularVariate PROC_TIME_C7_A;
-    static public TriangularVariate PROC_TIME_C7_B;
-    static public TriangularVariate PROC_TIME_C7_C;
+    static TriangularVariate PROC_TIME_C2_A;
+    static TriangularVariate PROC_TIME_C2_B;
+    static TriangularVariate PROC_TIME_C2_C;
+    static TriangularVariate PROC_TIME_C7_A;
+    static TriangularVariate PROC_TIME_C7_B;
+    static TriangularVariate PROC_TIME_C7_C;
     
 
 	public static boolean precondition()
 	{
-		boolean retVal = false;
-		if(CellReadyForProcessing() != Constants.NONE)
-			retVal = true;
-	//	System.out.println("Is cell ready for processing?  " + retVal);
-		return(retVal);
+		if(CellReadyForProcessing() != Constants.NONE) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	  
 	@Override
 	public void startingEvent() {
+		int last = model.rqPowerAndFreeConveyor[CellID].position.length -1;
+		
 		CellID = CellReadyForProcessing(); // identify the cell that processes the part
-	//	System.out.println(CellID + "Is ready for processing  ");
-
-		pid = model.rqPowerAndFreeConveyor[CellID].position[model.rqPowerAndFreeConveyor[CellID].position.length -1];	
+		pid = model.rqPowerAndFreeConveyor[CellID].position[last];	
 	//	System.out.println(pid);
 	//	System.out.println(CellID);
         // Set machine to busy
@@ -54,26 +54,21 @@ class Processing extends ConditionalActivity {
 
 	@Override
 	public double duration() {
-		
 		// determine the duration
-		
 		return uServiceTime(CellID, uType);
 	}
 
 
 	@Override
 	public void terminatingEvent() {
-        System.out.println("ended");
-
+		Pallet pallet = UDP.getPallet(pid);
+		
         model.rCell[CellID].busy = false; 
-        if(pid != Pallet.NO_PALLET_ID) {
-        	Pallet pallet = UDP.getPallet(pid);
-        	pallet.isProcessed = true;
-        }
+		pallet.isProcessed = true;
         
         model.rCell[CellID].previousPartType = uType;
-        model.rCell[2].previousPartType = null; 
-        model.rCell[7].previousPartType = null;
+        //model.rCell[2].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
+        //model.rCell[7].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
 	}
 
 	static void initRvp(Seeds sd)
@@ -86,33 +81,36 @@ class Processing extends ConditionalActivity {
 		PROC_TIME_C7_C = new TriangularVariate(22,27,38, new MersenneTwister(sd.ptC7C));
 	}	
 
-	static public double uServiceTime(int cellID, Part.PartType uType ) {
-		int [][]SETUP_TIME = {{0, 25, 0, 52, 35, 29, 11, 0},
-				{0, 20, 0, 21, 22, 14, 19, 0},
-	      		{0, 17, 0, 34, 24, 37, 17, 0}};
-	    double [][]PROC_TIME = {{0, 37, PROC_TIME_C2_A.next(), 39, 41, 33, 31, PROC_TIME_C7_A.next()}, 
-	      		                {0, 46, PROC_TIME_C2_B.next(), 27, 38, 41, 24, PROC_TIME_C7_B.next()},
-	                            {0, 39, PROC_TIME_C2_C.next(), 23, 47, 35, 51, PROC_TIME_C7_C.next()}};
+	static public double uServiceTime(int cellID, Part.PartType uType) {
+		double[][] PROC_TIME = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
+							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
+					      	    {0, 17, PROC_TIME_C2_C.next(), 34, 24, 37, 17, PROC_TIME_C2_C.next()}};
+		
+	    int[][] SETUP_TIME = {{0, 37, 0, 39, 41, 33, 31, 0}, 
+	      		              {0, 46, 0, 27, 38, 41, 24, 0},
+	                          {0, 39, 0, 23, 47, 35, 51, 0}};
 	        
 	        // [UPDATE_CM] change the name of this: TypeToArrLocation
 		double serviceTime = 0.0; // an arbitrary default value
 		int partType;
-		  if (uType == Part.PartType.A) {
-			  partType = 0;
-		  }else if(uType == Part.PartType.B) {
-			  partType = 1;
-		  }else {
-			  partType = 2;
-		  }  
+		
+		if (uType == Part.PartType.A) {
+			partType = 0;
+		}else if(uType == Part.PartType.B) {
+			partType = 1;
+		}else {
+			partType = 2;
+		}  
 		  
-		  serviceTime = PROC_TIME[partType][cellID];
+		serviceTime = PROC_TIME[partType][cellID];
 		  
-		  if (uType!= model.rCell[cellID].previousPartType)
-			  serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID];
+		if (uType != model.rCell[cellID].previousPartType) {
+			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID];
+		}
 		  
-		 System.out.println("Service time for cell: " + cellID + "=  " + serviceTime );
-		  return serviceTime;
-		 }
+		System.out.println("Service time for cell: " + cellID + "=  " + serviceTime);
+		return serviceTime;
+	}
 	
 	
 	
@@ -124,35 +122,27 @@ class Processing extends ConditionalActivity {
 			System.out.println("Cell ID is   " + cid);
 			int pidHead = model.rqPowerAndFreeConveyor[cid].position.length - 1; 
 
-	//	Pallet palletHead = UDP.getPallet(pidHead);
-		//	System.out.println("Pallet position is     " + palletHead.NO_PALLET);
-
+			Pallet palletHead = UDP.getPallet(pidHead);
 	
-				if (model.rqPowerAndFreeConveyor[cid].position[pidHead] != model.rqPowerAndFreeConveyor[cid].NO_PALLET
-					&& model.rcPallet[pidHead] != Pallet.NO_PALLET 
-						&&
-						// Work cell is not busy
-						model.rCell[cid].busy == false
-						&&
-						//A pallet with a part exists on the conveyor at the work cell
-						pidHead != Pallet.NO_PALLET_ID 
-				        &&  
-				         // Processing on the part is not complete
-				         model.rcPallet[pidHead].isProcessed == false  
-						)
-				
-					     {CellID = cid;
-
-					//	System.out.println("Is cell ready for processing?  " + model.rCell[cid].busy);
-						//System.out.println("Is there a pallet in the cell?  " + Pallet.NO_PALLET );
-						System.out.println("cell:   " + CellID + "   is ready for processing!");
-					     }
+				// A pallet exists on the conveyor at the work cell
+			if (palletHead != Pallet.NO_PALLET  &&
+				// Work cell is not busy
+				model.rCell[cid].busy == false  &&
+				// A pallet with a part exists on the conveyor at the work cell
+				palletHead.part != Part.NO_PART &&  
+		        // Processing on the part is not complete
+		        palletHead.isProcessed == false)
+			{
+				System.out.println("cell:   " + cid + "   is ready for processing!");
+				return cid;
+				//	System.out.println("Is cell ready for processing?  " + model.rCell[cid].busy);
+				//System.out.println("Is there a pallet in the cell?  " + Pallet.NO_PALLET );
+		    }
 					
 		}
-		 System.out.println(CellID );
-		  return CellID;		
-				      
-		}
+	
+		return Constants.NONE;			      
+	}
 		
 	
 	

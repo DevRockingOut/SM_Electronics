@@ -13,7 +13,7 @@ import simulationModelling.ConditionalActivity;
 class UnLoadLoad extends ConditionalActivity
 {
 	static ElectronicsProject model;
-    static public TriangularVariate TIME_RESPOND_TO_JAM;
+    static TriangularVariate TIME_RESPOND_TO_JAM;
 	static MersenneTwister JamOccur_CELL8;
     Part icPart;
     
