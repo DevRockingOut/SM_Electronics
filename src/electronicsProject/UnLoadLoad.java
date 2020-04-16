@@ -28,7 +28,7 @@ class UnLoadLoad extends ConditionalActivity
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
-		Pallet pallet = UDP.getPallet(pid);
+		Pallet pallet =  model.rcPallet[pid];
 		
 		// Remove part from the input conveyor
 		icPart = model.qInputConveyor.spRemoveQue();
@@ -79,7 +79,7 @@ class UnLoadLoad extends ConditionalActivity
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
-		Pallet pallet = UDP.getPallet(pid);
+		Pallet pallet = model.rcPallet[pid];
 		
 		model.rCell[C8].busy = false;
 		pallet.isProcessed = true;

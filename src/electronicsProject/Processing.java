@@ -61,7 +61,7 @@ class Processing extends ConditionalActivity {
 
 	@Override
 	public void terminatingEvent() {
-		Pallet pallet = UDP.getPallet(pid);
+		Pallet pallet = model.rcPallet[pid];
 		
         model.rCell[CellID].busy = false; 
 		pallet.isProcessed = true;
@@ -122,7 +122,7 @@ class Processing extends ConditionalActivity {
 			System.out.println("Cell ID is   " + cid);
 			int pidHead = model.rqPowerAndFreeConveyor[cid].position.length - 1; 
 
-			Pallet palletHead = UDP.getPallet(pidHead);
+			Pallet palletHead =  model.rcPallet[pidHead];
 	
 				// A pallet exists on the conveyor at the work cell
 			if (palletHead != Pallet.NO_PALLET  &&

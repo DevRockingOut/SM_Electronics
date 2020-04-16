@@ -46,7 +46,7 @@ public class UDP
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
-		Pallet pallet = UDP.getPallet(pid);
+		Pallet pallet = model.rcPallet[pid];
 		
 		// A pallet is available at work cell 8
 		if ( pallet != Pallet.NO_PALLET 
@@ -82,7 +82,7 @@ public class UDP
     				}
     			}
     			
-    			Pallet pallet = getPallet(pid);
+    			Pallet pallet =  model.rcPallet[pid];
     			
     			// check if next position is empty
     			if(pallet != Pallet.NO_PALLET && nextPid == Pallet.NO_PALLET_ID) {
@@ -95,14 +95,4 @@ public class UDP
     	return palletsMove;
 	}
     
-    // This helper function returns the pallet from crPallet by pid
-    public static Pallet getPallet(int pid) {
-    	for(int i = 0; i < model.rcPallet.length; i++) {
-    		if(model.rcPallet[i].id == pid) {
-    			return model.rcPallet[i]; // return the pallet found
-    		}
-    	}
-    	
-    	return Pallet.NO_PALLET; // return Pallet.NO_PALLET (null) if pallet was not found
-    }
 }
