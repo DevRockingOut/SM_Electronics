@@ -18,7 +18,7 @@ class UnLoadLoad extends ConditionalActivity
     Part icPart;
     
 	public static boolean precondition() {
-		return UDP.CellReadyForUnloadLoad();
+		return CellReadyForUnloadLoad();
 	}
 
 	
@@ -88,6 +88,28 @@ class UnLoadLoad extends ConditionalActivity
 		System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
 		System.out.println("");
 		//traceEND();
+	}
+	
+	static boolean CellReadyForUnloadLoad() {
+    	int C8 = Cell.CellID.C8.getInt();
+		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
+		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		
+		Pallet pallet = model.rcPallet[pid];
+		
+		// A pallet is available at work cell 8
+		if ( pallet != Pallet.NO_PALLET 
+		     // A part is available in the input conveyor
+			 && model.qInputConveyor.n != 0 
+		     // Work cell 8 not busy
+		   	 && model.rCell[C8].busy == false 
+		     // Processing not done on pallet
+             && pallet.isProcessed == false) {
+			System.out.println("Cell Ready To Unload/Load: " + true);
+			return true;
+		}
+
+		return false;
 	}
 
 	private void traceSTART() {

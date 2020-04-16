@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 
@@ -15,8 +16,7 @@ class MovePallets extends ConditionalActivity {
 	private static List<int[]> palletsMove; //pid, pos
 	
     public static boolean precondition() {
-    	palletsMove = UDP.PalletReadyToMove();
- //   	System.out.println();
+    	palletsMove = PalletReadyToMove();
     	return palletsMove.size() > 0;
     }
     
@@ -61,6 +61,38 @@ class MovePallets extends ConditionalActivity {
 
 		//model.crPallet[pid].isMoving = false;
 
+	}
+	
+	// returns a list of pallets ready to move [UPDATE_CM]
+    static List<int[]> PalletReadyToMove() {
+    	List<int[]> palletsMove = new ArrayList<int[]>();
+    	
+    	for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+    		for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
+    			int pid = model.rqPowerAndFreeConveyor[i].position[j];
+    			int nextPid = Pallet.NO_PALLET_ID;
+    			
+    			if(j < model.rqPowerAndFreeConveyor[i].position.length -1) {
+    				nextPid = model.rqPowerAndFreeConveyor[i].position[j+1];
+    			}else {
+    				if(i < model.rqPowerAndFreeConveyor.length -1) {
+    					nextPid = model.rqPowerAndFreeConveyor[i+1].position[0];
+    				}else {
+    					nextPid = model.rqPowerAndFreeConveyor[0].position[0];
+    				}
+    			}
+    			
+    			Pallet pallet =  model.rcPallet[pid];
+    			
+    			// check if next position is empty
+    			if(pallet != Pallet.NO_PALLET && nextPid == Pallet.NO_PALLET_ID) {
+    				int[] p = new int[] {pid, i, j};
+    				palletsMove.add(p);
+    			}
+    		}
+    	}
+    	
+    	return palletsMove;
 	}
 	
 	private void trace() {

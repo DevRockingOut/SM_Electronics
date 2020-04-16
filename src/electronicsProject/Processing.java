@@ -81,6 +81,7 @@ class Processing extends ConditionalActivity {
 		PROC_TIME_C7_C = new TriangularVariate(22,27,38, new MersenneTwister(sd.ptC7C));
 	}	
 
+	// returns the operation time at the work cell
 	static public double uServiceTime(int cellID, Part.PartType uType) {
 		double[][] PROC_TIME = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
