@@ -7,7 +7,6 @@ class BuffConveyor {
 	protected int n;
     protected Part[] list;
     protected int capacity;
-    protected PartType conveyorPartType;
     protected BufferType type;
     protected static final BuffConveyor NO_BUFF_CONVEYOR = null;
     protected static final BufferType BUFF_TYPE_NONE = null;

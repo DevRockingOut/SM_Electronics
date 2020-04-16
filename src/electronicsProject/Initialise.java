@@ -43,18 +43,6 @@ class Initialise extends ScheduledAction
 				model.qBuffConveyor[id] = new BuffConveyor(n);
 				model.qBuffConveyor[id].n = 0;
 				model.qBuffConveyor[id].type = bID[i];
-				
-				switch(bID[i]) {
-					case BA :
-						model.qBuffConveyor[id].conveyorPartType = Part.PartType.A;
-						break;
-					case BB :
-						model.qBuffConveyor[id].conveyorPartType = Part.PartType.B;
-						break;
-					case BC :
-						model.qBuffConveyor[id].conveyorPartType = Part.PartType.C;
-						break;
-				}
 			}
 		}
 		
@@ -128,7 +116,7 @@ class Initialise extends ScheduledAction
 			System.out.print("No buffer conveyors"); // should print if batchSize == 0
 		}else {
 			for(int i = 0; i < model.qBuffConveyor.length; i++){
-				System.out.print(model.qBuffConveyor[i].type.getString() + " (capacity, partType): " + "(" + model.qBuffConveyor[i].capacity + ", " + model.qBuffConveyor[i].conveyorPartType + ")\n");
+				System.out.print(model.qBuffConveyor[i].type.getString() + " (capacity, partType): " + "(" + model.qBuffConveyor[i].capacity + ", " + model.qBuffConveyor[i].list[0].uType + ")\n");
 			}
 		}
 		

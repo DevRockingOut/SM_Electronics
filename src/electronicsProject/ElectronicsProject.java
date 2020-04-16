@@ -175,7 +175,7 @@ public class ElectronicsProject extends AOSimulationModel
 		if(batchSize > 0) {
 			for(int i = 0; i < qBuffConveyor.length; i++) {
 				if(qBuffConveyor[i] != null && qBuffConveyor[i].n > 0) {
-					System.out.println("Number of parts in BuffConveyor " + qBuffConveyor[i].conveyorPartType + ": " + qBuffConveyor[i].n);
+					System.out.println("Number of parts in BuffConveyor " + qBuffConveyor[i].list[0].uType + ": " + qBuffConveyor[i].n);
 					for(int j = 0; j < qBuffConveyor[i].n; j++) {
 						Part p = qBuffConveyor[i].list[j];
 						System.out.print("Part " + p.uType + "  ");
