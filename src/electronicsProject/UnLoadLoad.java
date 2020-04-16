@@ -36,6 +36,10 @@ class UnLoadLoad extends ConditionalActivity
 		// Load a part to a pallet
 		pallet.part = icPart;
 		model.rCell[C8].busy = true;
+		System.out.println("");
+		System.out.println("--- Starting Event ---");
+		System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
+		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);
 					
 		// traceSTART();
 	}
@@ -50,6 +54,7 @@ class UnLoadLoad extends ConditionalActivity
 	public double duration() {
 		double UnloadLoadTime = uUnloadLoadTime();
 		System.out.println("loading time : " + UnloadLoadTime);
+		System.out.println("");
 		return uUnloadLoadTime();
 	}
 	
@@ -78,7 +83,10 @@ class UnLoadLoad extends ConditionalActivity
 		
 		model.rCell[C8].busy = false;
 		pallet.isProcessed = true;
-
+		System.out.println("--- Terminating Event ---");
+		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);
+		System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
+		System.out.println("");
 		//traceEND();
 	}
 

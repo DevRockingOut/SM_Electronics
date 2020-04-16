@@ -124,6 +124,14 @@ public class ElectronicsProject extends AOSimulationModel
 			statusChanged = true;
 		}
 		
+		if(UnLoadLoad.precondition() == true)
+		{
+			UnLoadLoad act = new UnLoadLoad(); // Generate instance
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		
 		/*if (MovePallets.precondition() == true)
 		{
 			MovePallets act = new MovePallets(); // Generate instance
@@ -140,16 +148,6 @@ public class ElectronicsProject extends AOSimulationModel
 			scheduleActivity(act);
 			statusChanged = true;
 		}  */
-		
-		
-		
-		/* if(UnLoadLoad.precondition() == true)
-		{
-			UnLoadLoad act = new UnLoadLoad(); // Generate instance
-			act.startingEvent();
-			scheduleActivity(act);
-			statusChanged = true;
-		} */
 		
 	
 		

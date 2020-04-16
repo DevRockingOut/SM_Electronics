@@ -59,8 +59,7 @@ public class UDP
 			System.out.println("Cell Ready To Unload/Load: " + true);
 			return true;
 		}
-		
-		System.out.println("Cell Ready To Unload/Load: " + false);
+
 		return false;
 	}
     
