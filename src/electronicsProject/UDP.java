@@ -41,6 +41,27 @@ public class UDP
     	return Constants.NONE;
     }
     
+    static boolean CellReadyForUnloadLoad() {
+    	int C8 = Cell.CellID.C8.getInt();
+		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
+		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		
+		Pallet pallet = UDP.getPallet(pid);
+		
+		// A pallet is available at work cell 8
+		if ( pallet != Pallet.NO_PALLET 
+		     // A part is available in the input conveyor
+			 && model.qInputConveyor.n != 0 
+		     // Work cell 8 not busy
+		   	 && model.rCell[C8].busy == false 
+		     // Processing not done on pallet
+             && pallet.isProcessed == false) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+    
     // returns a list of pallets ready to move [UPDATE_CM]
     static List<int[]> PalletReadyToMove() {
     	List<int[]> palletsMove = new ArrayList<int[]>();

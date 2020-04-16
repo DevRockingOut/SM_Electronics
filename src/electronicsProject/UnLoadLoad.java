@@ -17,31 +17,31 @@ class UnLoadLoad extends ConditionalActivity
 	static MersenneTwister JamOccur_CELL8;
     Part icPart;
     
-	public static boolean precondition()
-	{			
-		boolean retVal = false;
-		if(CellReadyForUnloadLoad() == true )
-		{
-			retVal = true;
-			System.out.println(model.getClock());
-	        System.out.println( " Is cell ready for unloadLoad?  " + retVal);
-
-		}
-	 	return(retVal);
+	public static boolean precondition() { 
+		return UDP.CellReadyForUnloadLoad();
 	}
 
 	
 	@Override
 	public void startingEvent() {
-
+		int C8 = Cell.CellID.C8.getInt();
+		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
+		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		
+		Pallet pallet = UDP.getPallet(pid);
+		
+		// first do unload
+		if(pallet.part != Part.NO_PART) {
+			SP.Leave(pallet.part);  // parts at cell 8 leaves the system
+		}
+		
+		// now do load, why not put part in pallet here instead of terminating event ???
 		icPart = SP.RemoveQue(model.qInputConveyor);
-				
-					model.rCell[0].busy = true;
+		model.rCell[C8].busy = true;
 					
-		traceSTART();
+		//traceSTART();
 	}
 
-	
 	static void initRvp(Seeds sd)
 	{
 		JamOccur_CELL8 = new MersenneTwister(sd.jamC8);
@@ -51,7 +51,7 @@ class UnLoadLoad extends ConditionalActivity
 	@Override
 	public double duration() {
 		double UnloadLoadTime = uUnloadLoadTime();
-	System.out.println("##########loading time      " + UnloadLoadTime);
+		System.out.println("##########loading time      " + UnloadLoadTime);
 		return uUnloadLoadTime();
 	}
 	
@@ -67,61 +67,28 @@ class UnLoadLoad extends ConditionalActivity
 		//	System.out.println("JamOccur_CELL8=    " + JamOccur_CELL8.nextInt());
 		}
 		
-		nxtTime =   25 + clearTime;
+		nxtTime = 25 + clearTime;
 		return nxtTime;
-		
-
 	}
 	
 
 	@Override
 	protected void terminatingEvent() {
-
-
-		System.out.println( " Is cell busy when the ending event starts?  " + model.rCell[0].busy);
-
-		int last = model.rqPowerAndFreeConveyor[0].position[0];
-
-		Pallet pallet = UDP.getPallet(last);
+		int C8 = Cell.CellID.C8.getInt();
+		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
+		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		
+		Pallet pallet = UDP.getPallet(pid);
 		
 		// Any existing part in the pallet is considered removed
-		if (pallet != Pallet.NO_PALLET )
+		if (pallet != Pallet.NO_PALLET && pallet.part != Part.NO_PART) 
 		{
-		pallet.part = icPart;
-		model.rCell[0].busy = false;
-		pallet.isProcessed = true;
-		System.out.println( " Is cell busy before the event ending?  " + model.rCell[0].busy);
+			pallet.part = icPart;
+			model.rCell[C8].busy = false;
+			pallet.isProcessed = true;
 		}
-		System.out.println( " Is cell busy one the event ends?  " + model.rCell[0].busy);
 
-
-	
-		
-
-		traceEND();
-
-
-	}
-	
-	
-	private static boolean CellReadyForUnloadLoad() {
-		int last = model.rqPowerAndFreeConveyor[0].position.length -1;
-		Pallet pallet = UDP.getPallet(last);
-		
-		// A pallet is available at work cell 8
-		if ( last != Pallet.NO_PALLET_ID
-			&& pallet != Pallet.NO_PALLET 
-		     // A part is available in the input conveyor
-			 && model.qInputConveyor.n != 0 
-		     // Work cell 8 not busy
-		   	 && model.rCell[0].busy == false 
-		     // Processing not done on pallet
-             && pallet.isProcessed == false)
-			
-		return true;
-		else
-		return false;
-
+		//traceEND();
 	}
 
 	private void traceSTART() {

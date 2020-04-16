@@ -45,7 +45,7 @@ public class ElectronicsProject extends AOSimulationModel
 		logFlag = log;
 		
 		// Set up RVPs
-		rvp = new RVP(sd);
+		rvp = new RVP();
 		
 		// Initialise parameters
 		numPallets = _numPallets;
@@ -124,13 +124,13 @@ public class ElectronicsProject extends AOSimulationModel
 			statusChanged = true;
 		}
 		
-		if (MovePallets.precondition() == true)
+		/*if (MovePallets.precondition() == true)
 		{
 			MovePallets act = new MovePallets(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}
+		}*/
 		
 		// Conditional Activities
 	/*    if (Processing.precondition() == true)

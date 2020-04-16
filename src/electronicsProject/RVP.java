@@ -6,11 +6,6 @@ import dataModelling.TriangularVariate;
 class RVP 
 {
 	static ElectronicsProject model;  // reference to the complete model
-		
-	// Constructor
-	RVP(Seeds sd) 
-	{ 
-	}
 
 	
 	// returns a Part A which arrived

@@ -41,5 +41,9 @@ public class SP {
 		return part;
 	}
 	
+	static void Leave(Part part) {
+		part = null;
+	}
+	
 
 }
