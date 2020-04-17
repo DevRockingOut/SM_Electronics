@@ -7,7 +7,7 @@ public class Experiment {
 	{
 		int i, NUMRUNS = 40;
 		//double endTime = 30 * 24 * 60; // run for 30 days
-		double endTime = 4000.00;
+		double endTime = 100.00;
 		Seeds[] sds = new Seeds[NUMRUNS];
 		ElectronicsProject mnf; //Simulation object
 		int numPallets = 40;

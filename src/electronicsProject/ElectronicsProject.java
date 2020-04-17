@@ -124,30 +124,30 @@ public class ElectronicsProject extends AOSimulationModel
 			statusChanged = true;
 		}
 		
-		if(UnLoadLoad.precondition() == true)
+		/*if(UnLoadLoad.precondition() == true)
 		{
 			UnLoadLoad act = new UnLoadLoad(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}
+		}*/
 		
-		/*if (MovePallets.precondition() == true)
+		if (MovePallets.precondition() == true)
 		{
 			MovePallets act = new MovePallets(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}*/
+		}
 		
 		// Conditional Activities
-	    if (Processing.precondition() == true)
+	    /*if (Processing.precondition() == true)
 		{
 			Processing act = new Processing(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}
+		}*/
 		
 	
 		
