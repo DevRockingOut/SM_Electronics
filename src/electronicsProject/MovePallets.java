@@ -35,9 +35,11 @@ class MovePallets extends ConditionalActivity {
 			int pos = palletsMove.get(i)[1];
 			
 			int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
-			System.out.println("here " + model.rqPowerAndFreeConveyor[cellid].position[pos]);
+			System.out.println("pid " + model.rqPowerAndFreeConveyor[cellid].position[pos]);
 			model.rcPallet[pid].isMoving = true;
 		}
+		
+		System.out.println("-------------------------");
 	}
 	
 	
@@ -46,30 +48,32 @@ class MovePallets extends ConditionalActivity {
 		for(int i = 0; i < palletsMove.size(); i++) {
 			int cellid = palletsMove.get(i)[0];
 			int pos = palletsMove.get(i)[1];
-			
 			int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
 			
-		
+			if(pid != Pallet.NO_PALLET_ID) {
 			
-			// move the pallets
-			if(pos < model.rqPowerAndFreeConveyor[cellid].position.length -1) {
-				model.rqPowerAndFreeConveyor[cellid].position[pos+1] = pid;
-				
-			}else {
-				if(cellid < model.rqPowerAndFreeConveyor.length -1) {
-					model.rqPowerAndFreeConveyor[cellid+1].position[0] = pid;
+				// move the pallets
+				if(pos < model.rqPowerAndFreeConveyor[cellid].position.length -1) {
+					model.rqPowerAndFreeConveyor[cellid].position[pos+1] = pid;
+					
 				}else {
-					model.rqPowerAndFreeConveyor[0].position[0] = pid;
+					if(cellid < model.rqPowerAndFreeConveyor.length -1) {
+						model.rqPowerAndFreeConveyor[cellid+1].position[0] = pid;
+					}else {
+						model.rqPowerAndFreeConveyor[0].position[0] = pid;
+					}
 				}
+				
+				// clear old pallet pos and set isMoving to false
+				model.rcPallet[pid].isMoving = false;
+				
+				// reset isProcessed to false for pallets moving out of cells (C1 to C7)
+				model.rcPallet[pid].isProcessed = false;
+				model.rqPowerAndFreeConveyor[cellid].position[pos] = Pallet.NO_PALLET_ID;
 			}
-			
-			// clear old pallet pos and set isMoving to false
-			model.rcPallet[pid].isMoving = false;
-			
-			// reset isProcessed to false for pallets moving out of cells (C1 to C7)
-			model.rcPallet[pid].isProcessed = false;
-			model.rqPowerAndFreeConveyor[cellid].position[pos] = Pallet.NO_PALLET_ID;
 		}
+		
+		System.out.println("***********************");
 		
 		trace();
 	}
