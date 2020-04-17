@@ -141,13 +141,13 @@ public class ElectronicsProject extends AOSimulationModel
 		}*/
 		
 		// Conditional Activities
-	/*    if (Processing.precondition() == true)
+	    /*if (Processing.precondition() == true)
 		{
 			Processing act = new Processing(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}  */
+		}*/
 		
 	
 		
