@@ -18,9 +18,9 @@ import simulationModelling.ConditionalActivity;
 class Processing extends ConditionalActivity {
 	
 	static ElectronicsProject model;
-	static int CellID; // identifiers for Cell and PowerAndFreeConveyors
-	static PartType uType;
-    static int pid;
+	int CellID; // identifiers for Cell and PowerAndFreeConveyors
+	PartType uType;
+    int pid;
     static TriangularVariate PROC_TIME_C2_A;
     static TriangularVariate PROC_TIME_C2_B;
     static TriangularVariate PROC_TIME_C2_C;
@@ -32,21 +32,30 @@ class Processing extends ConditionalActivity {
 	public static boolean precondition()
 	{
 		int[] result = CellReadyForProcessing();
-		CellID = result[0];
-		pid = result[1];
-		System.out.println(CellID);
+		int CellID = result[0];
+		//pid = result[1];
+
 		return CellID != NONE;
 	}
 	
 	  
 	@Override
 	public void startingEvent() {
-		int last = model.rqPowerAndFreeConveyor[CellID].position.length -1;
+		//int last = model.rqPowerAndFreeConveyor[CellID].position.length -1;
 		
-		pid = model.rqPowerAndFreeConveyor[CellID].position[last];	
-
+		//pid = model.rqPowerAndFreeConveyor[CellID].position[last];	
+		int[] result = CellReadyForProcessing();
+		CellID = result[0];
+		pid = result[1];
         // Set machine to busy
         model.rCell[CellID].busy = true;
+        
+        System.out.println("--- Processing Starts ---");
+		System.out.print("C" + Cell.CellID.values()[CellID].getInt());
+		System.out.print(" busy: " + model.rCell[CellID].busy);
+		System.out.print("; isProcessed: " + model.rcPallet[pid].isProcessed);
+		System.out.print("; previousPartType: " + uType);
+		System.out.println("");
 	}
 
 	@Override
@@ -59,11 +68,18 @@ class Processing extends ConditionalActivity {
 	@Override
 	public void terminatingEvent() {
 		Pallet pallet = model.rcPallet[pid];
-		
         model.rCell[CellID].busy = false; 
 		pallet.isProcessed = true;
-        
         model.rCell[CellID].previousPartType = uType;
+        
+        System.out.println("");
+        System.out.println("--- Processing Ends ---");
+		System.out.print("C" + Cell.CellID.values()[CellID].getInt());
+		System.out.print("; busy: " + model.rCell[CellID].busy);
+		System.out.print("; isProcessed: " + pallet.isProcessed);
+		System.out.print("; previousPartType: " + uType);
+		System.out.println("");
+		System.out.println("");
         //model.rCell[2].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
         //model.rCell[7].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
 	}
@@ -79,8 +95,8 @@ class Processing extends ConditionalActivity {
 	}	
 
 	// returns the operation time at the work cell                            uServiceTime(int cellID, Part.PartType uType)
-	static public double uServiceTime(int pid, int cellID) {
-		System.out.println("pid " + pid);
+	public double uServiceTime(int pid, int cellID) {
+		System.out.println("pid " + pid + "; cellID " + Cell.CellID.values()[cellID].getInt());
 		
 		double[][] PROC_TIME = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
@@ -89,13 +105,10 @@ class Processing extends ConditionalActivity {
 	    int[][] SETUP_TIME = {{0, 37, 0, 39, 41, 33, 31, 0}, 
 	      		              {0, 46, 0, 27, 38, 41, 24, 0},
 	                          {0, 39, 0, 23, 47, 35, 51, 0}};
-	        
-	    if(pid == NONE) {
-	    	return 0.0;
-	    }
 	    
-	    Part.PartType uType = model.rcPallet[pid].part.uType;
-	   
+	    uType = model.rcPallet[pid].part.uType;
+	    System.out.println("Part type " + uType);
+	    
 	        // [UPDATE_CM] change the name of this: TypeToArrLocation
 		double serviceTime = 0.0; // an arbitrary default value
 		int partType;
@@ -118,7 +131,6 @@ class Processing extends ConditionalActivity {
 	}
 	
 	
-	
 	static protected int[] CellReadyForProcessing() {
 		int[] output = {NONE, NONE};
 		
@@ -127,7 +139,6 @@ class Processing extends ConditionalActivity {
 		// Check all cells from cell 1 to 7
 		for(int i = 1; i < cID.length ; i++) {
 			int cid = cID[i].getInt();
-			System.out.println("CellID " + cid);
 			int last = model.rqPowerAndFreeConveyor[cid].position.length - 1; 
 			int pid = model.rqPowerAndFreeConveyor[cid].position[last];
 			
@@ -138,7 +149,6 @@ class Processing extends ConditionalActivity {
 		        // Processing on the part is not complete
 		        model.rcPallet[pid].isProcessed == false)
 			{
-				System.out.println(cid + "; " + pid);
 				output[0] = cid;
 				output[1] = pid;
 				
