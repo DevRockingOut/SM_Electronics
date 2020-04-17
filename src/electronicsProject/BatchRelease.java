@@ -6,23 +6,20 @@ import simulationModelling.ConditionalAction;
 
 public class BatchRelease extends ConditionalAction {
 	
-	int id;
+	private static int id;
 	static ElectronicsProject model;
 	
-	
 	public static boolean precondition(ElectronicsProject md) {
-		BufferType NONE = null;
-		
+		int NONE = -1;
+		id = UDP.BatchReadyForRelease();
 		//System.out.println("Batch ready for release ID: " + id);
-		return UDP.BatchReadyForRelease() != NONE;
+		return id != NONE;
 	}
 	
 	@Override
 	protected void actionEvent() {
-		BufferType bType = UDP.BatchReadyForRelease();
-		id = bType.getInt();
-		
 		BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
+		
 		for(int i = 0; i < model.qBuffConveyor.length; i++) {
 			System.out.println("BufferConveyor " + model.qBuffConveyor[bID[i].getInt()].type + " :" + model.qBuffConveyor[bID[i].getInt()].n);
 		}
