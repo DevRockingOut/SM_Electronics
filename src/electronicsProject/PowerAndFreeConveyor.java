@@ -5,7 +5,7 @@ import java.util.ArrayList;
 class PowerAndFreeConveyor {
     protected PFConveyorType type;  // [Update_CM]   I think we should add this attribute to CM
     protected int[] position = new int[9];
-	protected static final int NO_PALLET = -1;
+	//protected static final int NO_PALLET = -1;
     /** [WTF_QUESTION]   I think no capacity attribute here because power-and-free conveyors contain always 9 pallets **/
     
     // assigning integer values to each enum member

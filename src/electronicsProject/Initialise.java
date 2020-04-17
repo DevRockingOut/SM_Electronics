@@ -63,7 +63,6 @@ class Initialise extends ScheduledAction
 		for(int i = 0; i < model.numPallets; i++) {  // [WTF_QUESTION]  if we have 40 pallets then we have 32 free positions, so power-and-free conveyors with no pallets at initialization
 			Pallet pallet = new Pallet();
 			pallet.id = pid;
-			pallet.index = pos;
 			pallet.isMoving = false;
 			pallet.isProcessed = false;
 			pallet.part = Part.NO_PART;

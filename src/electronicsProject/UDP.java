@@ -14,8 +14,8 @@ public class UDP
 	
     
     // returns the buffer conveyor id that is ready to release the batch of parts
-    static int BatchReadyForRelease() {
-    	int NONE = -1;
+    static BufferType BatchReadyForRelease() {
+    	BufferType NONE = null;
     	
     	// check if there is available space in the input conveyor [UPDATE_CM]
     	if(model.batchSize > 0 && model.qInputConveyor.n <= model.qInputConveyor.capacity - model.batchSize) {
@@ -31,7 +31,7 @@ public class UDP
     			return NONE;
     		}
     	
-    		return lastBuffConveyor.getInt();
+    		return lastBuffConveyor;
     	}
     	
     	return NONE;

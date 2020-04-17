@@ -1,27 +1,30 @@
 package electronicsProject;
 
 
+import electronicsProject.BuffConveyor.BufferType;
 import simulationModelling.ConditionalAction;
 
 public class BatchRelease extends ConditionalAction {
 	
-	private static int id;
+	int id;
 	static ElectronicsProject model;
 	
 	
 	public static boolean precondition(ElectronicsProject md) {
-		int NONE = -1;
+		BufferType NONE = null;
 		
-		id = UDP.BatchReadyForRelease();
 		//System.out.println("Batch ready for release ID: " + id);
-		return id != NONE;
+		return UDP.BatchReadyForRelease() != NONE;
 	}
 	
 	@Override
 	protected void actionEvent() {
-		BuffConveyor.BufferType[] bfID = BuffConveyor.BufferType.values();
+		BufferType bType = UDP.BatchReadyForRelease();
+		id = bType.getInt();
+		
+		BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
 		for(int i = 0; i < model.qBuffConveyor.length; i++) {
-			System.out.println("BufferConveyor " + model.qBuffConveyor[bfID[i].getInt()].type + " :" + model.qBuffConveyor[bfID[i].getInt()].n);
+			System.out.println("BufferConveyor " + model.qBuffConveyor[bID[i].getInt()].type + " :" + model.qBuffConveyor[bID[i].getInt()].n);
 		}
 		for(int i = 0; i < model.batchSize; i++) {
 			Part icPart = model.qBuffConveyor[id].spRemoveQue();

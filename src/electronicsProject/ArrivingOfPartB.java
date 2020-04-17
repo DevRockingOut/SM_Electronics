@@ -10,7 +10,6 @@ class ArrivingOfPartB extends ScheduledAction {
 
 	static ElectronicsProject model;
 	static public TriangularVariate delayOfB;
-	static private PrintStream so = System.out;
 	
 	@Override
 	protected double timeSequence()
