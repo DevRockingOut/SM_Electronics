@@ -47,8 +47,9 @@ class Initialise extends ScheduledAction
 		}
 		
 		int pid = 0;
-		int cellid = 0; // C8
-		int pos = 0; // start at the head of the power-and-free conveyor
+		//int cellid = 0; // C8
+		//int pos = 0; // start at the head of the power-and-free conveyor
+		
 		PFConveyorType[] pfID = PowerAndFreeConveyor.PFConveyorType.values();
 		
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
@@ -59,6 +60,9 @@ class Initialise extends ScheduledAction
 				model.rqPowerAndFreeConveyor[i].position[j] = Pallet.NO_PALLET_ID;
 			}
 		}
+		
+		int cellid = Cell.CellID.C8.getInt();
+		int pos = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 		
 		for(int i = 0; i < model.numPallets; i++) {  // [WTF_QUESTION]  if we have 40 pallets then we have 32 free positions, so power-and-free conveyors with no pallets at initialization
 			Pallet pallet = new Pallet();
@@ -71,20 +75,35 @@ class Initialise extends ScheduledAction
 			
 			// put the pallets in the power-and-free conveyors
 			int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
+			model.rqPowerAndFreeConveyor[cellid].position[pos] = pid;
 			
-			if(i == 0) {
+			//if(i == 0) {
 				// put a pallet ready for unload/load at Cell 8
-				model.rqPowerAndFreeConveyor[cellid].position[last] = pid;
+				//model.rqPowerAndFreeConveyor[cellid].position[last] = pid;
+			//}
+			
+			if(pos == 0) {
+				pos = last;
+				if(cellid == Cell.CellID.C8.getInt()) {
+					cellid = Cell.CellID.C7.getInt();
+				}else {
+					cellid -= 1;
+				}
+			}else {
+				pos -= 1;
 			}
 			
-			if(pos == last) { // pos == 8
+			pid += 1;
+			
+			
+			/*if(pos == last) { // pos == 8
 				cellid += 1; // go to next power-and-free conveyor
 				pos = 0;
 			}else {
 				pos += 1;
 			}
 			
-			pid += 1;
+			pid += 1;*/
 		}
 		
 		/*for(int i = cellid; i < model.rqPowerAndFreeConveyor.length; i++) {
