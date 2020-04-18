@@ -133,6 +133,16 @@ public class ElectronicsProject extends AOSimulationModel
 			statusChanged = true;
 		}
 		
+		// Conditional Activities
+	    if (Processing.precondition() == true)
+		{
+			Processing act = new Processing(); // Generate instance
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		
+		
 		if (MovePallets.precondition() == true)
 		{
 			MovePallets act = new MovePallets(); // Generate instance
@@ -140,16 +150,6 @@ public class ElectronicsProject extends AOSimulationModel
 			scheduleActivity(act);
 			statusChanged = true;
 		}
-		
-		// Conditional Activities
-	    /*if (Processing.precondition() == true)
-		{
-			Processing act = new Processing(); // Generate instance
-			act.startingEvent();
-			scheduleActivity(act);
-			statusChanged = true;
-		}*/
-		
 	
 		
 		//System.out.println(getTime0());

@@ -47,15 +47,25 @@ class Processing extends ConditionalActivity {
 		int[] result = CellReadyForProcessing();
 		CellID = result[0];
 		pid = result[1];
+		System.out.println("CellID: " + CellID + "  pid: " + pid);
         // Set machine to busy
         model.rCell[CellID].busy = true;
         
-        System.out.println("--- Processing Starts ---");
+        /*System.out.println("--- Processing Starts ---");
+        System.out.println("Clock: " + model.getClock());
 		System.out.print("C" + Cell.CellID.values()[CellID].getInt());
 		System.out.print(" busy: " + model.rCell[CellID].busy);
 		System.out.print("; isProcessed: " + model.rcPallet[pid].isProcessed);
 		System.out.print("; previousPartType: " + uType);
-		System.out.println("");
+		System.out.println("");*/
+        String s = "--- Processing Starts --- \n";
+        s += "Clock: " + model.getClock() + "\n";
+        s += "C" + Cell.CellID.values()[CellID].getInt();
+        s += "; busy: " + model.rCell[CellID].busy;
+        s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
+        s += "; previousPartType: " + uType + "\n\n";
+		
+		trace(s);
 	}
 
 	@Override
@@ -72,14 +82,25 @@ class Processing extends ConditionalActivity {
 		pallet.isProcessed = true;
         model.rCell[CellID].previousPartType = uType;
         
-        System.out.println("");
+       /* System.out.println("");
         System.out.println("--- Processing Ends ---");
+        System.out.println("Clock: " + model.getClock());
 		System.out.print("C" + Cell.CellID.values()[CellID].getInt());
 		System.out.print("; busy: " + model.rCell[CellID].busy);
 		System.out.print("; isProcessed: " + pallet.isProcessed);
 		System.out.print("; previousPartType: " + uType);
 		System.out.println("");
-		System.out.println("");
+		System.out.println(""); */
+        
+        String s = "--- Processing Ends --- \n";
+        s += "Clock: " + model.getClock() + "\n";
+        s += "C" + Cell.CellID.values()[CellID].getInt();
+        s += "; busy: " + model.rCell[CellID].busy;
+        s += "; isProcessed: " + pallet.isProcessed;
+        s += "; previousPartType: " + uType + "\n\n";
+		
+		trace(s);
+		
         //model.rCell[2].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
         //model.rCell[7].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
 	}
@@ -107,7 +128,7 @@ class Processing extends ConditionalActivity {
 	                          {0, 39, 0, 23, 47, 35, 51, 0}};
 	    
 	    uType = model.rcPallet[pid].part.uType;
-	    System.out.println("Part type " + uType);
+	    //System.out.println("Part type " + uType);
 	    
 	        // [UPDATE_CM] change the name of this: TypeToArrLocation
 		double serviceTime = 0.0; // an arbitrary default value
@@ -126,6 +147,9 @@ class Processing extends ConditionalActivity {
 		if (uType != model.rCell[cellID].previousPartType) {
 			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID];
 		}
+		
+		//System.out.println("Processing time: " + model.getClock());
+		//System.out.println("service time: " + serviceTime);
 		  
 		return serviceTime;
 	}
@@ -144,6 +168,8 @@ class Processing extends ConditionalActivity {
 			
 				// A pallet exists on the conveyor at the work cell
 			if (pid != Pallet.NO_PALLET_ID  &&
+				// Pallet has a part
+				model.rcPallet[pid].part != Part.NO_PART &&
 				// Work cell is not busy
 				model.rCell[cid].busy == false  &&
 		        // Processing on the part is not complete
@@ -151,19 +177,19 @@ class Processing extends ConditionalActivity {
 			{
 				output[0] = cid;
 				output[1] = pid;
-				
+
 				return output;
 			}
 					
 		}
-	
+		
 		return output;			      
 	}
 		
 	
 	
 	
-/*	private void trace() {
+	private void trace(String s) {
 
 		PrintWriter writer = null;
 		try {
@@ -181,19 +207,8 @@ class Processing extends ConditionalActivity {
 			e.printStackTrace();
 		}
 		
-		writer.println(model.getClock());
-		writer.println();
+		writer.println(s);
 		
-		
-		Pallet pallet = UDP.getPallet(pid);
-		double serviceTime = uServiceTime(CellID, uType);
-		if (pallet != Pallet.NO_PALLET ) {
-		writer.println("cell " + CellID + "  Is ready for processing or not?  " + model.rCell[CellID].busy // 0 to 7
-				+ ",   part on the pallet " + pid + "  is processed or not?  " +  pallet.isProcessed);
-		writer.println("serviceTime" + "at " + CellID + "is " + serviceTime);
-		}
-		
-		writer.println("---------------------------------------------------------------------");
 		writer.close();
-	} */
+	}
 }

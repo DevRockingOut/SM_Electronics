@@ -134,6 +134,14 @@ class MovePallets extends ConditionalActivity {
 				int lastCell = model.rqPowerAndFreeConveyor.length -1;
 				boolean palletCanMove = false;
 				
+				if(pos == last && model.rCell[cellid].busy == false) {
+					//System.out.println("clock: " + model.getClock());
+					//System.out.println("Cellid " + cellid + "  busy=" + model.rCell[cellid].busy);
+				}
+				
+				if(pos == last && model.rCell[cellid].busy == true) {
+					break;
+				}
 				
 				if(pid != Pallet.NO_PALLET_ID) { // model.rcPallet[pid].part != Part.NO_PART
 					

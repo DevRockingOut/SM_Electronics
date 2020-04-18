@@ -14,7 +14,7 @@ public class Experiment {
 		int batchSize = 0;
 		
 		batchSize = 5; 
-		numPallets = 60;   
+		numPallets = 40;   
 		// Lets get a set of uncorrelated seeds, different seeds for each run
 		RandomSeedGenerator rsg = new RandomSeedGenerator();
 		for (i = 0; i < NUMRUNS; i++) {
