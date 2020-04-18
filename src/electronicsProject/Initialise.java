@@ -31,8 +31,6 @@ class Initialise extends ScheduledAction
 			model.rCell[id].previousPartType = Part.NO_PART_TYPE;
 		}
 		
-		model.rCell[Cell.CellID.C3.getInt()].busy = true;
-		
 		model.qInputConveyor.n = 0;
 		
 		if(model.batchSize > 0) {
@@ -72,14 +70,14 @@ class Initialise extends ScheduledAction
 			model.rcPallet[i] = pallet;
 			
 			// put the pallets in the power-and-free conveyors
-			model.rqPowerAndFreeConveyor[cellid].position[pos] = pid;
 			int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
+			
+			if(i == 0) {
+				// put a pallet ready for unload/load at Cell 8
+				model.rqPowerAndFreeConveyor[cellid].position[last] = pid;
+			}
+			
 			if(pos == last) { // pos == 8
-				/*if(cellid == Cell.CellID.C8.getInt()) {
-					// put a pallet ready for unload/load at Cell 8
-					model.rqPowerAndFreeConveyor[cellid].position[last] = pid;
-				}*/
-				
 				cellid += 1; // go to next power-and-free conveyor
 				pos = 0;
 			}else {
