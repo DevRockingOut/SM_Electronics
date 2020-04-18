@@ -107,7 +107,8 @@ public class ElectronicsProject extends AOSimulationModel
 	public void testPreconditions(Behaviour behObj)
 	{
 		reschedule(behObj);
-		while (scanPreconditions() == true) /* repeat */;
+		//while (scanPreconditions() == true) /* repeat */;
+		scanPreconditions();
 	}
 
 	// Single scan of all preconditions
@@ -117,12 +118,12 @@ public class ElectronicsProject extends AOSimulationModel
 		boolean statusChanged = false;
 		
 		// Conditional Actions
-		if (BatchRelease.precondition(this) == true)
+		/*if (BatchRelease.precondition(this) == true)
 		{
 			BatchRelease act = new BatchRelease(); // Generate instance																// instance
 			act.actionEvent();
 			statusChanged = true;
-		}
+		}*/
 		
 		/*if(UnLoadLoad.precondition() == true)
 		{

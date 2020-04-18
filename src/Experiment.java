@@ -7,14 +7,14 @@ public class Experiment {
 	{
 		int i, NUMRUNS = 40;
 		//double endTime = 30 * 24 * 60; // run for 30 days
-		double endTime = 100.00;
+		double endTime = 200.00;
 		Seeds[] sds = new Seeds[NUMRUNS];
 		ElectronicsProject mnf; //Simulation object
 		int numPallets = 40;
 		int batchSize = 0;
 		
 		batchSize = 5; 
-		numPallets = 50;
+		numPallets = 18;
 		// Lets get a set of uncorrelated seeds, different seeds for each run
 		RandomSeedGenerator rsg = new RandomSeedGenerator();
 		for (i = 0; i < NUMRUNS; i++) {
