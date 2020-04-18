@@ -31,6 +31,8 @@ class Initialise extends ScheduledAction
 			model.rCell[id].previousPartType = Part.NO_PART_TYPE;
 		}
 		
+		model.rCell[Cell.CellID.C3.getInt()].busy = true;
+		
 		model.qInputConveyor.n = 0;
 		
 		if(model.batchSize > 0) {
@@ -75,10 +77,6 @@ class Initialise extends ScheduledAction
 			if(pos == last) { // pos == 8
 				/*if(cellid == Cell.CellID.C8.getInt()) {
 					// put a pallet ready for unload/load at Cell 8
-					model.rqPowerAndFreeConveyor[cellid].position[last] = pid;
-				}else if(cellid == Cell.CellID.C4.getInt() || cellid == Cell.CellID.C2.getInt()) {
-					pallet.part = new Part();
-					pallet.part.uType = Part.PartType.C;
 					model.rqPowerAndFreeConveyor[cellid].position[last] = pid;
 				}*/
 				

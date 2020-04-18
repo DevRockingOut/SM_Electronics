@@ -150,14 +150,37 @@ class MovePallets extends ConditionalActivity {
 				int cellid = i;
 				int pos = j;
 				int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
-				
+				int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
+				int lastCell = model.rqPowerAndFreeConveyor.length -1;
+				boolean palletCanMove = false;
 				
 				if(pid != Pallet.NO_PALLET_ID) {
 					
-					if(cellid == model.rqPowerAndFreeConveyor.length -1
-						&& pos == model.rqPowerAndFreeConveyor[i].position.length -1
-						&& model.rqPowerAndFreeConveyor[0].position[0] != Pallet.NO_PALLET_ID) {
-						// we are at position in C7 and first position of C8 contains a pallet
+					int nextPid;
+					int nextCellid;
+					int nextPos;
+					
+					if(pos < last) {
+						nextCellid = cellid;
+						nextPos = pos+1;
+					}else {
+						if(cellid < lastCell) {
+							nextCellid = cellid+1;
+							nextPos = 0;
+						}else {
+							nextCellid = 0;
+							nextPos = 0;
+						}
+					}
+					
+					nextPid = model.rqPowerAndFreeConveyor[nextCellid].position[nextPos];
+					
+					// we are at position in C7 and first position of C8 contains a pallet
+					if(cellid == lastCell
+						&& pos == last
+						&& model.rqPowerAndFreeConveyor[0].position[0] != Pallet.NO_PALLET_ID
+						&& model.rCell[cellid].busy == false) {
+						
 						// first store scannedPallets the keep filling pallets array as usual
 						
 						boolean emptyFound = false;
@@ -165,18 +188,19 @@ class MovePallets extends ConditionalActivity {
 						
 						// scan forward till we find an empty position (or pallet stuck at cell i.e busy = true -- not coded yet)
 						for(int a = 0; a < model.rqPowerAndFreeConveyor.length; a++) {
+							int currentCellid = a;
+							
 							for(int b = 0; b < model.rqPowerAndFreeConveyor[a].position.length; b++) {
-								int currentCellid = a;
 								int currentPos = b;
 								int currentPid = model.rqPowerAndFreeConveyor[a].position[b];
 								
 								if(currentPid == Pallet.NO_PALLET_ID) { 
-									//System.out.println("previousPid: " + model.rqPowerAndFreeConveyor[a].position[b-1]);
 									emptyFound = true;
+									break;
+								}else if(model.rCell[currentCellid].busy == true){
 									break;
 								}else {
 									pidStop = currentPid;
-									System.out.println("pidStop " + pidStop);
 									// store pallets scanned
 									int[] p = {currentCellid, currentPos};
 									scannedPallets.add(p);
@@ -185,35 +209,38 @@ class MovePallets extends ConditionalActivity {
 							
 							if(emptyFound == true) {
 								break;
+							}else if(model.rCell[currentCellid].busy == true){
+								break;
 							}
 						}
 						
 						if(emptyFound == true) {
 							for(int m = scannedPallets.size() -1; m > -1; m--) {
 								int mpid = model.rqPowerAndFreeConveyor[scannedPallets.get(m)[0]].position[scannedPallets.get(m)[1]];
-								System.out.println(mpid);
 								pallets.add(scannedPallets.get(m));
 							}
-							//int[] pallet = {cellid, pos};
-							//pallets.add(pallet);
-							
-							for(int m = 0; m < pallets.size(); m++) {
-								int mpid = model.rqPowerAndFreeConveyor[pallets.get(m)[0]].position[pallets.get(m)[1]];
-								System.out.print(mpid + " ");
-							}
-							System.out.println("");
-							System.out.println("--------");
+						}
+						
+					}
+					
+					if(nextPid == Pallet.NO_PALLET_ID || model.rcPallet[nextPid].isMoving == true
+						|| palletInList(pallets, nextCellid, nextPos) == true) {
+						
+						// cell position in power-and-free-conveyor is not busy
+						if(pos == last && model.rCell[cellid].busy == false) {
+							palletCanMove = true;
+						}else if(pos != last) { // every other position in power-and-free conveyor
+							palletCanMove = true;
 						}
 					}
 					
 					if(pid == pidStop) {
-						System.out.println(pallets.size());
-						System.out.println("print this pid " + pid);
-						System.out.println("and this pidStop " + pidStop);
 						i = -1;
 						j = -1;
 						pidStop = -2;
-					}else {
+						
+					}else if(palletCanMove == true) {
+						// all conditions met, so pallet can move
 						int[] pallet = {cellid, pos};
 						pallets.add(pallet);
 					}
@@ -224,83 +251,15 @@ class MovePallets extends ConditionalActivity {
 		return pallets;
 	}
 	
-	
-	// returns a list of pallets ready to move
-	static List<int[]> PalletsReadyToMove_backup(){
-		List<int[]> pallets = new ArrayList<int[]>();
+	private static boolean palletInList(List<int[]> pallets, int cellid, int pos) {
 		
-		// scan power-and-free conveyors forward
-		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
-			
-			// reverse scan pallets
-			for(int j = model.rqPowerAndFreeConveyor[i].position.length -1; j > -1; j--) {
-				int cellid = i;
-				int pos = j;
-				int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
-				int posLength = model.rqPowerAndFreeConveyor[cellid].position.length -1;
-				
-				// if cell is busy then current pallet cannot move
-				if(pos == posLength && model.rCell[cellid].busy == true) {
-					pid = Pallet.NO_PALLET_ID;
-				}
-				
-				if(pid != Pallet.NO_PALLET_ID) {
-					int nextPid = Pallet.NO_PALLET_ID;
-					
-					// get pallet in next position
-					if(pos < posLength) {
-						nextPid = model.rqPowerAndFreeConveyor[cellid].position[pos+1];
-					}else {
-						// get pallet in next conveyor
-						if(cellid < model.rqPowerAndFreeConveyor.length -1) {
-							nextPid = model.rqPowerAndFreeConveyor[cellid+1].position[0];
-						}else {
-							nextPid = model.rqPowerAndFreeConveyor[0].position[0];
-						}
-					}
-					
-					// next position is empty or next pallet is moving
-					if(nextPid == Pallet.NO_PALLET_ID || (nextPid != Pallet.NO_PALLET_ID && model.rcPallet[nextPid].isMoving == true)) {
-						int[] pallet = {cellid, pos};
-						pallets.add(pallet);
-						
-					}else if(pos == posLength && nextPid != Pallet.NO_PALLET_ID && model.rcPallet[nextPid].isMoving == false) {
-						// start searching at next conveyor
-						int start = cellid;
-						if(i < model.rqPowerAndFreeConveyor.length -1) {
-							start += 1;
-						}else {
-							start = 0;
-						}
-						
-						// scan on next conveyor till an empty position is found or a pallet stuck in a cell
-						for(int k = start; k == i; k++) { // k == i  means we are back same conveyor so stop searching
-							
-							for(int l = model.rqPowerAndFreeConveyor[k].position.length -1; l > -1; l--) {
-								int cellid2 = k;
-								int pid2 = model.rqPowerAndFreeConveyor[cellid].position[k];
-								
-								// empty position found
-								if(pid2 == Pallet.NO_PALLET_ID) {
-									int[] pallet = {cellid, pos};
-									pallets.add(pallet);
-									
-									k = model.rqPowerAndFreeConveyor.length; // used to exit loop
-									l = model.rqPowerAndFreeConveyor[k].position.length -1; // used to exit loop
-									
-									// pallet is stuck in cell
-								}else if(model.rCell[cellid2].busy == true) {
-									k = model.rqPowerAndFreeConveyor.length; // used to exit loop
-									l = model.rqPowerAndFreeConveyor[k].position.length -1; // used to exit loop
-								}
-							}
-						}
-					}
-				}
+		for(int i = 0; i < pallets.size(); i++) {
+			if(pallets.get(i)[0] == cellid && pallets.get(i)[1] == pos) {
+				return true;
 			}
 		}
 		
-		return pallets;
+		return false;
 	}
 	
 	private void trace() {
