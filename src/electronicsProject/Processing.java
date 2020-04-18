@@ -33,21 +33,29 @@ class Processing extends ConditionalActivity {
 	{
 		int[] result = CellReadyForProcessing();
 		int CellID = result[0];
-		//pid = result[1];
-
+		
 		return CellID != NONE;
 	}
 	
 	  
 	@Override
 	public void startingEvent() {
-		//int last = model.rqPowerAndFreeConveyor[CellID].position.length -1;
 		
-		//pid = model.rqPowerAndFreeConveyor[CellID].position[last];	
 		int[] result = CellReadyForProcessing();
+		
 		CellID = result[0];
 		pid = result[1];
-		System.out.println("CellID: " + CellID + "  pid: " + pid);
+		
+		PartType partType = model.rcPallet[pid].part.uType;
+		if (result[2] == 0) {
+			uType = Part.PartType.A;
+		}else if(result[2] == 1) {
+			uType = Part.PartType.B;
+		}else {
+			//result[2] = 2;
+			uType = Part.PartType.C;
+		}  
+		
         // Set machine to busy
         model.rCell[CellID].busy = true;
         
@@ -71,7 +79,7 @@ class Processing extends ConditionalActivity {
 	@Override
 	public double duration() {
 		// determine the duration
-		return uServiceTime(pid, CellID); //uServiceTime(CellID, uType); // uServiceTime(pid, CellID)
+		return uServiceTime(pid, CellID);
 	}
 
 
@@ -91,7 +99,7 @@ class Processing extends ConditionalActivity {
 		System.out.print("; previousPartType: " + uType);
 		System.out.println("");
 		System.out.println(""); */
-        
+   
         String s = "--- Processing Ends --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[CellID].getInt();
@@ -115,7 +123,7 @@ class Processing extends ConditionalActivity {
 		PROC_TIME_C7_C = new TriangularVariate(22,27,38, new MersenneTwister(sd.ptC7C));
 	}	
 
-	// returns the operation time at the work cell                            uServiceTime(int cellID, Part.PartType uType)
+	// returns the operation time at the work cell
 	public double uServiceTime(int pid, int cellID) {
 		System.out.println("pid " + pid + "; cellID " + Cell.CellID.values()[cellID].getInt());
 		
@@ -128,9 +136,8 @@ class Processing extends ConditionalActivity {
 	                          {0, 39, 0, 23, 47, 35, 51, 0}};
 	    
 	    uType = model.rcPallet[pid].part.uType;
-	    //System.out.println("Part type " + uType);
+	    System.out.println("Part type (service time) " + uType);
 	    
-	        // [UPDATE_CM] change the name of this: TypeToArrLocation
 		double serviceTime = 0.0; // an arbitrary default value
 		int partType;
 		
@@ -156,7 +163,7 @@ class Processing extends ConditionalActivity {
 	
 	
 	static protected int[] CellReadyForProcessing() {
-		int[] output = {NONE, NONE};
+		int[] output = {NONE, NONE, NONE};
 		
 		CellID[] cID = Cell.CellID.values();
 		
@@ -177,6 +184,15 @@ class Processing extends ConditionalActivity {
 			{
 				output[0] = cid;
 				output[1] = pid;
+				
+				PartType partType = model.rcPallet[pid].part.uType;
+				if (partType == Part.PartType.A) {
+					output[2] = 0;
+				}else if(partType == Part.PartType.B) {
+					output[2] = 1;
+				}else {
+					output[2] = 2;
+				}  
 
 				return output;
 			}
