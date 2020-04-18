@@ -21,7 +21,6 @@ class UnLoadLoad extends ConditionalActivity
 		return CellReadyForUnloadLoad();
 	}
 
-	
 	@Override
 	public void startingEvent() {
 		int C8 = Cell.CellID.C8.getInt();
@@ -36,10 +35,10 @@ class UnLoadLoad extends ConditionalActivity
 		// Load a part to a pallet
 		pallet.part = icPart;
 		model.rCell[C8].busy = true;
-		System.out.println("");
+		/*System.out.println("");
 		System.out.println("--- Starting Event ---");
 		System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
-		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);
+		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);*/
 					
 		// traceSTART();
 	}
@@ -84,10 +83,12 @@ class UnLoadLoad extends ConditionalActivity
 		model.rCell[C8].busy = false;
 		pallet.isProcessed = true;
 		System.out.println("--- Terminating Event ---");
+		System.out.println("Time: " + model.getClock());
 		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);
-		System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
+		//System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
 		System.out.println("");
 		//traceEND();
+		// but first lets print here
 	}
 	
 	static boolean CellReadyForUnloadLoad() {
@@ -95,7 +96,10 @@ class UnLoadLoad extends ConditionalActivity
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
-		Pallet pallet = model.rcPallet[pid];
+		Pallet pallet = Pallet.NO_PALLET;
+		if(pid != Pallet.NO_PALLET_ID) {
+			pallet = model.rcPallet[pid];
+		}
 		
 		// A pallet is available at work cell 8
 		if ( pallet != Pallet.NO_PALLET 
@@ -105,7 +109,7 @@ class UnLoadLoad extends ConditionalActivity
 		   	 && model.rCell[C8].busy == false 
 		     // Processing not done on pallet
              && pallet.isProcessed == false) {
-			System.out.println("Cell Ready To Unload/Load: " + true);
+			//System.out.println("Cell Ready To Unload/Load: " + true);
 			return true;
 		}
 

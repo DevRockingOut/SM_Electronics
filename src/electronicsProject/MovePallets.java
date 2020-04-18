@@ -15,10 +15,11 @@ class MovePallets extends ConditionalActivity {
 	static ElectronicsProject model;
 	List<int[]> palletsMove; //cellid, pos
 	static boolean wait = false;
-	static int palletsCount = 1; // starting at one cuz there is already one 
+	//static int palletsCount = 1; // starting at one cuz there is already one 
 	
-    public static boolean precondition() { 
+    public static boolean precondition() {
     	
+    	/*
     	//add a new pallet into the system if the number of total pallets is not reached
 		if(palletsCount < model.numPallets) {
 			
@@ -29,7 +30,7 @@ class MovePallets extends ConditionalActivity {
 				model.rqPowerAndFreeConveyor[Cell.CellID.C8.getInt()].position[last] = palletsCount; 
 				palletsCount++;
 			}
-		}
+		}*/
     	
     	List<int[]> pallets = PalletsReadyToMove();
     	
@@ -133,7 +134,8 @@ class MovePallets extends ConditionalActivity {
 				int lastCell = model.rqPowerAndFreeConveyor.length -1;
 				boolean palletCanMove = false;
 				
-				if(pid != Pallet.NO_PALLET_ID) {
+				
+				if(pid != Pallet.NO_PALLET_ID) { // model.rcPallet[pid].part != Part.NO_PART
 					
 					int nextPid;
 					int nextCellid;
@@ -155,11 +157,15 @@ class MovePallets extends ConditionalActivity {
 					nextPid = model.rqPowerAndFreeConveyor[nextCellid].position[nextPos];
 					
 					// we are at position in C7 and first position of C8 contains a pallet
+					int pidCell8 = model.rqPowerAndFreeConveyor[0].position[0];
+					
 					if(cellid == lastCell
 						&& pos == last
-						&& model.rqPowerAndFreeConveyor[0].position[0] != Pallet.NO_PALLET_ID
+						&& pidCell8 != Pallet.NO_PALLET_ID
+						&& model.rcPallet[pidCell8].part != Part.NO_PART
 						&& model.rCell[cellid].busy == false) {
-						
+						System.out.println("Clock " + model.getClock());
+						System.out.println("Part is " + model.rcPallet[model.rqPowerAndFreeConveyor[0].position[0]].part);
 						// first store scannedPallets the keep filling pallets array as usual
 						
 						boolean emptyFound = false;
@@ -202,7 +208,11 @@ class MovePallets extends ConditionalActivity {
 						
 					}
 					
-					if(nextPid == Pallet.NO_PALLET_ID || model.rcPallet[nextPid].isMoving == true
+					// there must be a part in pallet at C8 before moving it out of C8
+					if(cellid == Cell.CellID.C8.getInt() && pos == last
+						&& pid != Pallet.NO_PALLET_ID && model.rcPallet[pid].part == Part.NO_PART) {
+						palletCanMove = false;
+					}else if(nextPid == Pallet.NO_PALLET_ID || model.rcPallet[nextPid].isMoving == true
 						|| palletInList(pallets, nextCellid, nextPos) == true) {
 						
 						// cell position in power-and-free-conveyor is not busy

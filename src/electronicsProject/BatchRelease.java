@@ -12,7 +12,6 @@ public class BatchRelease extends ConditionalAction {
 	public static boolean precondition(ElectronicsProject md) {
 		int NONE = -1;
 		id = UDP.BatchReadyForRelease();
-		//System.out.println("Batch ready for release ID: " + id);
 		return id != NONE;
 	}
 	

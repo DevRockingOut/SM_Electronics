@@ -118,20 +118,20 @@ public class ElectronicsProject extends AOSimulationModel
 		boolean statusChanged = false;
 		
 		// Conditional Actions
-		/*if (BatchRelease.precondition(this) == true)
+		if (BatchRelease.precondition(this) == true)
 		{
 			BatchRelease act = new BatchRelease(); // Generate instance																// instance
 			act.actionEvent();
 			statusChanged = true;
-		}*/
+		}
 		
-		/*if(UnLoadLoad.precondition() == true)
+		if(UnLoadLoad.precondition() == true)
 		{
 			UnLoadLoad act = new UnLoadLoad(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}*/
+		}
 		
 		if (MovePallets.precondition() == true)
 		{
