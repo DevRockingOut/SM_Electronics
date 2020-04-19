@@ -1,7 +1,5 @@
 package electronicsProject;
 
-import java.io.PrintStream;
-
 import cern.jet.random.engine.MersenneTwister;
 import dataModelling.TriangularVariate;
 import simulationModelling.ScheduledAction;
@@ -32,13 +30,10 @@ class ArrivingOfPartB extends ScheduledAction {
 			model.nLossB++;
 		}
 		
-		//so.println("LossB: " + model.nLossB);
-		//so.println("Part " + partB.uType.toString() + " created at time: " + model.getClock());
 	}
 	
 	static void initRvps(Seeds sd)
 	{
-		// Initialise Internal modules, user modules and input variables
 	    delayOfB = new TriangularVariate(5,20,55, new MersenneTwister(sd.uArrB));
 	}
 

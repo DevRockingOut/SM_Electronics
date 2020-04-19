@@ -1,8 +1,5 @@
 package electronicsProject;
 
-import java.util.ArrayList;
-
-
 class InputConveyor {
 	protected int n;
     protected Part[] list;  

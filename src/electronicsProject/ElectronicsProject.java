@@ -64,7 +64,6 @@ public class ElectronicsProject extends AOSimulationModel
 		Initialise init = new Initialise();
 		scheduleAction(init);  // Should always be first one scheduled.
 		
-		//System.out.print("testing seed (random number) : " + sd.uArrA + "\n\n");
 		// Start arrivals
 		ArrivingOfPartA arrPA = new ArrivingOfPartA();
 		scheduleAction(arrPA);
@@ -86,6 +85,7 @@ public class ElectronicsProject extends AOSimulationModel
 		Output.model = this;
 		RVP.model = this;
 		UDP.model = this;
+		
 		// Add reference to activity/action classes
 		ArrivingOfPartA.model = this;
 		ArrivingOfPartB.model = this;
@@ -120,7 +120,7 @@ public class ElectronicsProject extends AOSimulationModel
 		// Conditional Actions
 		if (BatchRelease.precondition(this) == true)
 		{
-			BatchRelease act = new BatchRelease(); // Generate instance																// instance
+			BatchRelease act = new BatchRelease(); // Generate instance
 			act.actionEvent();
 			statusChanged = true;
 		}
@@ -170,7 +170,7 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
-		System.out.printf("Clock = %10.4f\n", getClock());
+		/*System.out.printf("Clock = %10.4f\n", getClock());
 		System.out.print("\n");
 		
 		if(batchSize > 0) {
@@ -186,7 +186,7 @@ public class ElectronicsProject extends AOSimulationModel
 			}
 		}else {
 			System.out.println("No buffer conveyors created due to batch size of 0");
-		}
+		}*/
 		
 		/*
 		System.out.println("Number of parts in Input Conveyor is " + qInputConveyor.n + " and its capacity is " + qInputConveyor.capacity);

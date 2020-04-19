@@ -1,6 +1,5 @@
 package electronicsProject;
 
-import java.io.PrintStream;
 import cern.jet.random.engine.MersenneTwister;
 import dataModelling.TriangularVariate;
 import simulationModelling.ScheduledAction;
@@ -31,8 +30,6 @@ class ArrivingOfPartA extends ScheduledAction {
 			model.nLossA++;
 		}
 		
-		//so.println("LossA: " + model.nLossA);
-		//so.println("Part " + partA.uType.toString() + " created at time: " + model.getClock());
 	}
 	
 	static void initRvps(Seeds sd)

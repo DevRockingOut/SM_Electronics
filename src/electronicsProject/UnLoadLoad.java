@@ -35,12 +35,6 @@ class UnLoadLoad extends ConditionalActivity
 		// Load a part to a pallet
 		pallet.part = icPart;
 		model.rCell[C8].busy = true;
-		/*System.out.println("");
-		System.out.println("--- Starting Event ---");
-		System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
-		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);*/
-					
-		// traceSTART();
 	}
 
 	static void initRvp(Seeds sd)
@@ -51,9 +45,6 @@ class UnLoadLoad extends ConditionalActivity
 	
 	@Override
 	public double duration() {
-		double UnloadLoadTime = uUnloadLoadTime();
-		System.out.println("loading time : " + UnloadLoadTime);
-		System.out.println("");
 		return uUnloadLoadTime();
 	}
 	
@@ -65,7 +56,6 @@ class UnLoadLoad extends ConditionalActivity
 		if (JamOccur_CELL8.nextInt() < 0.01) 
 		{
 			ResponseTime = TIME_RESPOND_TO_JAM.next();
-		//	System.out.println("JamOccur_CELL8=    " + JamOccur_CELL8.nextInt());
 		}
 		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
 		return nxtTime;
@@ -82,13 +72,6 @@ class UnLoadLoad extends ConditionalActivity
 		
 		model.rCell[C8].busy = false;
 		pallet.isProcessed = true;
-		System.out.println("--- Terminating Event ---");
-		System.out.println("Time: " + model.getClock());
-		System.out.println("Cell 8 busy: " + model.rCell[C8].busy);
-		//System.out.println("Pallet with Part " + pallet.part.uType.toString() + " isProcessed: " + pallet.isProcessed);
-		System.out.println("");
-		//traceEND();
-		// but first lets print here
 	}
 	
 	static boolean CellReadyForUnloadLoad() {
@@ -116,12 +99,11 @@ class UnLoadLoad extends ConditionalActivity
 		return false;
 	}
 
-	private void traceSTART() {
+	private void trace(String s) {
 
 		PrintWriter writer = null;
 		try {
-			//writer = new PrintWriter("trace.txt", "UTF-8");
-			FileWriter fileWriter = new FileWriter("traceUnloadLoadSTART.txt", true); //Set true for append mode
+			FileWriter fileWriter = new FileWriter("traceUnloadLoad.txt", true); //Set true for append mode
 		    writer = new PrintWriter(fileWriter);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -134,41 +116,7 @@ class UnLoadLoad extends ConditionalActivity
 			e.printStackTrace();
 		}
 		
-		writer.println(model.getClock());
-		writer.println();
-		
-		writer.println(" Is cell busy? " + model.rCell[0].busy);
-		
-		
-		writer.println("---------------------------------------------------------------------");
-		writer.close();
-	}
-
-	private void traceEND() {
-
-		PrintWriter writer = null;
-		try {
-			//writer = new PrintWriter("trace.txt", "UTF-8");
-			FileWriter fileWriter = new FileWriter("traceUnloadLoadEND.txt", true); //Set true for append mode
-		    writer = new PrintWriter(fileWriter);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		writer.println(model.getClock());
-		writer.println();
-		
-		writer.println("  Is cell busy? " + model.rCell[0].busy);
-		
-		
-		writer.println("---------------------------------------------------------------------");
+		writer.println(s);
 		writer.close();
 	}
 

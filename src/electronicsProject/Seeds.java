@@ -9,14 +9,14 @@ public class Seeds
 	int uArrC;  // part C arrivals
 	
 	int type;   // for types
-	int ptC2A;   // process times C2, A
-	int ptC2B;   // process times C2, B
-	int ptC2C;   // process times C2, C
-	int ptC7A;   // process times C7, A
-	int ptC7B;   // process times C7, B
-	int ptC7C;   // process times C7, C
-	int ultC8;   // unload/Load times C8
-	int jamC8;   // Jam at cell 8
+	int ptC2A;  // process times C2, A
+	int ptC2B;  // process times C2, B
+	int ptC2C;  // process times C2, C
+	int ptC7A;  // process times C7, A
+	int ptC7B;  // process times C7, B
+	int ptC7C;  // process times C7, C
+	int ultC8;  // unload/Load times C8
+	int jamC8;  // Jam at cell 8
 
 	public Seeds(RandomSeedGenerator rsg)
 	{
@@ -31,10 +31,5 @@ public class Seeds
 		ptC7C=rsg.nextSeed();
 		ultC8=rsg.nextSeed();
 		jamC8=rsg.nextSeed();
-
-
-//		cArr=rsg.nextSeed();
-//		type=rsg.nextSeed();
-
 	}
 }

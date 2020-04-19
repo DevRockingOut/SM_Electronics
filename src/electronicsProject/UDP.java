@@ -1,23 +1,17 @@
 package electronicsProject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import electronicsProject.BuffConveyor.BufferType;
-
 
 public class UDP 
 {
 	static ElectronicsProject model; 
 	static BufferType lastBuffConveyor = BuffConveyor.BUFF_TYPE_NONE;
 	
-    
     // returns the buffer conveyor id that is ready to release the batch of parts
     static int BatchReadyForRelease() {
     	int NONE = -1;
     	
-    	// check if there is available space in the input conveyor [UPDATE_CM]
+    	// check if there is available space in the input conveyor
     	if(model.batchSize > 0 && model.qInputConveyor.n <= model.qInputConveyor.capacity - model.batchSize) {
     		
     		// try releasing the batch from a different buffer conveyor each time

@@ -1,8 +1,5 @@
 package electronicsProject;
 
-import java.util.ArrayList;
-import electronicsProject.Part.PartType;
-
 class BuffConveyor {
 	protected int n;
     protected Part[] list;

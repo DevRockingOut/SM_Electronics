@@ -1,8 +1,5 @@
 package electronicsProject;
 
-import cern.jet.random.engine.MersenneTwister;
-import dataModelling.TriangularVariate;
-
 class RVP 
 {
 	static ElectronicsProject model;  // reference to the complete model
@@ -52,11 +49,5 @@ class RVP
 	   nxtTime = model.getClock() + (2.0*60) + ArrivingOfPartC.delayOfC.next();
 	   return (nxtTime);
 	}
-
-	
-
-	
-	
-	
 
 }

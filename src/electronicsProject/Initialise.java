@@ -19,7 +19,6 @@ class Initialise extends ScheduledAction
 	@Override
 	public void actionEvent() 
 	{
-		// [UPDATE_CM]  update initialise action on CM
 		CellID[] cID = Cell.CellID.values();
 		
 		// loop C1 to C8
@@ -64,7 +63,7 @@ class Initialise extends ScheduledAction
 		int cellid = Cell.CellID.C8.getInt();
 		int pos = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 		
-		for(int i = 0; i < model.numPallets; i++) {  // [WTF_QUESTION]  if we have 40 pallets then we have 32 free positions, so power-and-free conveyors with no pallets at initialization
+		for(int i = 0; i < model.numPallets; i++) {
 			Pallet pallet = new Pallet();
 			pallet.id = pid;
 			pallet.isMoving = false;

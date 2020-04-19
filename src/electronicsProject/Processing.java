@@ -1,6 +1,5 @@
 package electronicsProject;
 
-
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import cern.jet.random.engine.MersenneTwister;
 import electronicsProject.Seeds;
 import dataModelling.TriangularVariate;
-import electronicsProject.Constants;
 import electronicsProject.Cell.CellID;
 import electronicsProject.Part.PartType;
 import simulationModelling.ConditionalActivity;
@@ -46,26 +44,17 @@ class Processing extends ConditionalActivity {
 		CellID = result[0];
 		pid = result[1];
 		
-		PartType partType = model.rcPallet[pid].part.uType;
 		if (result[2] == 0) {
 			uType = Part.PartType.A;
 		}else if(result[2] == 1) {
 			uType = Part.PartType.B;
 		}else {
-			//result[2] = 2;
 			uType = Part.PartType.C;
 		}  
 		
         // Set machine to busy
         model.rCell[CellID].busy = true;
         
-        /*System.out.println("--- Processing Starts ---");
-        System.out.println("Clock: " + model.getClock());
-		System.out.print("C" + Cell.CellID.values()[CellID].getInt());
-		System.out.print(" busy: " + model.rCell[CellID].busy);
-		System.out.print("; isProcessed: " + model.rcPallet[pid].isProcessed);
-		System.out.print("; previousPartType: " + uType);
-		System.out.println("");*/
         String s = "--- Processing Starts --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[CellID].getInt();
@@ -89,16 +78,6 @@ class Processing extends ConditionalActivity {
         model.rCell[CellID].busy = false; 
 		pallet.isProcessed = true;
         model.rCell[CellID].previousPartType = uType;
-        
-       /* System.out.println("");
-        System.out.println("--- Processing Ends ---");
-        System.out.println("Clock: " + model.getClock());
-		System.out.print("C" + Cell.CellID.values()[CellID].getInt());
-		System.out.print("; busy: " + model.rCell[CellID].busy);
-		System.out.print("; isProcessed: " + pallet.isProcessed);
-		System.out.print("; previousPartType: " + uType);
-		System.out.println("");
-		System.out.println(""); */
    
         String s = "--- Processing Ends --- \n";
         s += "Clock: " + model.getClock() + "\n";
@@ -125,7 +104,6 @@ class Processing extends ConditionalActivity {
 
 	// returns the operation time at the work cell
 	public double uServiceTime(int pid, int cellID) {
-		System.out.println("pid " + pid + "; cellID " + Cell.CellID.values()[cellID].getInt());
 		
 		double[][] PROC_TIME = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
@@ -136,7 +114,6 @@ class Processing extends ConditionalActivity {
 	                          {0, 39, 0, 23, 47, 35, 51, 0}};
 	    
 	    uType = model.rcPallet[pid].part.uType;
-	    System.out.println("Part type (service time) " + uType);
 	    
 		double serviceTime = 0.0; // an arbitrary default value
 		int partType;
@@ -154,9 +131,6 @@ class Processing extends ConditionalActivity {
 		if (uType != model.rCell[cellID].previousPartType) {
 			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID];
 		}
-		
-		//System.out.println("Processing time: " + model.getClock());
-		//System.out.println("service time: " + serviceTime);
 		  
 		return serviceTime;
 	}
