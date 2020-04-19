@@ -14,24 +14,9 @@ class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model;
 	List<int[]> palletsMove; //cellid, pos
-	static boolean wait = false;
-	//static int palletsCount = 1; // starting at one cuz there is already one 
+	static boolean wait = false; 
 	
     public static boolean precondition() {
-    	
-    	/*
-    	//add a new pallet into the system if the number of total pallets is not reached
-		if(palletsCount < model.numPallets) {
-			
-			int last = model.rqPowerAndFreeConveyor[Cell.CellID.C8.getInt()].position.length -1;
-			
-			// wait till C8 is empty to add a new pallet
-			if(model.rqPowerAndFreeConveyor[Cell.CellID.C8.getInt()].position[last] == Pallet.NO_PALLET_ID) {
-				model.rqPowerAndFreeConveyor[Cell.CellID.C8.getInt()].position[last] = palletsCount; 
-				palletsCount++;
-			}
-		}*/
-    	
     	List<int[]> pallets = PalletsReadyToMove();
     	
     	return pallets.size() > 0 && wait == false;
@@ -56,6 +41,18 @@ class MovePallets extends ConditionalActivity {
     		
     		model.rcPallet[pid].isMoving = true;
     	}
+    	
+    	/*String s = "--------------- Move Pallets (start) ---------------\n";
+		s += "Clock: " + model.getClock() + "\n";
+		
+		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
+				s += "Power-and-free conveyor " + i + "  " + Cell.CellID.values()[i].toString();
+				s += "  pid: " + model.rqPowerAndFreeConveyor[i].position[j] + "\n"; 
+			}
+		}
+    	
+    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName());*/
 	}
 	
 	
@@ -89,6 +86,17 @@ class MovePallets extends ConditionalActivity {
 				model.rcPallet[pid].isProcessed = false;
 			}
 		}
+		
+		String s = "Clock: " + model.getClock() + "\n";
+		
+		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
+				s += "Power-and-free conveyor " + i + "  " + Cell.CellID.values()[i].toString();
+				s += "  pid: " + model.rqPowerAndFreeConveyor[i].position[j] + "\n"; 
+			}
+		}
+    	
+    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName());
 		
 		wait = false;
 	}

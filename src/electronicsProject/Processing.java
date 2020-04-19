@@ -71,19 +71,18 @@ class Processing extends ConditionalActivity {
 		Pallet pallet = model.rcPallet[pid];
         model.rCell[CellID].busy = false; 
 		pallet.isProcessed = true;
-        model.rCell[CellID].previousPartType = uType;
    
         String s = "--- Processing Ends --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[CellID].getInt();
         s += "; busy: " + model.rCell[CellID].busy;
         s += "; isProcessed: " + pallet.isProcessed;
-        s += "; previousPartType: " + uType + "\n\n";
+        s += "; new previousPartType: " + uType;
+        s += "; old previousPartType: " + model.rCell[CellID].previousPartType + "\n\n";
+        
+        model.rCell[CellID].previousPartType = uType;
 		
         Trace.write(s, "traceProcessing.txt", this.getClass().getName());
-		
-        //model.rCell[2].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
-        //model.rCell[7].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
 	}
 
 	static void initRvp(Seeds sd)
@@ -122,7 +121,7 @@ class Processing extends ConditionalActivity {
 		  
 		serviceTime = PROC_TIME[partType][cellID];
 		  
-		if (uType != model.rCell[cellID].previousPartType) {
+		if (model.rCell[cellID].previousPartType != Part.NO_PART_TYPE && uType != model.rCell[cellID].previousPartType) {
 			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID];
 		}
 		  

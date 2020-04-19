@@ -10,7 +10,6 @@ class UnLoadLoad extends ConditionalActivity
     static TriangularVariate TIME_RESPOND_TO_JAM;
 	static MersenneTwister JamOccur_CELL8;
     Part icPart;
-    double tmpUnloadLoadTime;
     
 	public static boolean precondition() {
 		return CellReadyForUnloadLoad();
@@ -31,9 +30,6 @@ class UnLoadLoad extends ConditionalActivity
 		pallet.part = icPart;
 		model.rCell[C8].busy = true;
 		
-		System.out.println("--------------- Unload/Load (start) ---------------");
-		System.out.println("Clock: " + model.getClock());
-		
 		String s = "--------------- Unload/Load (start) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Loaded Part " + icPart.uType.toString() + "\n";
@@ -51,9 +47,7 @@ class UnLoadLoad extends ConditionalActivity
 	
 	@Override
 	public double duration() {
-		tmpUnloadLoadTime = uUnloadLoadTime();
-		System.out.println("Unload/load time: " + tmpUnloadLoadTime);
-		return tmpUnloadLoadTime;
+		return uUnloadLoadTime();
 	}
 	
 	private static double uUnloadLoadTime()
