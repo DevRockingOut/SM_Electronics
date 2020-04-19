@@ -125,7 +125,7 @@ public class ElectronicsProject extends AOSimulationModel
 			statusChanged = true;
 		}
 		
-		if(UnLoadLoad.precondition() == true)
+		/*if(UnLoadLoad.precondition() == true)
 		{
 			UnLoadLoad act = new UnLoadLoad(); // Generate instance
 			act.startingEvent();
@@ -149,7 +149,7 @@ public class ElectronicsProject extends AOSimulationModel
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
-		}
+		}*/
 	
 		
 		//System.out.println(getTime0());

@@ -17,6 +17,18 @@ public class BatchRelease extends ConditionalAction {
 	protected void actionEvent() {
 		BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
 		
+		String s = "--------------- Batch Release [" + bID[id].getString() + "] ---------------\n";
+		s += "Clock: " + model.getClock() + "\n";
+		s += "Before Release\n";
+		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
+		s += "   Input conveyor: ";
+		
+		for(int i = 0; i < model.qInputConveyor.n; i++) {
+			s += model.qInputConveyor.list[i].uType.toString() + " ";
+		}
+		
+		s += "\n";
+		
 		for(int i = 0; i < model.batchSize; i++) {
 			Part icPart = model.qBuffConveyor[id].spRemoveQue();
 			
@@ -25,6 +37,17 @@ public class BatchRelease extends ConditionalAction {
 			}
 		}
 
+		s += "After Release\n";
+		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
+		s += "   Input conveyor: ";
+		
+		for(int i = 0; i < model.qInputConveyor.n; i++) {
+			s += model.qInputConveyor.list[i].uType.toString() + " ";
+		}
+		
+		s += "\n";
+		
+		Trace.write(s, "traceBatchRelease.txt", this.getClass().getName());
 	}
 	
 }
