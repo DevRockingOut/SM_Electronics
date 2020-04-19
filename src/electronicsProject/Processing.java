@@ -56,7 +56,7 @@ class Processing extends ConditionalActivity {
         s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
         s += "; previousPartType: " + uType + "\n\n";
 		
-        Trace.write(s, "traceProcessing.txt");
+        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
 	}
 
 	@Override
@@ -80,7 +80,7 @@ class Processing extends ConditionalActivity {
         s += "; isProcessed: " + pallet.isProcessed;
         s += "; previousPartType: " + uType + "\n\n";
 		
-        Trace.write(s, "traceProcessing.txt");
+        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
 		
         //model.rCell[2].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
         //model.rCell[7].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
