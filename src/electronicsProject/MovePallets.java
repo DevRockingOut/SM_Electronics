@@ -1,14 +1,8 @@
 package electronicsProject;
 
 import simulationModelling.ConditionalActivity;
-
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
 
 class MovePallets extends ConditionalActivity {
 	
@@ -151,8 +145,7 @@ class MovePallets extends ConditionalActivity {
 						&& pidCell8 != Pallet.NO_PALLET_ID
 						&& model.rcPallet[pidCell8].part != Part.NO_PART
 						&& model.rCell[cellid].busy == false) {
-						System.out.println("Clock " + model.getClock());
-						System.out.println("Part is " + model.rcPallet[model.rqPowerAndFreeConveyor[0].position[0]].part);
+						
 						// first store scannedPallets the keep filling pallets array as usual
 						
 						boolean emptyFound = false;
