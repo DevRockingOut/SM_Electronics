@@ -1,11 +1,5 @@
 package electronicsProject;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
 import cern.jet.random.engine.MersenneTwister;
 import dataModelling.TriangularVariate;
 import simulationModelling.ConditionalActivity;
@@ -16,6 +10,7 @@ class UnLoadLoad extends ConditionalActivity
     static TriangularVariate TIME_RESPOND_TO_JAM;
 	static MersenneTwister JamOccur_CELL8;
     Part icPart;
+    double tmpUnloadLoadTime;
     
 	public static boolean precondition() {
 		return CellReadyForUnloadLoad();
@@ -35,6 +30,17 @@ class UnLoadLoad extends ConditionalActivity
 		// Load a part to a pallet
 		pallet.part = icPart;
 		model.rCell[C8].busy = true;
+		
+		System.out.println("--------------- Unload/Load (start) ---------------");
+		System.out.println("Clock: " + model.getClock());
+		
+		String s = "--------------- Unload/Load (start) ---------------\n";
+		s += "Clock: " + model.getClock() + "\n";
+		s += "Loaded Part " + icPart.uType.toString() + "\n";
+		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
+		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
+		
+		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());
 	}
 
 	static void initRvp(Seeds sd)
@@ -45,7 +51,9 @@ class UnLoadLoad extends ConditionalActivity
 	
 	@Override
 	public double duration() {
-		return uUnloadLoadTime();
+		tmpUnloadLoadTime = uUnloadLoadTime();
+		System.out.println("Unload/load time: " + tmpUnloadLoadTime);
+		return tmpUnloadLoadTime;
 	}
 	
 	private static double uUnloadLoadTime()
@@ -72,6 +80,13 @@ class UnLoadLoad extends ConditionalActivity
 		
 		model.rCell[C8].busy = false;
 		pallet.isProcessed = true;
+		
+		String s = "--------------- Unload/Load (end) ---------------\n";
+		s += "Clock: " + model.getClock() + "\n";
+		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
+		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
+		
+		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());
 	}
 	
 	static boolean CellReadyForUnloadLoad() {
