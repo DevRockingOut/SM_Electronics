@@ -1,11 +1,5 @@
 package electronicsProject;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
 import cern.jet.random.engine.MersenneTwister;
 import electronicsProject.Seeds;
 import dataModelling.TriangularVariate;
@@ -62,7 +56,7 @@ class Processing extends ConditionalActivity {
         s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
         s += "; previousPartType: " + uType + "\n\n";
 		
-		trace(s);
+        Trace.write(s, "traceProcessing.txt");
 	}
 
 	@Override
@@ -86,7 +80,7 @@ class Processing extends ConditionalActivity {
         s += "; isProcessed: " + pallet.isProcessed;
         s += "; previousPartType: " + uType + "\n\n";
 		
-		trace(s);
+        Trace.write(s, "traceProcessing.txt");
 		
         //model.rCell[2].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
         //model.rCell[7].previousPartType = Part.NO_PART_TYPE; // no need for this, since we don't use it anyways
@@ -176,29 +170,4 @@ class Processing extends ConditionalActivity {
 		return output;			      
 	}
 		
-	
-	
-	
-	private void trace(String s) {
-
-		PrintWriter writer = null;
-		try {
-			//writer = new PrintWriter("trace.txt", "UTF-8");
-			FileWriter fileWriter = new FileWriter("traceProcessing.txt", true); //Set true for append mode
-		    writer = new PrintWriter(fileWriter);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		writer.println(s);
-		
-		writer.close();
-	}
 }

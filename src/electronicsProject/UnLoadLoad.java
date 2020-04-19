@@ -98,27 +98,5 @@ class UnLoadLoad extends ConditionalActivity
 
 		return false;
 	}
-
-	private void trace(String s) {
-
-		PrintWriter writer = null;
-		try {
-			FileWriter fileWriter = new FileWriter("traceUnloadLoad.txt", true); //Set true for append mode
-		    writer = new PrintWriter(fileWriter);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		writer.println(s);
-		writer.close();
-	}
-
 	
 }

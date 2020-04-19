@@ -34,16 +34,6 @@ class MovePallets extends ConditionalActivity {
     	
     	List<int[]> pallets = PalletsReadyToMove();
     	
-    	/*for(int i = 0; i < pallets.size(); i++) {
-    		int cellid = pallets.get(i)[0];
-    		int pos = pallets.get(i)[1];
-    		int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
-    		
-    		System.out.println("cellid: " + cellid + "  pos: " + pos + "  pid: " + pid);
-    	}
-    	
-    	System.out.println("----------- 1 ------------");*/
-    	
     	return pallets.size() > 0 && wait == false;
     }
     
@@ -57,7 +47,6 @@ class MovePallets extends ConditionalActivity {
 	public void startingEvent() {
 		palletsMove = PalletsReadyToMove();
     	
-		//test();
 		wait = true;
 		// set isMoving to true for all pallets that can move
     	for(int i = 0; i < palletsMove.size(); i++) {
@@ -66,23 +55,12 @@ class MovePallets extends ConditionalActivity {
     		int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
     		
     		model.rcPallet[pid].isMoving = true;
-    		//System.out.println("cellid: " + cellid + "  pos: " + pos + "  pid: " + pid);
     	}
-    	
-    	//System.out.println("----------- 2 ------------");
-    	trace();
 	}
 	
 	
 	@Override
 	protected void terminatingEvent() {
-		/*for(int i = 0; i < palletsMove.size(); i++) {
-    		int cellid = palletsMove.get(i)[0];
-    		int pos = palletsMove.get(i)[1];
-    		int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
-    	
-    		System.out.println("cellid: " + cellid + "  pos: " + pos + "  pid: " + pid);
-    	}*/
 		
 		for(int i = 0; i < palletsMove.size(); i++) {
 			int cellid = palletsMove.get(i)[0];
@@ -112,8 +90,6 @@ class MovePallets extends ConditionalActivity {
 			}
 		}
 		
-		//System.out.println("----------- 3 ------------");
-		
 		wait = false;
 	}
 	
@@ -133,11 +109,6 @@ class MovePallets extends ConditionalActivity {
 				int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 				int lastCell = model.rqPowerAndFreeConveyor.length -1;
 				boolean palletCanMove = false;
-				
-				if(pos == last && model.rCell[cellid].busy == false) {
-					//System.out.println("clock: " + model.getClock());
-					//System.out.println("Cellid " + cellid + "  busy=" + model.rCell[cellid].busy);
-				}
 				
 				if(pos == last && model.rCell[cellid].busy == true) {
 					break;
@@ -257,38 +228,6 @@ class MovePallets extends ConditionalActivity {
 		}
 		
 		return false;
-	}
-	
-	private void trace() {
-
-		PrintWriter writer = null;
-		try {
-			//writer = new PrintWriter("trace.txt", "UTF-8");
-			FileWriter fileWriter = new FileWriter("trace.txt", true); //Set true for append mode
-		    writer = new PrintWriter(fileWriter);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		writer.println(model.getClock());
-		
-		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
-			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
-				int pid = model.rqPowerAndFreeConveyor[i].position[j];
-				writer.println("power-and-free conveyor: " + Cell.CellID.values()[i] + ", i: " + i + " pid: " + pid);
-			}
-		}
-		
-		writer.println("---------------------------------------------------------------------");
-		
-		writer.close();
 	}
 	        
 }
