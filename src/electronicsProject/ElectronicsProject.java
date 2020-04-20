@@ -203,16 +203,21 @@ public class ElectronicsProject extends AOSimulationModel
 		s += "\n\n";
 		s += "   Q.InputConveyor.n= " + qInputConveyor.n + "\n";
 		s += "   Q.InputConveyor: ";
-			
-		for(int i = 0; i < qInputConveyor.n; i++) {
-			s += qInputConveyor.list[i].uType.toString() + " ";
-		}
 		
-		// Power-and-free Conveyors
+		if (qInputConveyor.n == 0) {
+			s += "The Input Conveyor is empty.";
+		}else {
+			for(int i = 0; i < qInputConveyor.n; i++) {
+			s += qInputConveyor.list[i].uType.toString() + " ";
+			}
+			}
+		
 		s += "\n\n";
-		s += "   RQ.PowerAndFreeConveyor";
+		s += "   " + "RQ.PowerAndFreeConveyor:";
+		s += "\n" + "   " +  "----------------------------------------------------------------------------------------------------------------------------------";
 		s += "\n";
 		
+		// Power-and-free conveyors
 		for(int i = 1; i < rqPowerAndFreeConveyor.length; i++) {
 			s +=  "   " + Cell.CellID.values()[i].toString() + ": ";
 			
@@ -237,7 +242,7 @@ public class ElectronicsProject extends AOSimulationModel
 					}
 				}
 				}
-			s += "\n" + "   " +  ">--------------------------------------------------------------------------------------------------------------------------------<";
+			s += "\n" + "   " +  "----------------------------------------------------------------------------------------------------------------------------------";
 			s += "\n";
 		}
 		
@@ -267,7 +272,7 @@ public class ElectronicsProject extends AOSimulationModel
 		}
 		
 		// Cells
-		s += "\n" + "   " + ">--------------------------------------------------------------------------------------------------------------------------------<";
+		s += "\n" + "   " +  "----------------------------------------------------------------------------------------------------------------------------------";
 		s += "\n\n";
 		s += "   R.Cell:";
 		s += "\n";
@@ -299,13 +304,16 @@ public class ElectronicsProject extends AOSimulationModel
 		}else {
 			s += "N/A)\n";
 		}
-		System.out.println(s);
-		showSBL();		
-		s += "\n" + ">--------------------------------------------------------------------------------------------------------------------------------<";
+		
+		// Lost Cost
+		s += "\n" + "   " +  "----------------------------------------------------------------------------------------------------------------------------------";
 		s += "\n";
-		s += "   " + "Lost Cost = " + getLostCost();
-		s += "\n" + ">--------------------------------------------------------------------------------------------------------------------------------<";
+		s += "   " + "Lost Cost = " + String.format("%.2f", getLostCost());
+		s += "\n" + "   " +  "----------------------------------------------------------------------------------------------------------------------------------";
 		s += "\n\n";
+		
+		System.out.println(s);
+		showSBL();
 		Trace.write(s, "log.txt", "Experiment");
 	}
 

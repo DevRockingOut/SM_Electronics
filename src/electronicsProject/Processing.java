@@ -140,13 +140,10 @@ class Processing extends ConditionalActivity {
 			int last = model.rqPowerAndFreeConveyor[cid].position.length - 1; 
 			int pid = model.rqPowerAndFreeConveyor[cid].position[last];
 			
-				// A pallet exists on the conveyor at the work cell
+			
 			if (pid != Pallet.NO_PALLET_ID  &&
-				// Pallet has a part
 				model.rcPallet[pid].part != Part.NO_PART &&
-				// Work cell is not busy
 				model.rCell[cid].busy == false  &&
-		        // Processing on the part is not complete
 		        model.rcPallet[pid].isProcessed == false)
 			{
 				output[0] = cid;

@@ -36,7 +36,7 @@ class ArrivingOfPartC extends ScheduledAction {
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Buffer Conveyor " + BuffConveyor.BufferType.BC.getString() + " details: \n";
 		s += "batchSize: " + model.batchSize + "  ";
-		s += "n: " + model.qBuffConveyor[BC].n + "  capacity: " + model.qBuffConveyor[BC].capacity + "\n";
+	//	s += "n: " + model.qBuffConveyor[BC].n + "  capacity: " + model.qBuffConveyor[BC].capacity + "\n";
 		s += "Part " + partC.uType.toString() + " Loss: " + model.nLossC + "\n";
 		
 		Trace.write(s, "tracePartsArrival.txt", "PartsArrival");

@@ -38,7 +38,7 @@ class UnloadLoad extends ConditionalActivity
 		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());
+		Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
 	}
 
 	// Initialise the RVP
@@ -65,6 +65,8 @@ class UnloadLoad extends ConditionalActivity
 			ResponseTime = TIME_RESPOND_TO_JAM.next();
 		}
 		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
+		String s = "Loading Time= " + nxtTime ;
+		Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
 		return nxtTime;
 	}
 	
