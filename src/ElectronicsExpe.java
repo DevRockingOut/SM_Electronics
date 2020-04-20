@@ -4,6 +4,7 @@ import electronicsProject.Seeds;
 import electronicsProject.Trace;
 
 public class ElectronicsExpe {
+	
 	public static void main(String[] args)
 	{
 		int NUMRUNS = 4;
@@ -46,7 +47,5 @@ public class ElectronicsExpe {
 		 }
 		 
 	}
-	
-	
 	
 }

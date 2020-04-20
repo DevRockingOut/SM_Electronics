@@ -10,19 +10,23 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+// class to create log files for debugging
 public class Trace {
 	
-	static List<String> callers = new ArrayList<String>();
+	// list of group of classes wanting to create a log file
+	static List<String> classesGroup = new ArrayList<String>();
 	
+	
+	// function used to create a log file
 	public static void write(String output, String filename, String caller) {
 		
-		if(!callers.contains(caller)) {
-			callers.add(caller);
+		// delete trace once per class caller
+		if(!classesGroup.contains(caller)) {
+			classesGroup.add(caller);
 			
-			// delete trace once per class caller
 			File file = new File(filename);
 			try {
-				boolean result = Files.deleteIfExists(file.toPath());
+				Files.deleteIfExists(file.toPath());
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

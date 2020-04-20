@@ -4,12 +4,12 @@ import cern.jet.random.engine.MersenneTwister;
 import dataModelling.TriangularVariate;
 import simulationModelling.ConditionalActivity;
 
-class UnLoadLoad extends ConditionalActivity
+class UnloadLoad extends ConditionalActivity
 {
-	static ElectronicsProject model;
+	static ElectronicsProject model; // For referencing the model
     static TriangularVariate TIME_RESPOND_TO_JAM;
 	static MersenneTwister JamOccur_CELL8;
-    Part icPart;
+    Part icPart; // instance of Part involved in the Activity
     
 	public static boolean precondition() {
 		return CellReadyForUnloadLoad();
@@ -28,6 +28,8 @@ class UnLoadLoad extends ConditionalActivity
 		
 		// Load a part to a pallet
 		pallet.part = icPart;
+		
+		// Update work cell 8 status
 		model.rCell[C8].busy = true;
 		
 		String s = "--------------- Unload/Load (start) ---------------\n";
@@ -39,6 +41,7 @@ class UnLoadLoad extends ConditionalActivity
 		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());
 	}
 
+	// Initialise the RVP
 	static void initRvp(Seeds sd)
 	{
 		JamOccur_CELL8 = new MersenneTwister(sd.jamC8);
@@ -50,6 +53,8 @@ class UnLoadLoad extends ConditionalActivity
 		return uUnloadLoadTime();
 	}
 	
+	// RVP
+	// Provides the time required to load and unload parts in work cell 8
 	private static double uUnloadLoadTime()
 	{	
 		double nxtTime = 0;
@@ -66,13 +71,17 @@ class UnLoadLoad extends ConditionalActivity
 
 	@Override
 	protected void terminatingEvent() {
+		// Unload/Load Activity Terminating Event SCS 
 		int C8 = Cell.CellID.C8.getInt();
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
 		Pallet pallet = model.rcPallet[pid];
 		
+		// Update work cell 8 status
 		model.rCell[C8].busy = false;
+		
+		// Update pallet status
 		pallet.isProcessed = true;
 		
 		String s = "--------------- Unload/Load (end) ---------------\n";
@@ -83,6 +92,9 @@ class UnLoadLoad extends ConditionalActivity
 		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());
 	}
 	
+	
+	// UDP
+	// Returns a boolean describing whether work cell 8 is ready for the unload/load process or not
 	static boolean CellReadyForUnloadLoad() {
     	int C8 = Cell.CellID.C8.getInt();
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
@@ -93,13 +105,9 @@ class UnLoadLoad extends ConditionalActivity
 			pallet = model.rcPallet[pid];
 		}
 		
-		// A pallet is available at work cell 8
 		if ( pallet != Pallet.NO_PALLET 
-		     // A part is available in the input conveyor
 			 && model.qInputConveyor.n != 0 
-		     // Work cell 8 not busy
 		   	 && model.rCell[C8].busy == false 
-		     // Processing not done on pallet
              && pallet.isProcessed == false) {
 			return true;
 		}

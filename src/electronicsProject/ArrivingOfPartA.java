@@ -6,7 +6,7 @@ import simulationModelling.ScheduledAction;
 
 class ArrivingOfPartA extends ScheduledAction {
 
-	static ElectronicsProject model;  // reference to model object
+	static ElectronicsProject model;  // For referencing the model
 	static public TriangularVariate delayOfA;
 	static MersenneTwister delayPercentageA;
 	
@@ -35,7 +35,7 @@ class ArrivingOfPartA extends ScheduledAction {
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Buffer Conveyor " + BuffConveyor.BufferType.BA.getString() + " details: \n";
 		s += "batchSize: " + model.batchSize + "  ";
-//		s += "n: " + model.qBuffConveyor[BA].n + "  capacity: " + model.qBuffConveyor[BA].capacity + "\n";
+		s += "n: " + model.qBuffConveyor[BA].n + "  capacity: " + model.qBuffConveyor[BA].capacity + "\n";
 		s += "Part " + partA.uType.toString() + " Loss: " + model.nLossA + "\n";
 		
 		Trace.write(s, "tracePartsArrival.txt", "PartsArrival");

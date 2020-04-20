@@ -6,7 +6,7 @@ import java.util.List;
 
 class MovePallets extends ConditionalActivity {
 	
-	static ElectronicsProject model;
+	static ElectronicsProject model; // For referencing the model
 	List<int[]> palletsMove; //cellid, pos
 	static boolean wait = false; 
 	

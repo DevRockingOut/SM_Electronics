@@ -1,7 +1,12 @@
 package electronicsProject;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
+import simulationModelling.SBNotice;
 
 public class ElectronicsProject extends AOSimulationModel
 {
@@ -73,8 +78,6 @@ public class ElectronicsProject extends AOSimulationModel
 		
 		ArrivingOfPartC arrPC = new ArrivingOfPartC();
 		scheduleAction(arrPC);
-		
-		//printDebug();
 	}
 	
 	// Initialize static components of model classes
@@ -92,7 +95,7 @@ public class ElectronicsProject extends AOSimulationModel
 		ArrivingOfPartC.model = this;
 		BatchRelease.model = this;
 		MovePallets.model = this;
-		UnLoadLoad.model = this;
+		UnloadLoad.model = this;
 		Processing.model = this;
 		
 		// Initialize RVPs in the classes
@@ -100,7 +103,7 @@ public class ElectronicsProject extends AOSimulationModel
 		ArrivingOfPartB.initRvps(sd);
 		ArrivingOfPartC.initRvps(sd);
 		Processing.initRvp(sd);
-		UnLoadLoad.initRvp(sd);
+		UnloadLoad.initRvp(sd);
 	}
 	
 	@Override
@@ -112,7 +115,7 @@ public class ElectronicsProject extends AOSimulationModel
 	}
 
 	// Single scan of all preconditions
-	// Returns true if at least one precondition was true.
+	// Returns true if at least one precondition was true
 	private boolean scanPreconditions()
 	{
 		boolean statusChanged = false;
@@ -125,15 +128,15 @@ public class ElectronicsProject extends AOSimulationModel
 			statusChanged = true;
 		}
 		
-		if(UnLoadLoad.precondition() == true)
+		// Conditional Activities
+		if(UnloadLoad.precondition() == true)
 		{
-			UnLoadLoad act = new UnLoadLoad(); // Generate instance
+			UnloadLoad act = new UnloadLoad(); // Generate instance
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
 		}
 		
-		// Conditional Activities
 	    if (Processing.precondition() == true)
 		{
 			Processing act = new Processing(); // Generate instance
@@ -175,6 +178,8 @@ public class ElectronicsProject extends AOSimulationModel
 		s += "\n";
 		s += "Clock =  " + getClock();
 		s += "\n\n";
+		
+		// Buffer Conveyors
 		if(batchSize > 0) {
 			s += "   Buffer Conveyors:\n";
 			for(int i = 0; i < qBuffConveyor.length; i++) {
@@ -194,6 +199,7 @@ public class ElectronicsProject extends AOSimulationModel
 			s += "   ,  Q.BuffConveyor[BC].n = " + "0";
 		}
 		
+		// Input Conveyor
 		s += "\n\n";
 		s += "   Q.InputConveyor.n= " + qInputConveyor.n + "\n";
 		s += "   Q.InputConveyor: ";
@@ -201,6 +207,8 @@ public class ElectronicsProject extends AOSimulationModel
 		for(int i = 0; i < qInputConveyor.n; i++) {
 			s += qInputConveyor.list[i].uType.toString() + " ";
 		}
+		
+		// Power-and-free Conveyors
 		s += "\n\n";
 		s += "   RQ.PowerAndFreeConveyor";
 		s += "\n";
@@ -258,6 +266,7 @@ public class ElectronicsProject extends AOSimulationModel
 
 		}
 		
+		// Cells
 		s += "\n" + "   " + ">--------------------------------------------------------------------------------------------------------------------------------<";
 		s += "\n\n";
 		s += "   R.Cell:";

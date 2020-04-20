@@ -4,8 +4,8 @@ import simulationModelling.ConditionalAction;
 
 public class BatchRelease extends ConditionalAction {
 	
-	static ElectronicsProject model; // reference to model object
-	private static int id;
+	static ElectronicsProject model; // For referencing the model
+	private static int id; // Buffer Conveyor member identifier
 	
 	public static boolean precondition(ElectronicsProject md) {
 		int NONE = -1;
@@ -30,11 +30,12 @@ public class BatchRelease extends ConditionalAction {
 		
 		s += "\n";
 		
-		// Removing parts from buffer conveyors
 		for(int i = 0; i < model.batchSize; i++) {
+			// Removing parts from buffer conveyors
 			Part icPart = model.qBuffConveyor[id].spRemoveQue();
 			
 			if(icPart != Part.NO_PART) {
+				//  Inserting parts into input conveyor
 				model.qInputConveyor.spInsertQue(icPart);
 			}
 		}
@@ -43,7 +44,6 @@ public class BatchRelease extends ConditionalAction {
 		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
 		s += "   Input conveyor: ";
 		
-		//  Inserting parts into input conveyor
 		for(int i = 0; i < model.qInputConveyor.n; i++) {
 			s += model.qInputConveyor.list[i].uType.toString() + " ";
 		}

@@ -9,8 +9,9 @@ class BuffConveyor {
     protected static final BuffConveyor NO_BUFF_CONVEYOR = null;  // Value for BuffConveyor
     protected static final BufferType BUFF_TYPE_NONE = null;     // Value for BufferType
     
-    // assigning integer values to each enum member
+    // Buffer Conveyor identifier
     protected enum BufferType { 
+    	// assigning integer values to each enum member
     	BA(0, "BA"), BB(1, "BB"), BC(2, "BC");
     	
 		private final int value;
@@ -35,13 +36,13 @@ class BuffConveyor {
         this.list = new Part[capacity];
     }
     
-    // add a part to buffer conveyor
+    // Standard procedure: add a part to buffer conveyor
  	public void spInsertQue(Part part) {
  		list[n] = part;
  		n += 1;
  	}
     
-    // remove the part at the head from the buffer conveyor
+    // Standard procedure: remove the part at the head from the buffer conveyor
  	public Part spRemoveQue() {
  		if(n == 0) {
  			return Part.NO_PART;

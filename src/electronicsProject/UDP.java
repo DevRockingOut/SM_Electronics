@@ -4,10 +4,10 @@ import electronicsProject.BuffConveyor.BufferType;
 
 public class UDP 
 {
-	static ElectronicsProject model; 
+	static ElectronicsProject model; // For referencing the model
 	static BufferType lastBuffConveyor = BuffConveyor.BUFF_TYPE_NONE;
 	
-    // returns the buffer conveyor id that is ready to release the batch of parts
+    // returns the member identifier of the buffer conveyor that is ready to release the batch of parts
     static int BatchReadyForRelease() {
     	int NONE = -1;
     	

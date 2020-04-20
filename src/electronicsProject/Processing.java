@@ -9,8 +9,8 @@ import simulationModelling.ConditionalActivity;
 
 class Processing extends ConditionalActivity {
 	
-	static ElectronicsProject model;
-	int CellID; // identifiers for Cell and PowerAndFreeConveyors
+	static ElectronicsProject model; // For referencing the model
+	int CellID; // Identifier for Cell and PowerAndFreeConveyors
 	PartType uType;
     int pid;
     static TriangularVariate PROC_TIME_C2_A;
