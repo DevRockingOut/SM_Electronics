@@ -7,7 +7,7 @@ import java.util.List;
 class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model; // For referencing the model
-	List<int[]> palletsMove; //cellid, pos
+	List<int[]> palletsMove;
 	static boolean wait = false; 
 	
     public static boolean precondition() {
@@ -18,7 +18,8 @@ class MovePallets extends ConditionalActivity {
     
    	@Override
 	protected double duration() {
-		return Constants.MOVE_TIME; // duration of the activity to simulate time to move a pallet
+   		// determine the duration of the movement of a pallet
+		return Constants.MOVE_TIME;
 	}
    
 	
@@ -27,6 +28,7 @@ class MovePallets extends ConditionalActivity {
 		palletsMove = PalletsReadyToMove();
     	
 		wait = true;
+		
 		// set isMoving to true for all pallets that can move
     	for(int i = 0; i < palletsMove.size(); i++) {
     		int cellid = palletsMove.get(i)[0];
@@ -52,6 +54,7 @@ class MovePallets extends ConditionalActivity {
 	
 	@Override
 	protected void terminatingEvent() {
+		// MovePallets Activity Terminating Event SCS 
 		
 		for(int i = 0; i < palletsMove.size(); i++) {
 			int cellid = palletsMove.get(i)[0];
@@ -95,7 +98,8 @@ class MovePallets extends ConditionalActivity {
 		wait = false;
 	}
 	
-	
+	// UDP
+	// returns all pallets that are ready to move
 	static List<int[]> PalletsReadyToMove(){
 		List<int[]> pallets = new ArrayList<int[]>();
 		int pidStop = -2; // used to exit loop 
@@ -116,7 +120,7 @@ class MovePallets extends ConditionalActivity {
 					break;
 				}
 				
-				if(pid != Pallet.NO_PALLET_ID) { // model.rcPallet[pid].part != Part.NO_PART
+				if(pid != Pallet.NO_PALLET_ID) {
 					
 					int nextPid;
 					int nextCellid;
@@ -220,6 +224,7 @@ class MovePallets extends ConditionalActivity {
 		return pallets;
 	}
 	
+	// helper method which returns whether a pallet is contained in a list of pallets
 	private static boolean palletInList(List<int[]> pallets, int cellid, int pos) {
 		
 		for(int i = 0; i < pallets.size(); i++) {

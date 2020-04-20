@@ -46,7 +46,7 @@ class Processing extends ConditionalActivity {
 			uType = Part.PartType.C;
 		}  
 		
-        // Set machine to busy
+        // Update Cell busy status
         model.rCell[CellID].busy = true;
         
         String s = "--- Processing Starts --- \n";
@@ -61,15 +61,20 @@ class Processing extends ConditionalActivity {
 
 	@Override
 	public double duration() {
-		// determine the duration
+		// determine the processing duration
 		return uServiceTime(pid, CellID);
 	}
 
 
 	@Override
 	public void terminatingEvent() {
+		// Processing Activity Terminating Event SCS 
 		Pallet pallet = model.rcPallet[pid];
+		
+		// Update Cell busy status
         model.rCell[CellID].busy = false; 
+        
+        // Update Pallet isProcessed status
 		pallet.isProcessed = true;
    
         String s = "--- Processing Ends --- \n";
@@ -80,11 +85,13 @@ class Processing extends ConditionalActivity {
         s += "; new previousPartType: " + uType;
         s += "; old previousPartType: " + model.rCell[CellID].previousPartType + "\n\n";
         
+        // Update Cell previousPartType status
         model.rCell[CellID].previousPartType = uType;
 		
         Trace.write(s, "traceProcessing.txt", this.getClass().getName());
 	}
 
+	// Initialise the RVP
 	static void initRvp(Seeds sd)
 	{
 		PROC_TIME_C2_A = new TriangularVariate(36,45,52, new MersenneTwister(sd.ptC2A));
@@ -95,6 +102,7 @@ class Processing extends ConditionalActivity {
 		PROC_TIME_C7_C = new TriangularVariate(22,27,38, new MersenneTwister(sd.ptC7C));
 	}	
 
+	// UDP
 	// returns the operation time at the work cell
 	public double uServiceTime(int pid, int cellID) {
 		
@@ -119,16 +127,19 @@ class Processing extends ConditionalActivity {
 			partType = 2;
 		}  
 		  
+		// calculate service time (processing time)
 		serviceTime = PROC_TIME[partType][cellID];
 		  
 		if (model.rCell[cellID].previousPartType != Part.NO_PART_TYPE && uType != model.rCell[cellID].previousPartType) {
-			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID];
+			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID]; // calculate service time (processing time + setup time)
 		}
 		  
 		return serviceTime;
 	}
 	
 	
+	// UDP
+	// Returns a vector containing the cell id (C1 to C7) that is ready for processing
 	static protected int[] CellReadyForProcessing() {
 		int[] output = {NONE, NONE, NONE};
 		

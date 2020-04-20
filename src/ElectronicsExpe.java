@@ -15,11 +15,11 @@ public class ElectronicsExpe {
 		int batchSize = 0;
 		  
 		
-		// get a set of uncorrelated seeds, different seeds for each run
 		RandomSeedGenerator rsg = new RandomSeedGenerator();
 		String s = "";
 		
 		 for(int i=0 ; i < NUMRUNS ; i++) {
+			// get a set of uncorrelated seeds, different seeds for each run
 			sds[i] = new Seeds(rsg);	
 				
 			if(i == 0) {

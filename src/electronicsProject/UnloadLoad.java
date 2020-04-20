@@ -29,7 +29,7 @@ class UnloadLoad extends ConditionalActivity
 		// Load a part to a pallet
 		pallet.part = icPart;
 		
-		// Update work cell 8 status
+		// Update work cell 8 busy status
 		model.rCell[C8].busy = true;
 		
 		String s = "--------------- Unload/Load (start) ---------------\n";
@@ -50,6 +50,7 @@ class UnloadLoad extends ConditionalActivity
 	
 	@Override
 	public double duration() {
+		// determine the unload/load duration
 		return uUnloadLoadTime();
 	}
 	
