@@ -1,12 +1,13 @@
 package electronicsProject;
 
 class BuffConveyor {
+	// Attributes
 	protected int n;
     protected Part[] list;
     protected int capacity;
     protected BufferType type;
-    protected static final BuffConveyor NO_BUFF_CONVEYOR = null;
-    protected static final BufferType BUFF_TYPE_NONE = null;
+    protected static final BuffConveyor NO_BUFF_CONVEYOR = null;  // Value for BuffConveyor
+    protected static final BufferType BUFF_TYPE_NONE = null;     // Value for BufferType
     
     // assigning integer values to each enum member
     protected enum BufferType { 

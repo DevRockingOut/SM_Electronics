@@ -26,28 +26,49 @@ class RVP
 		return partC;
 	}
 	
-	// RVP for interarrival times.
-	public static double DuArrA()
-	{
-	   double nxtTime = 0.0;	   
-	   nxtTime = model.getClock() + (2.8*60) + ArrivingOfPartA.delayOfA.next();
-	   return (nxtTime);
-	}
-	
-	// RVP for interarrival times.
-	public static double DuArrB()
-	{
-	   double nxtTime = 0.0;	   
-	   nxtTime = model.getClock() + (1.4*60) + ArrivingOfPartB.delayOfB.next();
-	   return (nxtTime);
-	}
-	
-	// RVP for interarrival times.
-	public static double DuArrC()
-	{
-	   double nxtTime = 0.0;	   
-	   nxtTime = model.getClock() + (2.0*60) + ArrivingOfPartC.delayOfC.next();
-	   return (nxtTime);
-	}
+	// RVP for interarrival times
+		static private final double A_DelayPercentage = 0.02;
+		static private final double A_ArrivalTime = 2.8 * 60;
+		public static double DuArrA()
+		{
+		   double nxtTime = 0.0;
+		   double delayTime = 0.0; 
+		   if (ArrivingOfPartA.delayPercentageA.nextInt() < A_DelayPercentage)
+		   {
+			   delayTime = ArrivingOfPartA.delayOfA.next();
+		   }
+		   nxtTime = model.getClock() + (A_ArrivalTime) + delayTime;
+		   return (nxtTime);
+		}
+		
+		// RVP for interarrival times
+		static private final double B_DelayPercentage = 0.0175;
+		static private final double B_ArrivalTime = 1.4 * 60;
+		public static double DuArrB()
+		{
+			double nxtTime = 0.0;
+			double delayTime = 0.0;	
+			if (ArrivingOfPartB.delayPercentageB.nextInt() < B_DelayPercentage) 
+			{
+				delayTime = ArrivingOfPartB.delayOfB.next();
+			}
+			nxtTime = model.getClock() + (B_ArrivalTime) + delayTime;
+			return (nxtTime);
+		}
+
+		// RVP for interarrival times
+		static private final double C_DelayPercentage = 0.005;
+		static private final double C_ArrivalTime = 2.00 * 60;
+		public static double DuArrC()
+		{
+			double nxtTime = 0.0;
+			double delayTime = 0.0;	
+			if (ArrivingOfPartC.delayPercentageC.nextInt() < C_DelayPercentage) 
+			{
+				delayTime = ArrivingOfPartC.delayOfC.next();
+			}
+			nxtTime = model.getClock() + (C_ArrivalTime) + delayTime;
+			return (nxtTime);
+		}
 
 }

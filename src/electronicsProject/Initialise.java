@@ -2,7 +2,6 @@ package electronicsProject;
 
 import electronicsProject.BuffConveyor.BufferType;
 import electronicsProject.Cell.CellID;
-import electronicsProject.PowerAndFreeConveyor.PFConveyorType;
 import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction
@@ -49,11 +48,9 @@ class Initialise extends ScheduledAction
 		//int cellid = 0; // C8
 		//int pos = 0; // start at the head of the power-and-free conveyor
 		
-		PFConveyorType[] pfID = PowerAndFreeConveyor.PFConveyorType.values();
-		
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
 			model.rqPowerAndFreeConveyor[i] = new PowerAndFreeConveyor();
-			model.rqPowerAndFreeConveyor[i].type = pfID[i];
+			model.rqPowerAndFreeConveyor[i].type = cID[i];
 			
 			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++){
 				model.rqPowerAndFreeConveyor[i].position[j] = Pallet.NO_PALLET_ID;

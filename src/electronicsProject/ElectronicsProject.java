@@ -22,7 +22,7 @@ public class ElectronicsProject extends AOSimulationModel
 	// User Defined Procedures
 	UDP udp = new UDP();
 	
-	// Outputs
+	// Output object
     Output output = new Output();
     
     // SSOV
@@ -30,7 +30,7 @@ public class ElectronicsProject extends AOSimulationModel
 	int nLossB = 0;
 	int nLossC = 0;
 	
-    public double lostCost()
+    public double getLostCost()
     {
     	return output.lostCost(nLossA, nLossB, nLossC);
     }
@@ -170,71 +170,134 @@ public class ElectronicsProject extends AOSimulationModel
 	protected void printDebug()
 	{
 		// Debugging
-		/*System.out.printf("Clock = %10.4f\n", getClock());
-		System.out.print("\n");
 		
+		String s = "";
+		s += "\n";
+		s += "Clock =  " + getClock();
+		s += "\n\n";
 		if(batchSize > 0) {
+			s += "   Buffer Conveyors:\n";
 			for(int i = 0; i < qBuffConveyor.length; i++) {
-				if(qBuffConveyor[i] != null && qBuffConveyor[i].n > 0) {
-					System.out.println("Number of parts in BuffConveyor " + qBuffConveyor[i].list[0].uType + ": " + qBuffConveyor[i].n);
-					for(int j = 0; j < qBuffConveyor[i].n; j++) {
-						Part p = qBuffConveyor[i].list[j];
-						System.out.print("Part " + p.uType + "  ");
+				if(qBuffConveyor[i] != null) {
+					if(i > 0) {
+						s += ", ";
 					}
-					System.out.print("\n\n");
+					s += "   Q.BuffConveyor[" + BuffConveyor.BufferType.values()[i] + "].n = " + qBuffConveyor[i].n;
 				}
 			}
-		}else {
-			System.out.println("No buffer conveyors created due to batch size of 0");
-		}*/
-		
-		/*
-		System.out.println("Number of parts in Input Conveyor is " + qInputConveyor.n + " and its capacity is " + qInputConveyor.capacity);
-		
-		for(int i = 0; i < qInputConveyor.n; i++) {
-			Part p = qInputConveyor.list.get(i);
-			System.out.print("Part " + p.uType + "  ");
+		}
+	
+		if(batchSize == 0) {
+			s += "   Buffer Conveyors:\n";
+			s += "   Q.BuffConveyor[BA].n = " + "0";
+			s += "   ,  Q.BuffConveyor[BB].n = " + "0";
+			s += "   ,  Q.BuffConveyor[BC].n = " + "0";
 		}
 		
-		System.out.print("\n\n");
-		
-		for(int i = 0; i < rCell.length; i++) {
-			if(rCell[i] != null) {
-				if(rCell[i].previousPartType == null) {
-					System.out.print("C" + String.valueOf(i) + " (busy, previousPartType): " + "(" + String.valueOf(rCell[i].busy) + ", null)");
-				}else {
-					System.out.print("C" + String.valueOf(i) + " (busy, previousPartType): " + "(" + String.valueOf(rCell[i].busy) + ", not null)");
-				}
+		s += "\n\n";
+		s += "   Q.InputConveyor.n= " + qInputConveyor.n + "\n";
+		s += "   Q.InputConveyor: ";
 			
-				System.out.print("\n");
-			}
+		for(int i = 0; i < qInputConveyor.n; i++) {
+			s += qInputConveyor.list[i].uType.toString() + " ";
 		}
+		s += "\n\n";
+		s += "   RQ.PowerAndFreeConveyor";
+		s += "\n";
 		
-		System.out.print("\n\n");
-		
-		// Power-and-free conveyors
-		for(int i = 0; i < rqPowerAndFreeConveyor.length; i++) {
-			String pids = "";
-
-			if(rqPowerAndFreeConveyor[i] != null) {
-				for(int j = 0; j < rqPowerAndFreeConveyor[i].position.length; j++) {
-					int id = rqPowerAndFreeConveyor[i].position[j];
-					
-					if(id < 10) {
-						pids += String.valueOf(id) + "  ";
+		for(int i = 1; i < rqPowerAndFreeConveyor.length; i++) {
+			s +=  "   " + Cell.CellID.values()[i].toString() + ": ";
+			
+			for(int j = 0; j < rqPowerAndFreeConveyor[i].position.length; j++) {
+				int pid = rqPowerAndFreeConveyor[i].position[j];
+				
+				if(pid == Pallet.NO_PALLET_ID) {
+					s += "(NP, N/A, N/A)";
+				}else {
+					if(rcPallet[pid].part != Part.NO_PART) {
+						if(rcPallet[pid].isMoving) {
+							s += "(" + pid + ", T, " + rcPallet[pid].part.uType + ")"; 
+						}else {
+							s += "(" + pid + ", F, " + rcPallet[pid].part.uType + ")"; 
+						}
 					}else {
-						pids += String.valueOf(id) + " ";
+						if(rcPallet[pid].isMoving) {
+							s += "(" + pid + ", T, N/A)"; 
+						}else {
+							s += "(" + pid + ", F, N/A)"; 
+						}
 					}
 				}
-				System.out.print("Power-and-free conveyor " + rqPowerAndFreeConveyor[i].type.getString() + ": ");
-				System.out.print(pids + "\n");
+				}
+			s += "\n" + "   " +  ">--------------------------------------------------------------------------------------------------------------------------------<";
+			s += "\n";
+		}
+		
+		s +=  "   " + Cell.CellID.values()[0].toString() + ": ";
+		
+		for(int j = 0; j < rqPowerAndFreeConveyor[0].position.length; j++) {
+			int pid = rqPowerAndFreeConveyor[0].position[j];
+			
+			if(pid == Pallet.NO_PALLET_ID) {
+				s += "(NP, N/A, N/A)";
+			}else {
+				if(rcPallet[pid].part != Part.NO_PART) {
+					if(rcPallet[pid].isMoving) {
+						s += "(" + pid + ", T, " + rcPallet[pid].part.uType + ")"; 
+					}else {
+						s += "(" + pid + ", F, " + rcPallet[pid].part.uType + ")"; 
+					}
+				}else {
+					if(rcPallet[pid].isMoving) {
+						s += "(" + pid + ", T, N/A)"; 
+					}else {
+						s += "(" + pid + ", F, N/A)"; 
+					}
+				}
+			}
+
+		}
+		
+		s += "\n" + "   " + ">--------------------------------------------------------------------------------------------------------------------------------<";
+		s += "\n\n";
+		s += "   R.Cell:";
+		s += "\n";
+		for(int j = 1; j < rCell.length; j++) {
+			s += "   " + Cell.CellID.values()[j].toString() + ":   ";
+			
+			if (rCell[j].busy) {
+				s += "(" + "T" + ", ";
+			}else {
+				s += "(" + "F" + ", ";
+			}
+			
+			if(rCell[j].previousPartType != null) {
+				s += rCell[j].previousPartType + ")\n";
+			}else {
+				s += "N/A)\n";
 			}
 		}
 		
-		System.out.print("\n\n");*/
+		s +=  "   " + Cell.CellID.values()[0].toString() + ":   ";
+		if (rCell[0].busy) {
+			s += "(" + "T" + ", ";
+		}else {
+			s += "(" + "F" + ", ";
+		}
 		
-		//showSBL();
-		System.out.println(">-----------------------------------------------<");
+		if(rCell[0].previousPartType != null) {
+			s += rCell[0].previousPartType + ")\n";
+		}else {
+			s += "N/A)\n";
+		}
+		System.out.println(s);
+		showSBL();		
+		s += "\n" + ">--------------------------------------------------------------------------------------------------------------------------------<";
+		s += "\n";
+		s += "   " + "Lost Cost = " + getLostCost();
+		s += "\n" + ">--------------------------------------------------------------------------------------------------------------------------------<";
+		s += "\n\n";
+		Trace.write(s, "log.txt", "Experiment");
 	}
 
 }

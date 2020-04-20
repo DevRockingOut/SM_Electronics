@@ -1,6 +1,7 @@
 package electronicsProject;
 
 class InputConveyor {
+	// Attributes
 	protected int n;
     protected Part[] list;  
     protected int capacity;
@@ -11,13 +12,13 @@ class InputConveyor {
         this.list = new Part[capacity];
     }
  
-    // add a part to input conveyor
+    // Standard procedure: add a part to input conveyor
  	public void spInsertQue(Part part) {
  		list[n] = part;
  		n += 1;
  	}
  	
- 	// remove the part at the head from the input conveyor
+ 	// Standard procedure: remove the part at the head from the input conveyor
  	public Part spRemoveQue() {
  		if(n == 0) {
  			return Part.NO_PART;

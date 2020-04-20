@@ -101,7 +101,6 @@ class UnLoadLoad extends ConditionalActivity
 		   	 && model.rCell[C8].busy == false 
 		     // Processing not done on pallet
              && pallet.isProcessed == false) {
-			//System.out.println("Cell Ready To Unload/Load: " + true);
 			return true;
 		}
 

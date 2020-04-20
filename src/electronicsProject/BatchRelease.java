@@ -4,8 +4,8 @@ import simulationModelling.ConditionalAction;
 
 public class BatchRelease extends ConditionalAction {
 	
+	static ElectronicsProject model; // reference to model object
 	private static int id;
-	static ElectronicsProject model;
 	
 	public static boolean precondition(ElectronicsProject md) {
 		int NONE = -1;
@@ -15,6 +15,7 @@ public class BatchRelease extends ConditionalAction {
 	
 	@Override
 	protected void actionEvent() {
+		// BatchRelease Action Sequence SCS
 		BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
 		
 		String s = "--------------- Batch Release [" + bID[id].getString() + "] ---------------\n";
@@ -29,6 +30,7 @@ public class BatchRelease extends ConditionalAction {
 		
 		s += "\n";
 		
+		// Removing parts from buffer conveyors
 		for(int i = 0; i < model.batchSize; i++) {
 			Part icPart = model.qBuffConveyor[id].spRemoveQue();
 			
@@ -41,6 +43,7 @@ public class BatchRelease extends ConditionalAction {
 		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
 		s += "   Input conveyor: ";
 		
+		//  Inserting parts into input conveyor
 		for(int i = 0; i < model.qInputConveyor.n; i++) {
 			s += model.qInputConveyor.list[i].uType.toString() + " ";
 		}

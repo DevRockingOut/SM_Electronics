@@ -6,20 +6,21 @@ import simulationModelling.ScheduledAction;
 
 class ArrivingOfPartB extends ScheduledAction {
 
-	static ElectronicsProject model;
+	static ElectronicsProject model; // reference to model object
 	static public TriangularVariate delayOfB;
+	static MersenneTwister delayPercentageB;
 	
 	@Override
 	protected double timeSequence()
 	{
-		return RVP.DuArrB();  // delay is added to every part arrival, it should be between 1.75% of times [TO_FIX]
+		return RVP.DuArrB();
 	}
 
 	@Override
 	protected void actionEvent()
 	{
+		// ArrivingOfPartB of part B Action Sequence SCS
 		Part partB = RVP.uArrB();
-		
 		int BB = BuffConveyor.BufferType.BB.getInt();
 		
 		if(model.batchSize != 0 && model.qBuffConveyor[BB].n < model.qBuffConveyor[BB].capacity) {
@@ -34,7 +35,7 @@ class ArrivingOfPartB extends ScheduledAction {
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Buffer Conveyor " + BuffConveyor.BufferType.BB.getString() + " details: \n";
 		s += "batchSize: " + model.batchSize + "  ";
-		s += "n: " + model.qBuffConveyor[BB].n + "  capacity: " + model.qBuffConveyor[BB].capacity + "\n";
+	//	s += "n: " + model.qBuffConveyor[BB].n + "  capacity: " + model.qBuffConveyor[BB].capacity + "\n";
 		s += "Part " + partB.uType.toString() + " Loss: " + model.nLossB + "\n";
 		
 		Trace.write(s, "tracePartsArrival.txt", "PartsArrival");
@@ -42,7 +43,9 @@ class ArrivingOfPartB extends ScheduledAction {
 	
 	static void initRvps(Seeds sd)
 	{
+		// Initialise Internal modules, user modules and input variables
 	    delayOfB = new TriangularVariate(5,20,55, new MersenneTwister(sd.uArrB));
+	    delayPercentageB = new MersenneTwister(sd.delayB);
 	}
 
 }
