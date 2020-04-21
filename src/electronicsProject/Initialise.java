@@ -18,7 +18,7 @@ class Initialise extends ScheduledAction
 	@Override
 	public void actionEvent() 
 	{
-		// System Initialization
+		// System Initialisation
 		CellID[] cID = Cell.CellID.values();
 		
 		// loop C1 to C8
@@ -31,7 +31,7 @@ class Initialise extends ScheduledAction
 			model.rCell[id].previousPartType = Part.NO_PART_TYPE;
 		}
 		
-		// initialize input conveyor
+		// initialise input conveyor
 		model.qInputConveyor.n = 0;
 		
 		// create and initialise buffer conveyors
@@ -48,7 +48,7 @@ class Initialise extends ScheduledAction
 			}
 		}
 		
-		// create and initialize power-and-free conveyors
+		// create and initialise power-and-free conveyors
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
 			model.rqPowerAndFreeConveyor[i] = new PowerAndFreeConveyor();
 			model.rqPowerAndFreeConveyor[i].type = cID[i];
@@ -62,7 +62,7 @@ class Initialise extends ScheduledAction
 		int cellid = Cell.CellID.C8.getInt();
 		int pos = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 		
-		// create and initialize pallets
+		// create and initialise pallets
 		for(int i = 0; i < model.numPallets; i++) {
 			Pallet pallet = new Pallet();
 			pallet.id = pid;

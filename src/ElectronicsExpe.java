@@ -44,6 +44,7 @@ public class ElectronicsExpe {
 				numPallets = 47; 
 			}
 			
+			System.out.println(s);
 			Trace.write(s, "log.txt", "Experiment");
 			
 			mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], true);

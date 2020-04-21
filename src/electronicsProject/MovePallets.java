@@ -155,7 +155,7 @@ class MovePallets extends ConditionalActivity {
 						boolean emptyFound = false;
 						List<int[]> scannedPallets = new ArrayList<int[]>();
 						
-						// scan forward till we find an empty position (or pallet stuck at cell i.e busy = true -- not coded yet)
+						// scan forward till we find an empty position (or pallet stuck at cell i.e busy = true)
 						for(int a = 0; a < model.rqPowerAndFreeConveyor.length; a++) {
 							int currentCellid = a;
 							

@@ -19,7 +19,7 @@ class ArrivingOfPartA extends ScheduledAction {
 	@Override
 	protected void actionEvent()
 	{
-		// ArrivingOfPartA of part A Action Sequence SCS
+		// ArrivingOfPartA Action Sequence SCS
 		Part partA = RVP.uArrA();		
 		int BA = BuffConveyor.BufferType.BA.getInt();
 		

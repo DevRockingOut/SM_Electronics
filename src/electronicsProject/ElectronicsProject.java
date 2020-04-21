@@ -1,12 +1,7 @@
 package electronicsProject;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.PriorityQueue;
-
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
-import simulationModelling.SBNotice;
 
 public class ElectronicsProject extends AOSimulationModel
 {
@@ -80,7 +75,7 @@ public class ElectronicsProject extends AOSimulationModel
 		scheduleAction(arrPC);
 	}
 	
-	// Initialize static components of model classes
+	// Initialise static components of model classes
 	void initialiseClasses(Seeds sd)
 	{
 		// Add reference to standard classes
@@ -98,7 +93,7 @@ public class ElectronicsProject extends AOSimulationModel
 		UnloadLoad.model = this;
 		Processing.model = this;
 		
-		// Initialize RVPs in the classes
+		// Initialise RVPs in the classes
 		ArrivingOfPartA.initRvps(sd);
 		ArrivingOfPartB.initRvps(sd);
 		ArrivingOfPartC.initRvps(sd);
@@ -110,7 +105,6 @@ public class ElectronicsProject extends AOSimulationModel
 	public void testPreconditions(Behaviour behObj)
 	{
 		reschedule(behObj);
-		//while (scanPreconditions() == true) /* repeat */;
 		scanPreconditions();
 	}
 
@@ -153,9 +147,6 @@ public class ElectronicsProject extends AOSimulationModel
 			scheduleActivity(act);
 			statusChanged = true;
 		}
-	
-		
-		//System.out.println(getTime0());
 		
 		statusChanged = false;
 		return (statusChanged);
@@ -164,7 +155,6 @@ public class ElectronicsProject extends AOSimulationModel
 		
 	public void eventOccured()
 	{		
-		//output.updateSequences(); // for updating trajectory sets	
 		if(logFlag) printDebug();
 	}
 	
