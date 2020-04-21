@@ -32,13 +32,13 @@ class UnloadLoad extends ConditionalActivity
 		// Update work cell 8 busy status
 		model.rCell[C8].busy = true;
 		
-		String s = "--------------- Unload/Load (start) ---------------\n";
+	/*	String s = "--------------- Unload/Load (start) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Loaded Part " + icPart.uType.toString() + "\n";
 		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
+		Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); */
 	}
 
 	// Initialise the RVP
@@ -66,8 +66,8 @@ class UnloadLoad extends ConditionalActivity
 			ResponseTime = TIME_RESPOND_TO_JAM.next();
 		}
 		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
-		String s = "Loading Time= " + nxtTime ;
-		Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
+	//	String s = "Loading Time= " + nxtTime ;
+	//	Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
 		return nxtTime;
 	}
 	
@@ -87,12 +87,12 @@ class UnloadLoad extends ConditionalActivity
 		// Update pallet status
 		pallet.isProcessed = true;
 		
-		String s = "--------------- Unload/Load (end) ---------------\n";
+	/*	String s = "--------------- Unload/Load (end) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());
+		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); */
 	}
 	
 	

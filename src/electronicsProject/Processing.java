@@ -49,14 +49,14 @@ class Processing extends ConditionalActivity {
         // Update Cell busy status
         model.rCell[CellID].busy = true;
         
-        String s = "--- Processing Starts --- \n";
+    /*    String s = "--- Processing Starts --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[CellID].getInt();
         s += "; busy: " + model.rCell[CellID].busy;
         s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
         s += "; previousPartType: " + uType + "\n\n";
 		
-        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
+        Trace.write(s, "traceProcessing.txt", this.getClass().getName()); */
 	}
 
 	@Override
@@ -77,18 +77,18 @@ class Processing extends ConditionalActivity {
         // Update Pallet isProcessed status
 		pallet.isProcessed = true;
    
-        String s = "--- Processing Ends --- \n";
+   /*     String s = "--- Processing Ends --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[CellID].getInt();
         s += "; busy: " + model.rCell[CellID].busy;
         s += "; isProcessed: " + pallet.isProcessed;
         s += "; new previousPartType: " + uType;
-        s += "; old previousPartType: " + model.rCell[CellID].previousPartType + "\n\n";
+        s += "; old previousPartType: " + model.rCell[CellID].previousPartType + "\n\n"; */
         
         // Update Cell previousPartType status
         model.rCell[CellID].previousPartType = uType;
 		
-        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
+    //  Trace.write(s, "traceProcessing.txt", this.getClass().getName());
 	}
 
 	// Initialise the RVP

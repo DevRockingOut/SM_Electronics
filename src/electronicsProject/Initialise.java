@@ -48,7 +48,7 @@ class Initialise extends ScheduledAction
 			}
 		}
 		
-		// create and initialize power-and-free conveyorss
+		// create and initialize power-and-free conveyors
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
 			model.rqPowerAndFreeConveyor[i] = new PowerAndFreeConveyor();
 			model.rqPowerAndFreeConveyor[i].type = cID[i];
