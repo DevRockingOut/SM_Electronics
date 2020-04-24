@@ -29,10 +29,16 @@ public class ElectronicsProject extends AOSimulationModel
     int nLossA = 0;
 	int nLossB = 0;
 	int nLossC = 0;
+	double lostCost;
 	
     public double getLostCost()
     {
     	return output.lostCost(nLossA, nLossB, nLossC);
+    }
+    
+
+    public double clearLostCost() {
+		return this.lostCost = 0.0;
     }
    
     // Constructor

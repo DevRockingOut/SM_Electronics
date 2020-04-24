@@ -8,7 +8,7 @@ public class ElectronicsExpe {
 	public static void main(String[] args)
 	{
 		int NUMRUNS = 4;
-		double endTime = 8000.00;//5 * 16 * 60 * 60; // run for 5 days, 16h per day, time unit is seconds
+		double endTime = 8000.00;
 		Seeds[] sds = new Seeds[NUMRUNS];
 		ElectronicsProject mnf; //Simulation object
 		int numPallets = 40;
