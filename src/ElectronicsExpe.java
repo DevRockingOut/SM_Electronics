@@ -46,8 +46,8 @@ public class ElectronicsExpe {
 			
 			System.out.println(s);
 			Trace.write(s, "log.txt", "Experiment");
-			
-			mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], true);
+
+			mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], true,0);
 			mnf.runSimulation();
 		 }
 		 

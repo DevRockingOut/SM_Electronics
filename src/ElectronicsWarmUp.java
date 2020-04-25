@@ -15,9 +15,9 @@ public class ElectronicsWarmUp {
 		
 	       int NUMRUNS = 10;
 	       Seeds [] sds = new Seeds[NUMRUNS];
-	       double intervalStart, intervalEnd;   // start and end times of current interval
-	       double intervalLength=7*24.0;   // 1 week intervals, 7 days
-	       int numIntervals=48;                 // Total 60 hours observation interval
+	       double intervalStart, intervalEnd;     // start and end times of current interval
+	       double intervalLength = 60* 60 ;       // 1 week intervals, 7 days
+	       int numIntervals = 60;                 // Total 60 hours observation interval
 	       LostCostOutput = new double[NUMRUNS][numIntervals];
 
 	       // Lets get a set of uncorrelated seeds
@@ -26,13 +26,14 @@ public class ElectronicsWarmUp {
 	           sds[i] = new Seeds(rsg);
 
 	       int k = (int) (intervalLength*numIntervals);
-	       // Run for NUMRUNS simlation runs
+	       // Run for NUMRUNS simulation runs
 	    	  System.out.println("Base case: ");
 	          for(int i= 0 ; i < NUMRUNS ; i++)
 	          {
-	             // For computing warmup, compute average over intervalLength for numIntervals
+	             // For computing warm-up, compute average over intervalLength for numIntervals
 	             // Setup the simulation object
-	        	  model = new ElectronicsProject(0.0, k , 0, sds[i], false);
+	        	  model = new ElectronicsProject(0, 0 , 0, sds[i], false,intervalLength*numIntervals);
+
 	             // Loop for the all intervals
 	             for( int interval=0 ; interval<numIntervals ; interval++) 
 	             {
