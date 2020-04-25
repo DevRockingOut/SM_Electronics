@@ -23,7 +23,15 @@ public class ElectronicsProject extends AOSimulationModel
 	UDP udp = new UDP();
 	
 	// Output object
-    Output output = new Output();
+	protected Output output = new Output();
+	public double getLostCost() {
+		return output.lostCost(nLossA, nLossB, nLossC); 
+		}
+	
+	public void clearLostCost() {
+		lostCost = 0.0;
+		
+		}
     
     // SSOV
     int nLossA = 0;
@@ -31,16 +39,7 @@ public class ElectronicsProject extends AOSimulationModel
 	int nLossC = 0;
 	double lostCost;
 	
-    public double getLostCost()
-    {
-    	return output.lostCost(nLossA, nLossB, nLossC);
-    }
-    
-
-    public double clearLostCost() {
-		return this.lostCost = 0.0;
-    }
-   
+	      
     // Constructor
 	public ElectronicsProject(double tftime, int _numPallets, int _batchSize, Seeds sd, boolean log)
 	{

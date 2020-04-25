@@ -1,4 +1,3 @@
-
 import electronicsProject.ElectronicsProject;
 import electronicsProject.Seeds;
 import cern.jet.random.engine.*;
@@ -16,9 +15,9 @@ public class ElectronicsWarmUp {
 		
 	       int NUMRUNS = 10;
 	       Seeds [] sds = new Seeds[NUMRUNS];
-	       double intervalStart, intervalEnd;  // start and end times of current interval
-	       double intervalLength = 1 * 60 * 60;   // 1 hour
-	       int numIntervals = 60;            // Total 60 hours observation interval
+	       double intervalStart, intervalEnd;   // start and end times of current interval
+	       double intervalLength=7*24.0;   // 1 week intervals, 7 days
+	       int numIntervals=48;                 // Total 60 hours observation interval
 	       LostCostOutput = new double[NUMRUNS][numIntervals];
 
 	       // Lets get a set of uncorrelated seeds
@@ -26,15 +25,14 @@ public class ElectronicsWarmUp {
 	       for(int i=0 ; i<NUMRUNS ; i++)
 	           sds[i] = new Seeds(rsg);
 
-	       // Run for NUMRUNS simulation runs
-	       for(int numPallets=40 ; numPallets <=72 ; numPallets++)
-	       {
-	    	  System.out.println("Number of pallets: "+numPallets);
+	       int k = (int) (intervalLength*numIntervals);
+	       // Run for NUMRUNS simlation runs
+	    	  System.out.println("Base case: ");
 	          for(int i= 0 ; i < NUMRUNS ; i++)
 	          {
 	             // For computing warmup, compute average over intervalLength for numIntervals
 	             // Setup the simulation object
-	        	  model = new ElectronicsProject(0.0, numPallets, 0, sds[i], false); // Initialise object
+	        	  model = new ElectronicsProject(0.0, k , 0, sds[i], false);
 	             // Loop for the all intervals
 	             for( int interval=0 ; interval<numIntervals ; interval++) 
 	             {
@@ -46,7 +44,7 @@ public class ElectronicsWarmUp {
 	                // compute scalar output
 	            	LostCostOutput[i][interval]= model.getLostCost();
 	                // Reset ESOutput Objects
-	            	model.clearLostCost();
+	            	model.clearLostCost();         	
 	             }
 	          }
 	          
@@ -55,7 +53,7 @@ public class ElectronicsWarmUp {
 	    	   System.out.println("Lost Cost");
 	    	   printWelchOutputMatrix(welchLostCost.getWelchAvgOutput(), wSizeLostCost, 1);  
 	       }
-	   }
+	   
 
 	   private static void  printWelchOutputMatrix(double[][] m, int [] w, double intervalLength)
 	   {
