@@ -14,10 +14,12 @@ public class ElectronicsWarmUp {
 		// TODO Auto-generated method stub
 		
 	       int NUMRUNS = 10;
+	       int numPallets = 40;
+	       int batchSize = 0;
 	       Seeds [] sds = new Seeds[NUMRUNS];
-	       double intervalStart, intervalEnd;     // start and end times of current interval
-	       double intervalLength = 60*60;       // 1 week intervals, 7 days
-	       int numIntervals = 60;                 // Total 60 hours observation interval
+	       double intervalStart, intervalEnd;   // start and end times of current interval
+	       double intervalLength = 60*60;       // 1h interval
+	       int numIntervals = 60;               // Total 60 hours observation interval
 	       LostCostOutput = new double[NUMRUNS][numIntervals];
 
 	       // Lets get a set of uncorrelated seeds
@@ -31,7 +33,7 @@ public class ElectronicsWarmUp {
 	          {
 	             // For computing warm-up, compute average over intervalLength for numIntervals
 	             // Setup the simulation object
-	        	  model = new ElectronicsProject(intervalLength*numIntervals, 0 , 0, sds[i], false, 0);
+	        	  model = new ElectronicsProject(intervalLength*numIntervals, numPallets , batchSize, sds[i], false, 0);
 
 	             // Loop for the all intervals
 	             for( int interval=0 ; interval<numIntervals ; interval++) 
