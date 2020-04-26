@@ -16,7 +16,7 @@ public class ElectronicsWarmUp {
 	       int NUMRUNS = 10;
 	       Seeds [] sds = new Seeds[NUMRUNS];
 	       double intervalStart, intervalEnd;     // start and end times of current interval
-	       double intervalLength = 60* 60 ;       // 1 week intervals, 7 days
+	       double intervalLength = 60*60;       // 1 week intervals, 7 days
 	       int numIntervals = 60;                 // Total 60 hours observation interval
 	       LostCostOutput = new double[NUMRUNS][numIntervals];
 
@@ -25,14 +25,13 @@ public class ElectronicsWarmUp {
 	       for(int i=0 ; i<NUMRUNS ; i++)
 	           sds[i] = new Seeds(rsg);
 
-	       int k = (int) (intervalLength*numIntervals);
-	       // Run for NUMRUNS simulation runs
+	       	  // Run for NUMRUNS simulation runs
 	    	  System.out.println("Base case: ");
 	          for(int i= 0 ; i < NUMRUNS ; i++)
 	          {
 	             // For computing warm-up, compute average over intervalLength for numIntervals
 	             // Setup the simulation object
-	        	  model = new ElectronicsProject(0, 0 , 0, sds[i], false,intervalLength*numIntervals);
+	        	  model = new ElectronicsProject(intervalLength*numIntervals, 0 , 0, sds[i], false, 0);
 
 	             // Loop for the all intervals
 	             for( int interval=0 ; interval<numIntervals ; interval++) 
@@ -50,9 +49,9 @@ public class ElectronicsWarmUp {
 	          }
 	          
 	    	  int [] wSizeLostCost = {0,1,3,5};
-	    	   WelchAverage welchLostCost  = new WelchAverage(LostCostOutput, wSizeLostCost);
-	    	   System.out.println("Lost Cost");
-	    	   printWelchOutputMatrix(welchLostCost.getWelchAvgOutput(), wSizeLostCost, 1);  
+	    	  WelchAverage welchLostCost  = new WelchAverage(LostCostOutput, wSizeLostCost);
+	    	  System.out.println("Lost Cost");
+	    	  printWelchOutputMatrix(welchLostCost.getWelchAvgOutput(), wSizeLostCost, 1);  
 	       }
 	   
 
