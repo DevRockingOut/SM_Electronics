@@ -33,7 +33,6 @@ public class ElectronicsProject extends AOSimulationModel
 		nLossB = 0;
 		nLossC = 0;
 		lostCost = 0.0;
-		
 		}
     
     // SSOV

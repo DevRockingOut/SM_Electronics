@@ -10,28 +10,29 @@ public class ElectronicsExpe2 {
 
 
 	    // Some experimental constants
-		public static final int NUMRUNS = 100;   // for exploring number of runs
+		public static final int NUMRUNS = 200;   // for exploring number of runs
 		public static final int [] NUM_WEEKS_ARR = { 2, 4, 8 };
-	    public static double HOUR = 60*60.0;
+	    public static double HOUR = 60*60;
 	    public static final double WEEK = 5.0 * 16.0 * HOUR;  // 7 day week, 24 hours/day
-	    public static final double WARM_UP_PERIOD = 1 * WEEK;  // 5 week warm up period for tanker waiting times - see PortV1Warm
-	    
-	   // Some arrays to collect experimental data
+	    public static final double WARM_UP_PERIOD = 1 * WEEK;  // 5 week warm up period for tanker waiting times - see PortV1Warm    
+     
+	    // Some arrays to collect experimental data
 		public static double [][] lostCost1 = new double[NUM_WEEKS_ARR.length][NUMRUNS];
 
 		// For output analysis
 		static final double CONF_LEVEL = 0.95;
-	    static final int [] NUM_RUNS_ARRAY = {20, 30, 40, 60, 80, 100};
+	    static final int [] NUM_RUNS_ARRAY = {20, 30, 40, 60, 80, 100, 200};
 	    
 	  /** main method **/
 	   public static void main(String[] args)
 	   {
-		   
 			int i, ixNWeeks;
 			double startTime=0.0;        // Observation interval starts at t = 0
 		    double endTime;  
-		    double TimeCalcInWeeks;
+		    double ObservationTimeInWeek;
 		    Seeds [] sds = new Seeds[NUMRUNS];
+		  //double[]lostCost = new double [NUMRUNS];
+		    
 		    // Lets get a set of uncorrelated seeds
 		    RandomSeedGenerator rsg = new RandomSeedGenerator();
 		    
@@ -40,7 +41,7 @@ public class ElectronicsExpe2 {
 		    for(ixNWeeks = 0; ixNWeeks < NUM_WEEKS_ARR.length; ixNWeeks++)
 	 	    {
 	 	      endTime=NUM_WEEKS_ARR[ixNWeeks] * WEEK;
-	 	      TimeCalcInWeeks = NUM_WEEKS_ARR[ixNWeeks]- WARM_UP_PERIOD/WEEK;
+	 	      ObservationTimeInWeek = NUM_WEEKS_ARR[ixNWeeks]- WARM_UP_PERIOD/WEEK;
 	 	       
 	 	       
 	 	       System.out.println("End Time = "+NUM_WEEKS_ARR[ixNWeeks]+" weeks ("+endTime+" seconds), TimeStamp: "+
@@ -48,17 +49,16 @@ public class ElectronicsExpe2 {
 	 	       
 	 	       
 	 	      for(i=0 ; i < NUMRUNS ; i++)
-		       {
-	 	    	 ElectronicsProject model = new ElectronicsProject(startTime,0,0,sds[i], false, endTime); 
-	 	    	 
+		       { 	    	 
+	 	    	ElectronicsProject model = new ElectronicsProject(endTime, 0 , 0, sds[i], false, 0);
+
 	 	    	model.setTimef(WARM_UP_PERIOD);
 	 	    	model.runSimulation();
 	 	    	model.clearLostCost();
 	 	    	model.setTimef(endTime);
 	 	    	model.runSimulation();
                 // Save the results in the arrays
-		        lostCost1 [ixNWeeks][i] = model.getLostCost()/TimeCalcInWeeks;
-		              //lostCost[i] = ManSys.getLostCost();
+		        lostCost1 [ixNWeeks][i] = model.getLostCost()/ObservationTimeInWeek;
 		       }
 	 	    }
 			   displayTable (lostCost1);
