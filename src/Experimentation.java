@@ -22,40 +22,55 @@ public class Experimentation {
 	    RandomSeedGenerator rsg = new RandomSeedGenerator();
 	     
 	    for(int i = 0; i < numPallets*BatchSize.length; i++) { sds[i] = new Seeds(rsg);}
-		for(int addPallet = 40; addPallet <= numPallets; addPallet++)
-		{
-			ElectronicsProject model = new ElectronicsProject(endTime, addPallet, 0, sds[addPallet], false, 0);
+	    int count = 0;
+		//for(int i = 40; i <= numPallets; i++)
+		//{
+	  
+	    
+			ElectronicsProject model = new ElectronicsProject(endTime, 40, 0, sds[count], false, 0);
 		    model.setTimef(WARM_UP_PERIOD);
 		    model.runSimulation();
-		    model.clearLostCost(); 
+		    //model.clearLostCost();
+		    
 		    model.setTimef(endTime);
 		    model.runSimulation();             
-		    lostCost_step2[addPallet] = model.getLostCost()/ObservationTimeInWeek;
-		    model.clearLostCost(); 
+		    lostCost_step2[40] = model.getLostCost()/NUM_WEEKS;
+		    model.clearLostCost();
+		    count++;
+		    
+		    model = new ElectronicsProject(endTime, 50, 0, sds[count], false, 0);
+		    model.setTimef(WARM_UP_PERIOD);
+		    model.runSimulation();
+		    //model.clearLostCost();
+		    
+		    model.setTimef(endTime);
+		    model.runSimulation();             
+		    lostCost_step2[50] = model.getLostCost()/NUM_WEEKS;
+		    model.clearLostCost();
+		    count++;
+		    
+		//}
 		   // System.out.println("ADD_PALLET_NUMBER: " + addPallet);
 		 //   System.out.println("NO_BATCHLEAST");
 		   //     System.out.println(lostCost_step2[addPallet]);
 		
 		    
-		    for(int batch = 0; batch < BatchSize.length; batch++)
+		    /*for(int batch = 0; batch < BatchSize.length; batch++)
 		    {    
-		    	int k = batch+addPallet;
-		    	if(batch > 0) {
-		    		k = batch+addPallet*batch;
-		    	}
-				 ElectronicsProject model1 = new ElectronicsProject(endTime, addPallet, BatchSize[batch], sds[k], false, 0);
+				 ElectronicsProject model1 = new ElectronicsProject(endTime, addPallet, BatchSize[batch], sds[count], false, 0);
 				 model1.setTimef(WARM_UP_PERIOD);
 				 model1.runSimulation();
-			     model1.clearLostCost(); 
+			     //model1.clearLostCost(); 
 			     model1.setTimef(endTime);
 			     model1.runSimulation();             
-			     lostCost_step3AND4[addPallet][batch] = model1.getLostCost()/ObservationTimeInWeek;
-			     model.clearLostCost(); 
+			     lostCost_step3AND4[addPallet][batch] = model1.getLostCost()/NUM_WEEKS;
+			     model1.clearLostCost(); 
+			     count++;
 		 //    System.out.println("ADD_PALLET_NUMBER: " + addPallet);
 		   //  System.out.println("batchLeast: " + batch);
 		   //      System.out.println(lostCost_step3AND4[addPallet][batch]);
-		    }	
-		}
+		    }	*/
+		//}
 		displayTable(lostCost_step3AND4);     
 		}
 	
