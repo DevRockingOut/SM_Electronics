@@ -12,7 +12,7 @@ public class ElectronicsExpe2 {
 	    // Some experimental constants
 		public static final int NUMRUNS = 200;   // for exploring number of runs
 		public static final int [] NUM_WEEKS_ARR = { 2, 4, 8 };
-	    public static double HOUR = 60*60;
+	    public static final double HOUR = 60*60;
 	    public static final double WEEK = 5.0 * 16.0 * HOUR;  // 7 day week, 24 hours/day
 	    public static final double WARM_UP_PERIOD = 1 * WEEK;  // 5 week warm up period for tanker waiting times - see PortV1Warm    
      
@@ -21,7 +21,7 @@ public class ElectronicsExpe2 {
 
 		// For output analysis
 		static final double CONF_LEVEL = 0.95;
-	    static final int [] NUM_RUNS_ARRAY = {20, 30, 40, 60, 80, 100, 200};
+	    static final int [] NUM_RUNS_ARRAY = {10, 20, 30, 40, 60, 80, 100, 200};
 	    
 	  /** main method **/
 	   public static void main(String[] args)
@@ -30,13 +30,13 @@ public class ElectronicsExpe2 {
 			double startTime=0.0;        // Observation interval starts at t = 0
 		    double endTime;  
 		    double ObservationTimeInWeek;
-		    Seeds [] sds = new Seeds[NUMRUNS];
-		  //double[]lostCost = new double [NUMRUNS];
+		    Seeds [] sds = new Seeds[NUM_WEEKS_ARR.length*NUMRUNS];
+		    //double[]lostCost = new double [NUMRUNS];
 		    
 		    // Lets get a set of uncorrelated seeds
 		    RandomSeedGenerator rsg = new RandomSeedGenerator();
 		    
-		    for(i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
+		    for(i=0 ; i<NUM_WEEKS_ARR.length*NUMRUNS ; i++) { sds[i] = new Seeds(rsg); }
 		    System.out.println("Base Case");
 		    for(ixNWeeks = 0; ixNWeeks < NUM_WEEKS_ARR.length; ixNWeeks++)
 	 	    {
@@ -50,7 +50,7 @@ public class ElectronicsExpe2 {
 	 	       
 	 	      for(i=0 ; i < NUMRUNS ; i++)
 		       { 	    	 
-	 	    	ElectronicsProject model = new ElectronicsProject(endTime, 0 , 0, sds[i], false, 0);
+	 	    	ElectronicsProject model = new ElectronicsProject(endTime, 40 , 0, sds[i+NUMRUNS*ixNWeeks], false, 0);
 
 	 	    	model.setTimef(WARM_UP_PERIOD);
 	 	    	model.runSimulation();
@@ -59,6 +59,7 @@ public class ElectronicsExpe2 {
 	 	    	model.runSimulation();
                 // Save the results in the arrays
 		        lostCost1 [ixNWeeks][i] = model.getLostCost()/ObservationTimeInWeek;
+		        model.clearLostCost();
 		       }
 	 	    }
 			   displayTable (lostCost1);
