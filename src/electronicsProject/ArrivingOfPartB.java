@@ -28,7 +28,7 @@ class ArrivingOfPartB extends ScheduledAction {
 		}else if(model.batchSize == 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
 			model.qInputConveyor.spInsertQue(partB);
 		}else {
-			model.nLossB++; // Part is considered lost
+			model.output.nLossB++; // Part is considered lost
 		}
 		
 	/*	String s = "--------------- Part " + partB.uType.toString() + " arrived ---------------\n";

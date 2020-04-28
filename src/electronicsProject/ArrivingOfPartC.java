@@ -9,7 +9,6 @@ class ArrivingOfPartC extends ScheduledAction {
 	static ElectronicsProject model; // For referencing the model
 	static public TriangularVariate delayOfC;
 	static MersenneTwister delayPercentageC;
-
 	
 	@Override
 	protected double timeSequence()
@@ -29,7 +28,7 @@ class ArrivingOfPartC extends ScheduledAction {
 		}else if(model.batchSize == 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
 			model.qInputConveyor.spInsertQue(partC);
 		}else {
-			model.nLossC++; // Part is considered lost
+			model.output.nLossC++; // Part is considered lost
 		}
 	
 	/*	String s = "--------------- Part " + partC.uType.toString() + " arrived ---------------\n";

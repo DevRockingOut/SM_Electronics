@@ -24,30 +24,21 @@ public class ElectronicsProject extends AOSimulationModel
 	
 	// Output object
 	protected Output output = new Output();
+	
 	public double getLostCost() {
-		return output.lostCost(nLossA, nLossB, nLossC); 
-		}
+		return output.lostCost(); 
+	}
 	
 	public void clearLostCost() {
-		nLossA = 0;
-		nLossB = 0;
-		nLossC = 0;
-		lostCost = 0.0;
-		}
-    
-    // SSOV
-    int nLossA = 0;
-	int nLossB = 0;
-	int nLossC = 0;
-	double lostCost;
-	
-	      
+		output.clearLostCost();
+	}
+	     
     // Constructor
 	public ElectronicsProject(double tftime, int _numPallets, int _batchSize, Seeds sd, boolean log, double tEndTime)
 	{
 		// Adding references to model object to classes
 		initialiseClasses(sd);
-		
+
 		// For turning on logging
 		logFlag = log;
 		
