@@ -79,13 +79,16 @@ class UnloadLoad extends ConditionalActivity
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
-		Pallet pallet = model.rcPallet[pid];
+		if(pid != Pallet.NO_PALLET_ID) {
+			Pallet pallet = model.rcPallet[pid];
+			// Update pallet status
+			pallet.isProcessed = true;
+		}
 		
 		// Update work cell 8 status
 		model.rCell[C8].busy = false;
 		
-		// Update pallet status
-		pallet.isProcessed = true;
+		
 		
 	/*	String s = "--------------- Unload/Load (end) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
