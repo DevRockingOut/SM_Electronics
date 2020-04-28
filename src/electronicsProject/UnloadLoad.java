@@ -7,27 +7,25 @@ import simulationModelling.ConditionalActivity;
 class UnloadLoad extends ConditionalActivity
 {
 	static ElectronicsProject model; // For referencing the model
-    static TriangularVariate TIME_RESPOND_TO_JAM;
-	static MersenneTwister JamOccur_CELL8;
+    static TriangularVariate time_respond_to_jam;
+	static MersenneTwister jamoccur_cell8;
     Part icPart; // instance of Part involved in the Activity
     
 	public static boolean precondition() {
 		return CellReadyForUnloadLoad();
 	}
-
+	
 	@Override
 	public void startingEvent() {
 		int C8 = Cell.CellID.C8.getInt();
 		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
-		Pallet pallet =  model.rcPallet[pid];
-		
 		// Remove part from the input conveyor
 		icPart = model.qInputConveyor.spRemoveQue();
 		
 		// Load a part to a pallet
-		pallet.part = icPart;
+		model.rcPallet[pid].part = icPart;
 		
 		// Update work cell 8 busy status
 		model.rCell[C8].busy = true;
@@ -40,37 +38,12 @@ class UnloadLoad extends ConditionalActivity
 		
 		Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); */
 	}
-
-	// Initialise the RVP
-	static void initRvp(Seeds sd)
-	{
-		JamOccur_CELL8 = new MersenneTwister(sd.jamC8);
-		TIME_RESPOND_TO_JAM = new TriangularVariate(5, 15, 75, new MersenneTwister(sd.ultC8));
-	}	
 	
 	@Override
 	public double duration() {
 		// determine the unload/load duration
 		return uUnloadLoadTime();
 	}
-	
-	// RVP
-	// Provides the time required to load and unload parts in work cell 8
-	private static double uUnloadLoadTime()
-	{	
-		double nxtTime = 0;
-		double ResponseTime = 0.0;
-		
-		if (JamOccur_CELL8.nextInt() < 0.01) 
-		{
-			ResponseTime = TIME_RESPOND_TO_JAM.next();
-		}
-		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
-	//	String s = "Loading Time= " + nxtTime ;
-	//	Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
-		return nxtTime;
-	}
-	
 
 	@Override
 	protected void terminatingEvent() {
@@ -98,6 +71,12 @@ class UnloadLoad extends ConditionalActivity
 		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); */
 	}
 	
+	// Initialise the RVP
+	static void initRvp(Seeds sd)
+	{
+		jamoccur_cell8 = new MersenneTwister(sd.jamC8);
+		time_respond_to_jam = new TriangularVariate(5, 15, 75, new MersenneTwister(sd.ultC8));
+	}	
 	
 	// UDP
 	// Returns a boolean describing whether work cell 8 is ready for the unload/load process or not
@@ -119,6 +98,23 @@ class UnloadLoad extends ConditionalActivity
 		}
 
 		return false;
+	}
+	
+	// RVP
+	// Provides the time required to load and unload parts in work cell 8
+	private static double uUnloadLoadTime()
+	{	
+		double nxtTime = 0;
+		double ResponseTime = 0.0;
+		
+		if (jamoccur_cell8.nextInt() < 0.01) 
+		{
+			ResponseTime = time_respond_to_jam.next();
+		}
+		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
+	//	String s = "Loading Time= " + nxtTime ;
+	//	Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
+		return nxtTime;
 	}
 	
 }

@@ -7,20 +7,20 @@ import simulationModelling.ScheduledAction;
 class ArrivingOfPartC extends ScheduledAction {
 
 	static ElectronicsProject model; // For referencing the model
-	static public TriangularVariate delayOfC;
-	static MersenneTwister delayPercentageC;
 	
 	@Override
 	protected double timeSequence()
 	{
-		return RVP.DuArrC();
+		return rvpDuArrC();
 	}
 
 	@Override
 	protected void actionEvent()
 	{
 		// ArrivingOfPartC Action Sequence SCS
-		Part partC = RVP.uArrC();
+		Part partC = new Part();
+		partC.uType = Part.PartType.C;
+		
 		int BC = BuffConveyor.BufferType.BC.getInt();
 		
 		if(model.batchSize != 0 && model.qBuffConveyor[BC].n < model.qBuffConveyor[BC].capacity) {
@@ -41,6 +41,9 @@ class ArrivingOfPartC extends ScheduledAction {
 		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); */
 	}
 	
+	static public TriangularVariate delayOfC;
+	static MersenneTwister delayPercentageC;
+	
 	static void initRvps(Seeds sd)
 	{	
 		// Initialise Internal modules, user modules and input variables
@@ -49,4 +52,19 @@ class ArrivingOfPartC extends ScheduledAction {
 
 	}
 
+	// RVP for interarrival times
+	static private final double C_DelayPercentage = 0.005;
+	static private final double C_ArrivalTime = 2.00 * 60;
+	
+	public static double rvpDuArrC() // for getting the next arrival time of Part C
+	{
+		double nxtTime = 0.0;
+		double delayTime = 0.0;	
+		if (ArrivingOfPartC.delayPercentageC.nextDouble() < C_DelayPercentage) 
+		{
+			delayTime = ArrivingOfPartC.delayOfC.next();
+		}
+		nxtTime = model.getClock() + C_ArrivalTime + delayTime;
+		return (nxtTime);
+	}
 }

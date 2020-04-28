@@ -1,15 +1,17 @@
 package electronicsProject;
 
+import electronicsProject.BuffConveyor.BufferType;
 import simulationModelling.ConditionalAction;
 
 public class BatchRelease extends ConditionalAction {
 	
 	static ElectronicsProject model; // For referencing the model
 	private static int id; // Buffer Conveyor member identifier
+	static BufferType lastBuffConveyor = BuffConveyor.BUFF_TYPE_NONE;  // Update_CM
+	static int NONE = -1;
 	
 	public static boolean precondition(ElectronicsProject md) {
-		int NONE = -1;
-		id = UDP.BatchReadyForRelease();
+		id = udpBatchReadyForRelease(); // Update_CM
 		return id != NONE;
 	}
 	
@@ -52,5 +54,28 @@ public class BatchRelease extends ConditionalAction {
 		
 		Trace.write(s, "traceBatchRelease.txt", this.getClass().getName()); */
 	}
+	
+    // returns the member identifier of the buffer conveyor that is ready to release the batch of parts
+    static int udpBatchReadyForRelease() {
+    	
+    	// check if there is available space in the input conveyor
+    	if(model.batchSize > 0 && model.qInputConveyor.n <= model.qInputConveyor.capacity - model.batchSize) {
+    		
+    		// try releasing the batch from a different buffer conveyor each time
+    		if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
+    			lastBuffConveyor = BufferType.BA;
+    		}else if(lastBuffConveyor != BufferType.BB && model.qBuffConveyor[BufferType.BB.getInt()].n >= model.batchSize) {
+    			lastBuffConveyor = BufferType.BB;
+    		}else if(lastBuffConveyor != BufferType.BC && model.qBuffConveyor[BufferType.BC.getInt()].n >= model.batchSize) {
+    			lastBuffConveyor = BufferType.BC;
+    		}else {
+    			return NONE;
+    		}
+    	
+    		return lastBuffConveyor.getInt();
+    	}
+    	
+    	return NONE;
+    }
 	
 }

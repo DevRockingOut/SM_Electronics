@@ -22,7 +22,7 @@ public class Experimentation {
 	    Seeds [] sds = new Seeds[numPallets*BatchSize.length];
 	    RandomSeedGenerator rsg = new RandomSeedGenerator();
 	     
-	    //for(int i = 0; i < numPallets*BatchSize.length; i++) { sds[i] = new Seeds(rsg);}
+	    for(int i = 0; i < numPallets*BatchSize.length; i++) { sds[i] = new Seeds(rsg);}
 
 		//for(int i = 40; i <= numPallets; i++)
 		//{
@@ -46,7 +46,7 @@ public class Experimentation {
 	    count++;
 	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);*/
 
-	    ElectronicsProject model = new ElectronicsProject(endTime, pallet+2, batchSize, new Seeds(rsg), false, 0);
+	   /* ElectronicsProject model = new ElectronicsProject(endTime, pallet+2, batchSize, new Seeds(rsg), false, 0);
 	    model.setTimef(WARM_UP_PERIOD);
 	    model.runSimulation();
 	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
@@ -56,20 +56,22 @@ public class Experimentation {
 	    System.out.println(model.getLostCost()/NUM_WEEKS);
 	    lostCost_step2[pallet+2] = model.getLostCost()/NUM_WEEKS;
 	    model.clearLostCost();
-	    count++;
+	    count++;*/
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
+		    pallet = 45;
+		    batchSize = 4;
+		    count = 45;
+			ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
+			model1.setTimef(WARM_UP_PERIOD);
+			model1.runSimulation();
+			//model1.clearLostCost(); 
+			model1.setTimef(endTime);
+			model1.runSimulation();             
+			lostCost_step3AND4[pallet][batchSize] = model1.getLostCost()/NUM_WEEKS;
+			model1.clearLostCost(); 
+			count++;
 		    
-		    /*ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
-			 model1.setTimef(WARM_UP_PERIOD);
-			 model1.runSimulation();
-		     //model1.clearLostCost(); 
-		     model1.setTimef(endTime);
-		     model1.runSimulation();             
-		     lostCost_step3AND4[pallet][batchSize-1] = model1.getLostCost()/NUM_WEEKS;
-		     model1.clearLostCost(); 
-		     count++;
-		    */
 		//}
 		   // System.out.println("ADD_PALLET_NUMBER: " + addPallet);
 		 //   System.out.println("NO_BATCHLEAST");

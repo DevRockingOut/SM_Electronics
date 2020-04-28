@@ -16,12 +16,6 @@ public class ElectronicsProject extends AOSimulationModel
 	int numPallets;
 	int batchSize;
 	
-	// Random variate procedures
-	RVP rvp;
-	
-	// User Defined Procedures
-	UDP udp = new UDP();
-	
 	// Output object
 	protected Output output = new Output();
 	
@@ -41,9 +35,6 @@ public class ElectronicsProject extends AOSimulationModel
 
 		// For turning on logging
 		logFlag = log;
-		
-		// Set up RVPs
-		rvp = new RVP();
 		
 		// Initialise parameters
 		numPallets = _numPallets;
@@ -79,8 +70,6 @@ public class ElectronicsProject extends AOSimulationModel
 		// Add reference to standard classes
 		Initialise.model = this;
 		Output.model = this;
-		RVP.model = this;
-		UDP.model = this;
 		
 		// Add reference to activity/action classes
 		ArrivingOfPartA.model = this;
