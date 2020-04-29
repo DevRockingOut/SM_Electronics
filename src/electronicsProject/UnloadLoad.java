@@ -31,7 +31,7 @@ class UnloadLoad extends ConditionalActivity
 		String s = "--------------- Unload/Load (start) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Loaded Part " + icPart.uType.toString() + "\n";
-		s += "Pallet " + model.rcPallet[pid].id + "  pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
+		s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
 		Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); 
@@ -61,7 +61,7 @@ class UnloadLoad extends ConditionalActivity
 		
 		String s = "--------------- Unload/Load (end) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
-		s += "Pallet " + model.rcPallet[pid].id + "  pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
+		s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
 		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); 

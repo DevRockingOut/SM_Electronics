@@ -65,7 +65,6 @@ class Initialise extends ScheduledAction
 		// create and initialise pallets
 		for(int i = 0; i < model.numPallets; i++) {
 			Pallet pallet = new Pallet();
-			pallet.id = pid;
 			pallet.isMoving = false;
 			pallet.isProcessed = false;
 			pallet.part = Part.NO_PART;

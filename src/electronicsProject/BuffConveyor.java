@@ -11,7 +11,8 @@ class BuffConveyor {
     
     // Buffer Conveyor identifier
     protected enum BufferType { 
-    	// assigning integer and string values to each enum member
+    	// integer value assigned are used as identifier for the Buffer Conveyors
+    	// and string values of each enum member are used for logging/debugging purposes
     	BA(0, "BA"), BB(1, "BB"), BC(2, "BC");
     	
 		private final int value;
