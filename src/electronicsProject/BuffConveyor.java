@@ -44,9 +44,9 @@ class BuffConveyor {
     
     // Standard procedure: remove the part at the head from the buffer conveyor
  	public Part spRemoveQue() {
- 		if(n == 0) {
+ 		/*if(n == 0) {
  			return Part.NO_PART;
- 		}
+ 		}*/
  	
  		Part part = list[0];
  		for(int i = 0; i < n-1; i++) {

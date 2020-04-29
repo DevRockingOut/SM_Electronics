@@ -28,17 +28,21 @@ class ArrivingOfPartC extends ScheduledAction {
 		}else if(model.batchSize == 0 && model.qInputConveyor.n < model.qInputConveyor.capacity) {
 			model.qInputConveyor.spInsertQue(partC);
 		}else {
-			model.output.nLossC++; // Part is considered lost
+			model.output.ssov_nLossC++; // Part is considered lost
 		}
 	
-	/*	String s = "--------------- Part " + partC.uType.toString() + " arrived ---------------\n";
+		String s = "--------------- Part " + partC.uType.toString() + " arrived ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Buffer Conveyor " + BuffConveyor.BufferType.BC.getString() + " details: \n";
 		s += "batchSize: " + model.batchSize + "  ";
-		s += "n: " + model.qBuffConveyor[BC].n + "  capacity: " + model.qBuffConveyor[BC].capacity + "\n";
-		s += "Part " + partC.uType.toString() + " Loss: " + model.nLossC + "\n";
+		if(model.batchSize == 0) {
+			s += "n: 0" + "  capacity: 0\n";
+		}else {
+			s += "n: " + model.qBuffConveyor[BC].n + "  capacity: " + model.qBuffConveyor[BC].capacity + "\n";
+		}
+		s += "Part " + partC.uType.toString() + " Loss: " + model.output.ssov_nLossC + "\n";
 		
-		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); */
+		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); 
 	}
 	
 	static public TriangularVariate delayOfC;

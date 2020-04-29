@@ -7,19 +7,17 @@ import simulationModelling.ConditionalActivity;
 class UnloadLoad extends ConditionalActivity
 {
 	static ElectronicsProject model; // For referencing the model
-    static TriangularVariate time_respond_to_jam;
-	static MersenneTwister jamoccur_cell8;
     Part icPart; // instance of Part involved in the Activity
     
 	public static boolean precondition() {
-		return CellReadyForUnloadLoad();
+		return udpCellReadyForUnloadLoad();
 	}
 	
 	@Override
 	public void startingEvent() {
 		int C8 = Cell.CellID.C8.getInt();
-		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
-		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		int LAST_CONV_POS = model.rqPowerAndFreeConveyor[C8].position.length -1;
+		int pid = model.rqPowerAndFreeConveyor[C8].position[LAST_CONV_POS];
 		
 		// Remove part from the input conveyor
 		icPart = model.qInputConveyor.spRemoveQue();
@@ -30,13 +28,13 @@ class UnloadLoad extends ConditionalActivity
 		// Update work cell 8 busy status
 		model.rCell[C8].busy = true;
 		
-	/*	String s = "--------------- Unload/Load (start) ---------------\n";
+		String s = "--------------- Unload/Load (start) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Loaded Part " + icPart.uType.toString() + "\n";
-		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
+		s += "Pallet " + model.rcPallet[pid].id + "  pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); */
+		Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); 
 	}
 	
 	@Override
@@ -53,23 +51,24 @@ class UnloadLoad extends ConditionalActivity
 		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
 		
 		if(pid != Pallet.NO_PALLET_ID) {
-			Pallet pallet = model.rcPallet[pid];
 			// Update pallet status
-			pallet.isProcessed = true;
+			model.rcPallet[pid].isProcessed = true;
 		}
 		
 		// Update work cell 8 status
 		model.rCell[C8].busy = false;
 		
 		
-		
-	/*	String s = "--------------- Unload/Load (end) ---------------\n";
+		String s = "--------------- Unload/Load (end) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
-		s += "Pallet " + pallet.id + "  pid: " + pid + "  part: " + pallet.part.uType.toString() + "\n";
+		s += "Pallet " + model.rcPallet[pid].id + "  pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); */
+		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); 
 	}
+	
+	static TriangularVariate time_respond_to_jam;
+	static MersenneTwister jamoccur_cell8;
 	
 	// Initialise the RVP
 	static void initRvp(Seeds sd)
@@ -80,20 +79,16 @@ class UnloadLoad extends ConditionalActivity
 	
 	// UDP
 	// Returns a boolean describing whether work cell 8 is ready for the unload/load process or not
-	static boolean CellReadyForUnloadLoad() {
+	static boolean udpCellReadyForUnloadLoad() {
     	int C8 = Cell.CellID.C8.getInt();
-		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
-		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		int LAST_CONV_POS = model.rqPowerAndFreeConveyor[C8].position.length -1;
+		int pid = model.rqPowerAndFreeConveyor[C8].position[LAST_CONV_POS];
 		
-		Pallet pallet = Pallet.NO_PALLET;
-		if(pid != Pallet.NO_PALLET_ID) {
-			pallet = model.rcPallet[pid];
-		}
-		
-		if ( pallet != Pallet.NO_PALLET 
+		if ( pid != Pallet.NO_PALLET_ID
+			 && model.rcPallet[pid] != Pallet.NO_PALLET 
 			 && model.qInputConveyor.n != 0 
 		   	 && model.rCell[C8].busy == false 
-             && pallet.isProcessed == false) {
+             && model.rcPallet[pid].isProcessed == false) {
 			return true;
 		}
 
@@ -107,7 +102,7 @@ class UnloadLoad extends ConditionalActivity
 		double nxtTime = 0;
 		double ResponseTime = 0.0;
 		
-		if (jamoccur_cell8.nextInt() < 0.01) 
+		if (jamoccur_cell8.nextDouble() < 0.01) 
 		{
 			ResponseTime = time_respond_to_jam.next();
 		}
