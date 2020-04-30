@@ -6,9 +6,8 @@ class InputConveyor {
     protected Part[] list;  
     protected int capacity;
     
-    InputConveyor(int capacity){
-        this.n = 0;
-        this.capacity = capacity;
+    public void setCapacity(int capacity) {
+    	this.capacity = capacity;
         this.list = new Part[capacity];
     }
  

@@ -32,9 +32,14 @@ class BuffConveyor {
 	    }
 	}
     
-    BuffConveyor(int capacity){
+    /*BuffConveyor(int capacity){
         this.capacity = capacity;
         this.list = new Part[capacity];
+    }*/
+    
+    public void setCapacity(int capacity) {
+    	this.capacity = capacity;
+    	this.list = new Part[capacity];
     }
     
     // Standard procedure: add a part to buffer conveyor

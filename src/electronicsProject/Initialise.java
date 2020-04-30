@@ -19,6 +19,8 @@ class Initialise extends ScheduledAction
 	public void actionEvent() 
 	{
 		// System Initialisation
+		
+		// cID contains all the cells identifiers and string representations used for logging/debugging purposes
 		CellID[] cID = Cell.CellID.values();
 		
 		// loop C1 to C8
@@ -33,27 +35,30 @@ class Initialise extends ScheduledAction
 		
 		// initialise input conveyor
 		model.qInputConveyor.n = 0;
+		model.qInputConveyor.setCapacity(40);
 		
 		// create and initialise buffer conveyors
 		if(model.batchSize > 0) {
+			
+			// bID contains all the buffer conveyor identifiers and string representations used for logging/debugging purposes
 			BufferType[] bID = BuffConveyor.BufferType.values();
 			
 			// loop BA to BC
 			for(int i = 0; i < bID.length; i++) {
 				int id = bID[i].getInt();
-				int n = 10;
-				model.qBuffConveyor[id] = new BuffConveyor(n);
+				model.qBuffConveyor[id] = new BuffConveyor();
+				model.qBuffConveyor[id].setCapacity(10);
 				model.qBuffConveyor[id].n = 0;
 				model.qBuffConveyor[id].type = bID[i];
 			}
 		}
 		
 		// create and initialise power-and-free conveyors
-		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+		for(int i = 0; i < cID.length; i++) {//model.rqPowerAndFreeConveyor.length; i++) {
 			model.rqPowerAndFreeConveyor[i] = new PowerAndFreeConveyor();
 			model.rqPowerAndFreeConveyor[i].type = cID[i];
 			
-			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++){
+			for(int j = 0; j <= 8; j++){  //model.rqPowerAndFreeConveyor[i].position.length; j++){
 				model.rqPowerAndFreeConveyor[i].position[j] = Pallet.NO_PALLET_ID;
 			}
 		}
@@ -61,18 +66,16 @@ class Initialise extends ScheduledAction
 		int pid = 0;
 		int cellid = Cell.CellID.C8.getInt();
 		int pos = model.rqPowerAndFreeConveyor[cellid].position.length -1;
+		int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 		
 		// create and initialise pallets
-		for(int i = 0; i < model.numPallets; i++) {
-			Pallet pallet = new Pallet();
-			pallet.isMoving = false;
-			pallet.isProcessed = false;
-			pallet.part = Part.NO_PART;
-			
-			model.rcPallet[i] = pallet;
+		for(int id = 0; id < model.numPallets; id++) {
+			model.rcPallet[id] = new Pallet();
+			model.rcPallet[id].isMoving = false;
+			model.rcPallet[id].isProcessed = false;
+			model.rcPallet[id].part = Part.NO_PART;
 			
 			// put the pallets in the power-and-free conveyors
-			int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 			model.rqPowerAndFreeConveyor[cellid].position[pos] = pid;
 			
 			if(pos == 0) {
