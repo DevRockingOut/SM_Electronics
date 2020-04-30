@@ -8,15 +8,15 @@ class UnloadLoad extends ConditionalActivity
 {
 	static ElectronicsProject model; // For referencing the model
     Part icPart; // instance of Part involved in the Activity
-    
+    final int C8 = Cell.CellID.C8.getInt();
+	final int LAST_CONV_POS = model.rqPowerAndFreeConveyor[C8].position.length -1;
+	
 	public static boolean precondition() {
 		return udpCellReadyForUnloadLoad();
 	}
 	
 	@Override
-	public void startingEvent() {
-		int C8 = Cell.CellID.C8.getInt();
-		int LAST_CONV_POS = model.rqPowerAndFreeConveyor[C8].position.length -1;
+	public void startingEvent() {	
 		int pid = model.rqPowerAndFreeConveyor[C8].position[LAST_CONV_POS];
 		
 		// Remove part from the input conveyor
@@ -46,9 +46,7 @@ class UnloadLoad extends ConditionalActivity
 	@Override
 	protected void terminatingEvent() {
 		// Unload/Load Activity Terminating Event SCS 
-		int C8 = Cell.CellID.C8.getInt();
-		int last = model.rqPowerAndFreeConveyor[C8].position.length -1;
-		int pid = model.rqPowerAndFreeConveyor[C8].position[last];
+		int pid = model.rqPowerAndFreeConveyor[C8].position[LAST_CONV_POS];
 		
 		if(pid != Pallet.NO_PALLET_ID) {
 			// Update pallet status
