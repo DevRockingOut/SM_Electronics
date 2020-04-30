@@ -38,7 +38,7 @@ class MovePallets extends ConditionalActivity {
     		model.rcPallet[pid].isMoving = true;
     	}
     	
-    	String s = "--------------- Move Pallets (start) ---------------\n";
+    	/*String s = "--------------- Move Pallets (start) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
@@ -48,7 +48,7 @@ class MovePallets extends ConditionalActivity {
 			}
 		}
     	
-    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName());
+    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName());*/
 	}
 	
 	
@@ -116,9 +116,9 @@ class MovePallets extends ConditionalActivity {
 				int lastCell = model.rqPowerAndFreeConveyor.length -1;
 				boolean palletCanMove = false;
 				
-				if(pos == last && model.rCell[cellid].busy == true) {
+				/*if(pos == last && model.rCell[cellid].busy == true) {
 					break;
-				}
+				}*/
 				
 				if(pid != Pallet.NO_PALLET_ID) {
 					
