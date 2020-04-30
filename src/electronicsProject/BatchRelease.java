@@ -36,10 +36,8 @@ public class BatchRelease extends ConditionalAction {
 			// Removing parts from buffer conveyors
 			Part icPart = model.qBuffConveyor[id].spRemoveQue();
 			
-			if(icPart != Part.NO_PART) {
-				//  Inserting parts into input conveyor
-				model.qInputConveyor.spInsertQue(icPart);
-			}
+			//  Inserting parts into input conveyor
+			model.qInputConveyor.spInsertQue(icPart);
 		}
 
 		s += "After Release\n";
@@ -62,7 +60,12 @@ public class BatchRelease extends ConditionalAction {
     	if(model.batchSize > 0 && model.qInputConveyor.n <= model.qInputConveyor.capacity - model.batchSize) {
     		
     		// try releasing the batch from a different buffer conveyor each time
-    		if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
+    		if(lastBuffConveyor == BufferType.BB 
+    				&& model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize
+    				&& model.qBuffConveyor[BufferType.BB.getInt()].n >= model.batchSize
+    				&& model.qBuffConveyor[BufferType.BC.getInt()].n >= model.batchSize) {
+    			lastBuffConveyor = BufferType.BC;
+    		}else if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BA;
     		}else if(lastBuffConveyor != BufferType.BB && model.qBuffConveyor[BufferType.BB.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BB;
