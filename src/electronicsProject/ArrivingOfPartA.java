@@ -45,6 +45,7 @@ class ArrivingOfPartA extends ScheduledAction {
 			
 			Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); 
 		}
+
 	}
 	
 	static public TriangularVariate delayOfA;

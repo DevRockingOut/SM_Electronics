@@ -49,7 +49,7 @@ class Processing extends ConditionalActivity {
         // Update Cell busy status
         model.rCell[CellID].busy = true;
         
-    /*    String s = "--- Processing Starts --- \n";
+  /*    String s = "--- Processing Starts --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[CellID].getInt();
         s += "; busy: " + model.rCell[CellID].busy;
@@ -89,6 +89,7 @@ class Processing extends ConditionalActivity {
         model.rCell[CellID].previousPartType = uType;
 		
     //  Trace.write(s, "traceProcessing.txt", this.getClass().getName());
+
 	}
 
 	// Initialise the RVP
