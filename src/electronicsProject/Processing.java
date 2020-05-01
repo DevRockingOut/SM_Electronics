@@ -34,14 +34,14 @@ class Processing extends ConditionalActivity {
         // Update Cell busy status
         model.rCell[cellID].busy = true;
         
-        String s = "--- Processing Starts --- \n";
+  /*      String s = "--- Processing Starts --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[cellID].getInt();
         s += "; busy: " + model.rCell[cellID].busy;
         s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
         s += "; previousPartType: " + model.rCell[cellID].previousPartType + "\n\n";
 		
-        Trace.write(s, "traceProcessing.txt", this.getClass().getName()); 
+        Trace.write(s, "traceProcessing.txt", this.getClass().getName()); */
 	}
 
 	@Override
@@ -61,18 +61,18 @@ class Processing extends ConditionalActivity {
         // Update Pallet isProcessed status
         model.rcPallet[pid].isProcessed = true;
    
-        String s = "--- Processing Ends --- \n";
+    /*    String s = "--- Processing Ends --- \n";
         s += "Clock: " + model.getClock() + "\n";
         s += "C" + Cell.CellID.values()[cellID].getInt();
         s += "; busy: " + model.rCell[cellID].busy;
         s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
         s += "; new previousPartType: " + model.rcPallet[pid].part.uType;
-        s += "; old previousPartType: " + model.rCell[cellID].previousPartType + "\n\n"; 
+        s += "; old previousPartType: " + model.rCell[cellID].previousPartType + "\n\n";  */
         
         // Update Cell previousPartType status
         model.rCell[cellID].previousPartType = model.rcPallet[pid].part.uType;
         
-        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
+      //  Trace.write(s, "traceProcessing.txt", this.getClass().getName());
 	}
 
 	static TriangularVariate PROC_TIME_C2_A;

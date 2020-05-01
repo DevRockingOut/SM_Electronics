@@ -57,12 +57,12 @@ class UnloadLoad extends ConditionalActivity
 		model.rCell[C8].busy = false;
 		
 		
-		String s = "--------------- Unload/Load (end) ---------------\n";
+	/*	String s = "--------------- Unload/Load (end) ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
 		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); 
+		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName());  */
 	}
 	
 	static TriangularVariate time_respond_to_jam;

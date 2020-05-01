@@ -31,7 +31,7 @@ class ArrivingOfPartC extends ScheduledAction {
 			model.output.ssov_nLossC++; // Part is considered lost
 		}
 	
-		String s = "--------------- Part " + partC.uType.toString() + " arrived ---------------\n";
+/*		String s = "--------------- Part " + partC.uType.toString() + " arrived ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Buffer Conveyor " + BuffConveyor.BufferType.BC.getString() + " details: \n";
 		s += "batchSize: " + model.batchSize + "  ";
@@ -42,7 +42,7 @@ class ArrivingOfPartC extends ScheduledAction {
 		}
 		s += "Part " + partC.uType.toString() + " Loss: " + model.output.ssov_nLossC + "\n";
 		
-		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); 
+		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); */
 	}
 	
 	static public TriangularVariate delayOfC;

@@ -20,7 +20,7 @@ public class BatchRelease extends ConditionalAction {
 		// BatchRelease Action Sequence SCS
 		BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
 		
-		String s = "--------------- Batch Release [" + bID[id].getString() + "] ---------------\n";
+	/*	String s = "--------------- Batch Release [" + bID[id].getString() + "] ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Before Release\n";
 		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
@@ -30,7 +30,7 @@ public class BatchRelease extends ConditionalAction {
 			s += model.qInputConveyor.list[i].uType.toString() + " ";
 		}
 		
-		s += "\n"; 
+		s += "\n";  */
 		
 		for(int i = 0; i < model.batchSize; i++) {
 			// Removing parts from buffer conveyors
@@ -40,7 +40,7 @@ public class BatchRelease extends ConditionalAction {
 			model.qInputConveyor.spInsertQue(icPart);
 		}
 
-		s += "After Release\n";
+	/*	s += "After Release\n";
 		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
 		s += "   Input conveyor: ";
 		
@@ -50,7 +50,7 @@ public class BatchRelease extends ConditionalAction {
 		
 		s += "\n";
 		
-		Trace.write(s, "traceBatchRelease.txt", this.getClass().getName()); 
+		Trace.write(s, "traceBatchRelease.txt", this.getClass().getName());  */
 	}
 	
     // returns the member identifier of the buffer conveyor that is ready to release the batch of parts

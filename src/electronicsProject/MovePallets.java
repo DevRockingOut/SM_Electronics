@@ -84,7 +84,7 @@ class MovePallets extends ConditionalActivity {
 			}
 		}
 		
-		String s = "Clock: " + model.getClock() + "\n";
+	/*	String s = "Clock: " + model.getClock() + "\n";
 		
 		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
 			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
@@ -93,7 +93,7 @@ class MovePallets extends ConditionalActivity {
 			}
 		}
     	
-    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName()); 
+    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName()); */
 		
 		wait = false;
 	}

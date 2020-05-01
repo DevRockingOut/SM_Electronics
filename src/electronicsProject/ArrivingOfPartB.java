@@ -31,7 +31,7 @@ class ArrivingOfPartB extends ScheduledAction {
 			model.output.ssov_nLossB++; // Part is considered lost
 		}
 		
-		String s = "--------------- Part " + partB.uType.toString() + " arrived ---------------\n";
+	/*	String s = "--------------- Part " + partB.uType.toString() + " arrived ---------------\n";
 		s += "Clock: " + model.getClock() + "\n";
 		s += "Buffer Conveyor " + BuffConveyor.BufferType.BB.getString() + " details: \n";
 		s += "batchSize: " + model.batchSize + "  ";
@@ -44,7 +44,7 @@ class ArrivingOfPartB extends ScheduledAction {
 		
 		s += "Part " + partB.uType.toString() + " Loss: " + model.output.ssov_nLossB + "\n";
 		
-		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); 
+		Trace.write(s, "tracePartsArrival.txt", "PartsArrival"); */
 	}
 	
 	static public TriangularVariate delayOfB;
