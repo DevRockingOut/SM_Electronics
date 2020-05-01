@@ -7,7 +7,7 @@ public class Experimentation {
 	
     static final int NUMRUNS = 20;
     static int numPallets = 72;
-	final static int [] BatchSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	final static int [] BatchSize = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     final static double HOUR = 60 * 60;
     final static double WEEK = 5 * 16 * HOUR;  // 5 day week, 16 hours/day
     public static final int NUM_WEEKS = 4;
@@ -36,15 +36,15 @@ public class Experimentation {
 	    /*ElectronicsProject model = new ElectronicsProject(endTime, pallet, batchSize, new Seeds(rsg), false, 0);
 	    model.setTimef(WARM_UP_PERIOD);
 	    model.runSimulation();
-	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
+	    //System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
 	    //model.clearLostCost();
 	    
 	    model.setTimef(endTime);
 	    model.runSimulation();
 	    lostCost_step2[pallet] = model.getLostCost()/NUM_WEEKS;
 	    model.clearLostCost();
-	    count++;
-	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);*/
+	    count++;*/
+	    //System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
 
 	   /* ElectronicsProject model = new ElectronicsProject(endTime, pallet+2, batchSize, new Seeds(rsg), false, 0);
 	    model.setTimef(WARM_UP_PERIOD);
@@ -59,8 +59,8 @@ public class Experimentation {
 	    count++;*/
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
-		    pallet = 44;
-		    batchSize = 4;
+		    pallet = 60;
+		    batchSize = 9;
 		    count = 0;
 			ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 			model1.setTimef(WARM_UP_PERIOD);
@@ -100,26 +100,37 @@ public class Experimentation {
 	 private static void displayTable(double [][]lostCost)
 	 {
 	  
-	  System.out.print("Batch Size        ");
-	  for (int i = 0; i < BatchSize.length; i++)
-	  {
-		  System.out.print("|     " + BatchSize[i] + "    ");
-	  }
-	  System.out.print("\n");
-	  for (int i = 40; i < numPallets + 1; i++)
-	  {
-		  if(i < 10) {
-			  System.out.print("Pallet Number: " + i + "  |");
-		  }else {
-			  System.out.print("Pallet Number: " + i +" |");
-	  }
-	  for (int q = 0; q < BatchSize.length; q++) 
-	  {
-		  System.out.printf("%8.2f ", lostCost[i][q]);
-		  System.out.print(" |");
-	  }
-	  System.out.printf("%8.2f ",lostCost_step2[i]);
-	  System.out.println(" |");
-	  }
-	  }
+		 System.out.print("Batch Size        ");
+		 for (int i = 0; i < BatchSize.length; i++)
+		 {
+			 if(i < 10) {
+				 System.out.print("|     " + BatchSize[i] + "    ");
+			 }else {
+				 System.out.print("|     " + BatchSize[i] + "   ");
+			 }
+		 }
+		 System.out.println("|");
+		 
+		 for (int i = 40; i < numPallets + 1; i++)
+		 {
+			 if(i < 10) {
+				 System.out.print("Pallet Number: " + i + "  |");
+			 }else {
+				 System.out.print("Pallet Number: " + i +" |");
+			 }
+			 
+			 for (int q = 0; q < BatchSize.length; q++) 
+			 {
+				 if(q == 0) {
+					 System.out.printf("%8.2f ", lostCost_step2[i]);
+				 }else {
+					 System.out.printf("%8.2f ", lostCost[i][q]);
+				 }
+				 
+				 System.out.print(" |");
+			 }
+			 
+			 System.out.println("");
+		  }
 	 }
+}
