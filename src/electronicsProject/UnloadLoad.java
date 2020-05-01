@@ -28,13 +28,16 @@ class UnloadLoad extends ConditionalActivity
 		// Update work cell 8 busy status
 		model.rCell[C8].busy = true;
 		
-		String s = "--------------- Unload/Load (start) ---------------\n";
-		s += "Clock: " + model.getClock() + "\n";
-		s += "Loaded Part " + icPart.uType.toString() + "\n";
-		s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
-		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
+		if(model.logFlag) {
+			String s = "--------------- Unload/Load (start) ---------------\n";
 		
-		Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); 
+			s += "Clock: " + model.getClock() + "\n";
+			s += "Loaded Part " + icPart.uType.toString() + "\n";
+			s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
+			s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
+			
+			Trace.write(s, "traceUnloadLoad.txt", "Unloadload"); 
+		}
 	}
 	
 	@Override
@@ -56,13 +59,14 @@ class UnloadLoad extends ConditionalActivity
 		// Update work cell 8 status
 		model.rCell[C8].busy = false;
 		
-		
-		String s = "--------------- Unload/Load (end) ---------------\n";
-		s += "Clock: " + model.getClock() + "\n";
-		s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
-		s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
-		
-		Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); 
+		if(model.logFlag) {
+			String s = "--------------- Unload/Load (end) ---------------\n";
+			s += "Clock: " + model.getClock() + "\n";
+			s += "Pallet " + "pid: " + pid + "  part: " + model.rcPallet[pid].part.uType.toString() + "\n";
+			s += "Cell [" + Cell.CellID.C8.toString() + "]  busy: " + model.rCell[C8].busy + "\n";
+			
+			Trace.write(s, "traceUnloadLoad.txt", this.getClass().getName()); 
+		}
 	}
 	
 	static TriangularVariate time_respond_to_jam;
@@ -100,7 +104,7 @@ class UnloadLoad extends ConditionalActivity
 		double nxtTime = 0;
 		double ResponseTime = 0.0;
 		
-		if (jamoccur_cell8.nextDouble() < 0.01) 
+		if (jamoccur_cell8.nextInt() < 0.01) 
 		{
 			ResponseTime = time_respond_to_jam.next();
 		}

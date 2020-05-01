@@ -18,19 +18,23 @@ public class BatchRelease extends ConditionalAction {
 	@Override
 	protected void actionEvent() {
 		// BatchRelease Action Sequence SCS
-		BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
+		String s = "";
 		
-		String s = "--------------- Batch Release [" + bID[id].getString() + "] ---------------\n";
-		s += "Clock: " + model.getClock() + "\n";
-		s += "Before Release\n";
-		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
-		s += "   Input conveyor: ";
-		
-		for(int i = 0; i < model.qInputConveyor.n; i++) {
-			s += model.qInputConveyor.list[i].uType.toString() + " ";
+		if(model.logFlag) {
+			BuffConveyor.BufferType[] bID = BuffConveyor.BufferType.values();
+			
+			s = "--------------- Batch Release [" + bID[id].getString() + "] ---------------\n";
+			s += "Clock: " + model.getClock() + "\n";
+			s += "Before Release\n";
+			s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
+			s += "   Input conveyor: ";
+			
+			for(int i = 0; i < model.qInputConveyor.n; i++) {
+				s += model.qInputConveyor.list[i].uType.toString() + " ";
+			}
+			
+			s += "\n"; 
 		}
-		
-		s += "\n"; 
 		
 		for(int i = 0; i < model.batchSize; i++) {
 			// Removing parts from buffer conveyors
@@ -40,17 +44,19 @@ public class BatchRelease extends ConditionalAction {
 			model.qInputConveyor.spInsertQue(icPart);
 		}
 
-		s += "After Release\n";
-		s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
-		s += "   Input conveyor: ";
-		
-		for(int i = 0; i < model.qInputConveyor.n; i++) {
-			s += model.qInputConveyor.list[i].uType.toString() + " ";
+		if(model.logFlag) {
+			s += "After Release\n";
+			s += "   BuffConveyor n: " + model.qBuffConveyor[id].n + "\n";
+			s += "   Input conveyor: ";
+			
+			for(int i = 0; i < model.qInputConveyor.n; i++) {
+				s += model.qInputConveyor.list[i].uType.toString() + " ";
+			}
+			
+			s += "\n";
+			
+			Trace.write(s, "traceBatchRelease.txt", this.getClass().getName()); 
 		}
-		
-		s += "\n";
-		
-		Trace.write(s, "traceBatchRelease.txt", this.getClass().getName()); 
 	}
 	
     // returns the member identifier of the buffer conveyor that is ready to release the batch of parts

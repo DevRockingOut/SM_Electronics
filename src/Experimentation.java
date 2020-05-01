@@ -22,7 +22,7 @@ public class Experimentation {
 	    Seeds [] sds = new Seeds[numPallets*BatchSize.length];
 	    RandomSeedGenerator rsg = new RandomSeedGenerator();
 	     
-	    for(int i = 0; i < numPallets*BatchSize.length; i++) { sds[i] = new Seeds(rsg);}
+	    for(int i = 0; i < numPallets*BatchSize.length; i++) { sds[i] = new Seeds(rsg); }
 
 		//for(int i = 40; i <= numPallets; i++)
 		//{
@@ -59,9 +59,9 @@ public class Experimentation {
 	    count++;*/
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
-		    pallet = 45;
+		    pallet = 44;
 		    batchSize = 4;
-		    count = 45;
+		    count = 0;
 			ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 			model1.setTimef(WARM_UP_PERIOD);
 			model1.runSimulation();

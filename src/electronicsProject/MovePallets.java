@@ -84,16 +84,18 @@ class MovePallets extends ConditionalActivity {
 			}
 		}
 		
-		String s = "Clock: " + model.getClock() + "\n";
-		
-		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
-			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
-				s += "Power-and-free conveyor " + i + "  " + Cell.CellID.values()[i].toString();
-				s += "  pid: " + model.rqPowerAndFreeConveyor[i].position[j] + "\n"; 
+		if(model.logFlag) {
+			String s = "Clock: " + model.getClock() + "\n";
+			
+			for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+				for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
+					s += "Power-and-free conveyor " + i + "  " + Cell.CellID.values()[i].toString();
+					s += "  pid: " + model.rqPowerAndFreeConveyor[i].position[j] + "\n"; 
+				}
 			}
+	    	
+	    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName()); 
 		}
-    	
-    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName()); 
 		
 		wait = false;
 	}
@@ -200,7 +202,9 @@ class MovePallets extends ConditionalActivity {
 						|| palletInList(pallets, nextCellid, nextPos) == true) {
 						
 						// cell position in power-and-free-conveyor is not busy
-						if(pos == last && model.rCell[cellid].busy == false) {
+						if(pos == last && model.rCell[cellid].busy == true) {
+							palletCanMove = false;
+						}else if(pos == last && model.rCell[cellid].busy == false) {
 							palletCanMove = true;
 						}else if(pos != last) { // every other position in power-and-free conveyor
 							palletCanMove = true;
