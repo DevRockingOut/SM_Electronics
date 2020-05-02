@@ -10,32 +10,29 @@ import simulationModelling.ConditionalActivity;
 class Processing extends ConditionalActivity {
 	
 	static ElectronicsProject model; // For referencing the model
-	int CellID; // Identifier for Cell and PowerAndFreeConveyors
+	int cellID; // Identifier for Cell and PowerAndFreeConveyors
 	PartType uType;
     int pid;
-    static TriangularVariate PROC_TIME_C2_A;
-    static TriangularVariate PROC_TIME_C2_B;
-    static TriangularVariate PROC_TIME_C2_C;
-    static TriangularVariate PROC_TIME_C7_A;
-    static TriangularVariate PROC_TIME_C7_B;
-    static TriangularVariate PROC_TIME_C7_C;
     static int NONE = -1;
+    static final int[][] SETUP_TIME = {{0, 37, 0, 39, 41, 33, 31, 0}, 
+							           {0, 46, 0, 27, 38, 41, 24, 0},
+							           {0, 39, 0, 23, 47, 35, 51, 0}};
 
 	public static boolean precondition()
 	{
-		int[] result = CellReadyForProcessing();
-		int CellID = result[0];
+		int[] result = udpCellReadyForProcessing();
+		int cellID = result[0];
 		
-		return CellID != NONE;
+		return cellID != NONE;
 	}
 	
 	  
 	@Override
 	public void startingEvent() {
 		
-		int[] result = CellReadyForProcessing();
+		int[] result = udpCellReadyForProcessing();
 		
-		CellID = result[0];
+		cellID = result[0];
 		pid = result[1];
 		
 		if (result[2] == 0) {
@@ -47,51 +44,60 @@ class Processing extends ConditionalActivity {
 		}  
 		
         // Update Cell busy status
-        model.rCell[CellID].busy = true;
+        model.rCell[cellID].busy = true;
         
-  /*    String s = "--- Processing Starts --- \n";
-        s += "Clock: " + model.getClock() + "\n";
-        s += "C" + Cell.CellID.values()[CellID].getInt();
-        s += "; busy: " + model.rCell[CellID].busy;
-        s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
-        s += "; previousPartType: " + uType + "\n\n";
-		
-        Trace.write(s, "traceProcessing.txt", this.getClass().getName()); */
+        if(model.logFlag) {
+	        String s = "--- Processing Starts --- \n";
+	        s += "Clock: " + model.getClock() + "\n";
+	        s += "C" + Cell.CellID.values()[cellID].getInt();
+	        s += "; busy: " + model.rCell[cellID].busy;
+	        s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
+	        s += "; previousPartType: " + uType + "\n\n";
+			
+	        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
+        }
 	}
 
 	@Override
 	public double duration() {
 		// determine the processing duration
-		return uServiceTime(pid, CellID);
+		return uServiceTime(pid, cellID);
 	}
 
 
 	@Override
 	public void terminatingEvent() {
 		// Processing Activity Terminating Event SCS 
-		Pallet pallet = model.rcPallet[pid];
 		
 		// Update Cell busy status
-        model.rCell[CellID].busy = false; 
+        model.rCell[cellID].busy = false; 
         
         // Update Pallet isProcessed status
-		pallet.isProcessed = true;
+        model.rcPallet[pid].isProcessed = true;
    
-   /*     String s = "--- Processing Ends --- \n";
-        s += "Clock: " + model.getClock() + "\n";
-        s += "C" + Cell.CellID.values()[CellID].getInt();
-        s += "; busy: " + model.rCell[CellID].busy;
-        s += "; isProcessed: " + pallet.isProcessed;
-        s += "; new previousPartType: " + uType;
-        s += "; old previousPartType: " + model.rCell[CellID].previousPartType + "\n\n"; */
+		if(model.logFlag) {
+	        String s = "--- Processing Ends --- \n";
+	        s += "Clock: " + model.getClock() + "\n";
+	        s += "C" + Cell.CellID.values()[cellID].getInt();
+	        s += "; busy: " + model.rCell[cellID].busy;
+	        s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
+	        s += "; new previousPartType: " + uType;
+	        s += "; old previousPartType: " + model.rCell[cellID].previousPartType + "\n\n";
+	        
+	        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
+		}
         
         // Update Cell previousPartType status
-        model.rCell[CellID].previousPartType = uType;
-		
-    //  Trace.write(s, "traceProcessing.txt", this.getClass().getName());
-
+        model.rCell[cellID].previousPartType = uType;
 	}
 
+	static TriangularVariate PROC_TIME_C2_A;
+    static TriangularVariate PROC_TIME_C2_B;
+    static TriangularVariate PROC_TIME_C2_C;
+    static TriangularVariate PROC_TIME_C7_A;
+    static TriangularVariate PROC_TIME_C7_B;
+    static TriangularVariate PROC_TIME_C7_C;
+	
 	// Initialise the RVP
 	static void initRvp(Seeds sd)
 	{
@@ -110,10 +116,6 @@ class Processing extends ConditionalActivity {
 		double[][] PROC_TIME = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
 					      	    {0, 17, PROC_TIME_C2_C.next(), 34, 24, 37, 17, PROC_TIME_C2_C.next()}};
-		
-	    int[][] SETUP_TIME = {{0, 37, 0, 39, 41, 33, 31, 0}, 
-	      		              {0, 46, 0, 27, 38, 41, 24, 0},
-	                          {0, 39, 0, 23, 47, 35, 51, 0}};
 	    
 	    uType = model.rcPallet[pid].part.uType;
 	    
@@ -141,7 +143,7 @@ class Processing extends ConditionalActivity {
 	
 	// UDP
 	// Returns a vector containing the cell id (C1 to C7) that is ready for processing
-	static protected int[] CellReadyForProcessing() {
+	static protected int[] udpCellReadyForProcessing() {
 		int[] output = {NONE, NONE, NONE};
 		
 		CellID[] cID = Cell.CellID.values();

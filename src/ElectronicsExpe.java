@@ -8,7 +8,7 @@ public class ElectronicsExpe {
 	public static void main(String[] args)
 	{
 		int NUMRUNS = 4;
-		double endTime = 1000.00;//8000.00;
+		double endTime = 8000.00;
 		Seeds[] sds = new Seeds[NUMRUNS];
 		ElectronicsProject mnf; //Simulation object
 		int numPallets = 40;
@@ -17,8 +17,8 @@ public class ElectronicsExpe {
 		
 		RandomSeedGenerator rsg = new RandomSeedGenerator();
 		String s = "";
-		for(int i = 0; i < NUMRUNS; i++) sds[i] = new Seeds(rsg);
-		 /*for(int i=0 ; i < NUMRUNS ; i++) {
+		
+		 for(int i=0 ; i < NUMRUNS ; i++) {
 			// get a set of uncorrelated seeds, different seeds for each run
 			sds[i] = new Seeds(rsg);	
 				
@@ -42,15 +42,14 @@ public class ElectronicsExpe {
 				s = "Case 4 (7 additional pallets and three buffer conveyors)";
 				batchSize = 2; 
 				numPallets = 47; 
-			}*/
+			}
 			
 			System.out.println(s);
 			Trace.write(s, "log.txt", "Experiment");
-			numPallets = 40;
-			batchSize = 5;
+
 			mnf = new ElectronicsProject(endTime, numPallets, batchSize, sds[0], true,0);
 			mnf.runSimulation();
-		 //}
+		 }
 		 
 	}
 	

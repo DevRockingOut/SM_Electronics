@@ -26,14 +26,14 @@ public class Experimentation {
 
 		//for(int i = 40; i <= numPallets; i++)
 		//{
-		    
+		
 	    int pallet = 40;
 	    int batchSize = 0;
 	    int count = 0;
 	    
 	    /*******************   The code below for printing pallets with NO batchSize   *************************/
-	    /*batchSize = 5;
-	    ElectronicsProject model = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
+	    //kadgjbatchSize = 5;
+	    /*ElectronicsProject model = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 	    model.setTimef(WARM_UP_PERIOD);
 	    model.runSimulation();
 	    //System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
@@ -45,23 +45,10 @@ public class Experimentation {
 	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
 	    model.clearLostCost();
 	    count++;*/
-	    //System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
-
-	   /*ElectronicsProject model = new ElectronicsProject(endTime, pallet+2, batchSize, new Seeds(rsg), false, 0);
-	    model.setTimef(WARM_UP_PERIOD);
-	    model.runSimulation();
-	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
-	    
-	    model.setTimef(endTime);
-	    model.runSimulation();
-	    System.out.println(model.getLostCost()/NUM_WEEKS);
-	    lostCost_step2[pallet+2] = model.getLostCost()/NUM_WEEKS;
-	    model.clearLostCost();
-	    count++;*/
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
-	    pallet = 45;
-	    batchSize = 4;
+	    pallet = 40;
+	    batchSize = 6;
 	    count = 0;
 		ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 		model1.setTimef(WARM_UP_PERIOD);

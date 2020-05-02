@@ -66,12 +66,12 @@ public class BatchRelease extends ConditionalAction {
     	if(model.batchSize > 0 && model.qInputConveyor.n <= model.qInputConveyor.capacity - model.batchSize) {
     		
     		// try releasing the batch from a different buffer conveyor each time
-    		if(lastBuffConveyor == BufferType.BB 
+    		/*if(lastBuffConveyor == BufferType.BB 
     				&& model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize
     				&& model.qBuffConveyor[BufferType.BB.getInt()].n >= model.batchSize
     				&& model.qBuffConveyor[BufferType.BC.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BC;
-    		}else if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
+    		}else */if(lastBuffConveyor != BufferType.BA && model.qBuffConveyor[BufferType.BA.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BA;
     		}else if(lastBuffConveyor != BufferType.BB && model.qBuffConveyor[BufferType.BB.getInt()].n >= model.batchSize) {
     			lastBuffConveyor = BufferType.BB;

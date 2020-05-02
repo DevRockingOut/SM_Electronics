@@ -41,7 +41,7 @@ public class ElectronicsExpe2 {
 		    for(ixNWeeks = 0; ixNWeeks < NUM_WEEKS_ARR.length; ixNWeeks++)
 	 	    {
 	 	      endTime=NUM_WEEKS_ARR[ixNWeeks] * WEEK;
-	 	      ObservationTimeInWeek = NUM_WEEKS_ARR[ixNWeeks]- WARM_UP_PERIOD/WEEK;
+	 	      ObservationTimeInWeek = (NUM_WEEKS_ARR[ixNWeeks]- WARM_UP_PERIOD/WEEK)*2.75;
 	 	       
 	 	       
 	 	       System.out.println("End Time = "+NUM_WEEKS_ARR[ixNWeeks]+" weeks ("+endTime+" seconds), TimeStamp: "+
