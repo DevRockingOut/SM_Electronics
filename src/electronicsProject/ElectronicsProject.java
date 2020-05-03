@@ -35,7 +35,7 @@ public class ElectronicsProject extends AOSimulationModel
 	
 	      
     // Constructor
-	public ElectronicsProject(double tftime, int _numPallets, int _batchSize, Seeds sd, boolean log, double tEndTime)
+	public ElectronicsProject(double tftime, int _numPallets, int _batchSize, Seeds sd, boolean log)
 	{
 		// Adding references to model object to classes
 		initialiseClasses(sd);

@@ -33,7 +33,7 @@ public class ElectronicsWarmUp {
 	          {
 	             // For computing warm-up, compute average over intervalLength for numIntervals
 	             // Setup the simulation object
-	        	  model = new ElectronicsProject(intervalLength*numIntervals, numPallets , batchSize, sds[i], false, 0);
+	        	  model = new ElectronicsProject(intervalLength*numIntervals, numPallets , batchSize, sds[i], false);
 
 	             // Loop for the all intervals
 	             for( int interval=0 ; interval<numIntervals ; interval++) 

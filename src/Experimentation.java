@@ -31,7 +31,7 @@ public class Experimentation {
 	    int count = 0;
 	    
 	    /*******************   The code below for printing pallets with NO batchSize   *************************/
-	    //kadgjbatchSize = 5;
+	    //batchSize = 5;
 	    /*ElectronicsProject model = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 	    model.setTimef(WARM_UP_PERIOD);
 	    model.runSimulation();
@@ -47,9 +47,9 @@ public class Experimentation {
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
 	    pallet = 40;
-	    batchSize = 7;
+	    batchSize = 6;
 	    count = 0;
-		ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
+		ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false);
 		model1.setTimef(WARM_UP_PERIOD);
 		model1.runSimulation();
 		//model1.clearLostCost(); 

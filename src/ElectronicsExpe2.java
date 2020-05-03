@@ -48,7 +48,7 @@ public class ElectronicsExpe2 {
 	 	       
 	 	      for(i=0 ; i < NUMRUNS ; i++)
 		       { 	    	 
-	 	    	ElectronicsProject model = new ElectronicsProject(endTime, 40 , 0, sds[i+NUMRUNS*ixNWeeks], false, 0);
+	 	    	ElectronicsProject model = new ElectronicsProject(endTime, 40 , 0, sds[i+NUMRUNS*ixNWeeks], false);
 
 	 	    	model.setTimef(WARM_UP_PERIOD);
 	 	    	model.runSimulation();
