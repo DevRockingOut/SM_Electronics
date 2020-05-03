@@ -17,7 +17,8 @@ class Processing extends ConditionalActivity {
 							           {0, 46, 0, 27, 38, 41, 24, 0},
 							           {0, 39, 0, 23, 47, 35, 51, 0}};
     final int LAST_CONV_POS = model.rqPowerAndFreeConveyor[cellID].position.length - 1;
-
+    PartType uType;
+    
 	public static boolean precondition()
 	{
 		return udpCellReadyForProcessing() != NONE;
@@ -28,6 +29,7 @@ class Processing extends ConditionalActivity {
 	public void startingEvent() {
 		cellID = udpCellReadyForProcessing();
 		pid = model.rqPowerAndFreeConveyor[cellID].position[LAST_CONV_POS];
+        uType = model.rcPallet[pid].part.uType;
 		
         // Update Cell busy status
         model.rCell[cellID].busy = true;
@@ -47,7 +49,7 @@ class Processing extends ConditionalActivity {
 	@Override
 	public double duration() {
 		// determine the processing duration
-		return uServiceTime(pid, cellID);
+		return uServiceTime(uType, cellID);
 	}
 
 
@@ -97,13 +99,11 @@ class Processing extends ConditionalActivity {
 
 	// UDP
 	// returns the operation time at the work cell
-	public double uServiceTime(int pid, int cellID) {
+	public double uServiceTime(PartType uType, int cellID) {
 		
 		double[][] proc_time = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
 					      	    {0, 17, PROC_TIME_C2_C.next(), 34, 24, 37, 17, PROC_TIME_C2_C.next()}};
-	    
-	    PartType uType = model.rcPallet[pid].part.uType;
 	    
 		double serviceTime = 0.0; // an arbitrary default value
 		int partType;
