@@ -16,6 +16,7 @@ class Processing extends ConditionalActivity {
     static final int[][] SETUP_TIME = {{0, 37, 0, 39, 41, 33, 31, 0}, 
 							           {0, 46, 0, 27, 38, 41, 24, 0},
 							           {0, 39, 0, 23, 47, 35, 51, 0}};
+    final int LAST_CONV_POS = model.rqPowerAndFreeConveyor[cellID].position.length - 1;
 
 	public static boolean precondition()
 	{
@@ -25,10 +26,7 @@ class Processing extends ConditionalActivity {
 	  
 	@Override
 	public void startingEvent() {
-		
 		cellID = udpCellReadyForProcessing();
-		
-		int LAST_CONV_POS = model.rqPowerAndFreeConveyor[cellID].position.length - 1; 
 		pid = model.rqPowerAndFreeConveyor[cellID].position[LAST_CONV_POS];
 		
         // Update Cell busy status
