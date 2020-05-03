@@ -113,7 +113,7 @@ class Processing extends ConditionalActivity {
 	// returns the operation time at the work cell
 	public double uServiceTime(int pid, int cellID) {
 		
-		double[][] PROC_TIME = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
+		double[][] proc_time = {{0, 25, PROC_TIME_C2_A.next(), 52, 35, 29, 11, PROC_TIME_C2_A.next()},
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
 					      	    {0, 17, PROC_TIME_C2_C.next(), 34, 24, 37, 17, PROC_TIME_C2_C.next()}};
 	    
@@ -131,10 +131,10 @@ class Processing extends ConditionalActivity {
 		}  
 		  
 		// calculate service time (processing time)
-		serviceTime = PROC_TIME[partType][cellID];
+		serviceTime = proc_time[partType][cellID];
 		  
 		if (model.rCell[cellID].previousPartType != Part.NO_PART_TYPE && uType != model.rCell[cellID].previousPartType) {
-			serviceTime =  PROC_TIME[partType][cellID] + SETUP_TIME[partType][cellID]; // calculate service time (processing time + setup time)
+			serviceTime =  proc_time[partType][cellID] + SETUP_TIME[partType][cellID]; // calculate service time (processing time + setup time)
 		}
 		  
 		return serviceTime;

@@ -2,7 +2,6 @@ package electronicsProject;
 
 class Pallet {
 	// Attributes
-    //protected int id;
     protected boolean isMoving;
     protected boolean isProcessed;
     protected Part part;

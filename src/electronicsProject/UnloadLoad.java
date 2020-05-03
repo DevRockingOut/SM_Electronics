@@ -109,8 +109,7 @@ class UnloadLoad extends ConditionalActivity
 			ResponseTime = time_respond_to_jam.next();
 		}
 		nxtTime = Constants.UNLOAD_LOAD_TIME + ResponseTime;
-	//	String s = "Loading Time= " + nxtTime ;
-	//	Trace.write(s, "traceUnloadLoad.txt", "Unloadload");
+	
 		return nxtTime;
 	}
 	

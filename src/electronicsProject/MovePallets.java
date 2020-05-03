@@ -187,7 +187,6 @@ class MovePallets extends ConditionalActivity {
 						
 						if(emptyFound == true) {
 							for(int m = scannedPallets.size() -1; m > -1; m--) {
-								int mpid = model.rqPowerAndFreeConveyor[scannedPallets.get(m)[0]].position[scannedPallets.get(m)[1]];
 								pallets.add(scannedPallets.get(m));
 							}
 						}

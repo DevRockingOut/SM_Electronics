@@ -35,7 +35,7 @@ class Initialise extends ScheduledAction
 		
 		// initialise input conveyor
 		model.qInputConveyor.n = 0;
-		model.qInputConveyor.setCapacity(40);
+		model.qInputConveyor.setCapacity(40); // need to use this setter to update capacity and create an array with max capacity of 40
 		
 		// create and initialise buffer conveyors
 		if(model.batchSize > 0) {
@@ -47,19 +47,18 @@ class Initialise extends ScheduledAction
 			for(int i = 0; i < bID.length; i++) {
 				int id = bID[i].getInt();
 				model.qBuffConveyor[id] = new BuffConveyor();
-				model.qBuffConveyor[id].setCapacity(10);
+				model.qBuffConveyor[id].setCapacity(10); // need to use this setter to update capacity and create an array with max capacity of 10
 				model.qBuffConveyor[id].n = 0;
 				model.qBuffConveyor[id].type = bID[i];
 			}
 		}
 		
 		// create and initialise power-and-free conveyors
-		for(int i = 0; i < cID.length; i++) {//model.rqPowerAndFreeConveyor.length; i++) {
-			model.rqPowerAndFreeConveyor[i] = new PowerAndFreeConveyor();
-			//model.rqPowerAndFreeConveyor[i].type = cID[i];
+		for(int id = 0; id < cID.length; id++) {
+			model.rqPowerAndFreeConveyor[id] = new PowerAndFreeConveyor();
 			
-			for(int j = 0; j <= 8; j++){  //model.rqPowerAndFreeConveyor[i].position.length; j++){
-				model.rqPowerAndFreeConveyor[i].position[j] = Pallet.NO_PALLET_ID;
+			for(int j = 0; j <= 8; j++){
+				model.rqPowerAndFreeConveyor[id].position[j] = Pallet.NO_PALLET_ID;
 			}
 		}
 		

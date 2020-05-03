@@ -1,7 +1,6 @@
 import electronicsProject.ElectronicsProject;
 import electronicsProject.Seeds;
 import cern.jet.random.engine.RandomSeedGenerator;
-import cern.jet.random.engine.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import outputAnalysis.ConfidenceInterval;
@@ -27,7 +26,6 @@ public class ElectronicsExpe2 {
 	   public static void main(String[] args)
 	   {
 			int i, ixNWeeks;
-			double startTime=0.0;        // Observation interval starts at t = 0
 		    double endTime;  
 		    double ObservationTimeInWeek;
 		    Seeds [] sds = new Seeds[NUM_WEEKS_ARR.length*NUMRUNS];

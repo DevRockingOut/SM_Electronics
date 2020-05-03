@@ -1,5 +1,4 @@
 import electronicsProject.ElectronicsProject;
-import electronicsProject.Part;
 import electronicsProject.Seeds;
 import cern.jet.random.engine.RandomSeedGenerator;
 
@@ -48,7 +47,7 @@ public class Experimentation {
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
 	    pallet = 40;
-	    batchSize = 6;
+	    batchSize = 10;
 	    count = 0;
 		ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 		model1.setTimef(WARM_UP_PERIOD);

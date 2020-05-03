@@ -5,12 +5,6 @@ class InputConveyor {
 	protected int n;
     protected Part[] list;  
     protected int capacity;
-    
-    /*InputConveyor(int capacity){
-        //this.n = 0;
-        this.capacity = capacity;
-        this.list = new Part[capacity];
-    }*/
  
     public void setCapacity(int capacity) {
     	this.capacity = capacity;
@@ -25,10 +19,6 @@ class InputConveyor {
  	
  	// Standard procedure: remove the part at the head from the input conveyor
  	public Part spRemoveQue() {
- 		/*if(n == 0) {
- 			return Part.NO_PART;
- 		}*/
- 		
  		Part part = list[0];
  		for(int i = 0; i < n-1; i++) {
  			list[i] = list[i+1];

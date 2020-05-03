@@ -32,11 +32,6 @@ class BuffConveyor {
 	    }
 	}
     
-    /*BuffConveyor(int capacity){
-        this.capacity = capacity;
-        this.list = new Part[capacity];
-    }*/
-    
     public void setCapacity(int capacity) {
     	this.capacity = capacity;
     	this.list = new Part[capacity];
@@ -50,10 +45,6 @@ class BuffConveyor {
     
     // Standard procedure: remove the part at the head from the buffer conveyor
  	public Part spRemoveQue() {
- 		/*if(n == 0) {
- 			return Part.NO_PART;
- 		}*/
- 	
  		Part part = list[0];
  		for(int i = 0; i < n-1; i++) {
  			list[i] = list[i+1];
