@@ -11,7 +11,7 @@ class MovePallets extends ConditionalActivity {
 	static boolean wait = false; 
 	
     public static boolean precondition() {
-    	return udpCanMovePallets() == true && wait == false;
+    	return udpCanMovePallets() == true;
     }
     
    	@Override
@@ -53,10 +53,13 @@ class MovePallets extends ConditionalActivity {
 	@Override
 	protected void terminatingEvent() {
 		// MovePallets Activity Terminating Event SCS 
-		
-		for(int i = 0; i < palletsMove.length; i++) {
-			int cellid = palletsMove[i][0];
-			int pos = palletsMove[i][1];
+		MovePalletsToNewPos(palletsMove);
+	}
+	
+	static void MovePalletsToNewPos(int[][] pallets) {
+		for(int i = 0; i < pallets.length; i++) {
+			int cellid = pallets[i][0];
+			int pos = pallets[i][1];
 			int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
 			
 			if(pid != Pallet.NO_PALLET_ID) {
@@ -92,16 +95,17 @@ class MovePallets extends ConditionalActivity {
 				}
 			}
 	    	
-	    	Trace.write(s, "traceMovePallets.txt", this.getClass().getName());
+	    	Trace.write(s, "traceMovePallets.txt", "MovePallets");
 		}
 		
 		wait = false;
 	}
 	
 	static boolean udpCanMovePallets() {
-		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+		/*for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
 			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
 				int nextPid;
+				int lastPos = model.rqPowerAndFreeConveyor[i].position.length -1;
 				
 				if(j < model.rqPowerAndFreeConveyor[i].position.length -1) {
 					nextPid = model.rqPowerAndFreeConveyor[i].position[j+1];
@@ -116,16 +120,21 @@ class MovePallets extends ConditionalActivity {
 				
 				if(nextPid == Pallet.NO_PALLET_ID) {
 					// found empty position
-					return true;
+					if(j == lastPos && model.rCell[i].busy == false) {
+						return true && wait == false;
+					}else if(j < lastPos) {
+						return true && wait == false;
+					}
+					
 				}else if(nextPid != Pallet.NO_PALLET_ID && model.rcPallet[nextPid].isMoving == true) {
 					// found a moving pallet
-					return true;
+					return true && wait == false;
 				}
 			}
-		}
-		//int[][] arr = udpGetPalletsToMove();
-		
-		return false;
+		}*/
+		int[][] arr = udpGetPalletsToMove();
+		return arr.length > 0 && wait == false;
+		//return false;
 	}
 	
 	// UDP

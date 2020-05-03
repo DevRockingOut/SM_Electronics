@@ -47,7 +47,7 @@ public class Experimentation {
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
 	    pallet = 40;
-	    batchSize = 8;
+	    batchSize = 7;
 	    count = 0;
 		ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
 		model1.setTimef(WARM_UP_PERIOD);
