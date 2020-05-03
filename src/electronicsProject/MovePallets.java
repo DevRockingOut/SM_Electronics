@@ -7,13 +7,11 @@ import java.util.List;
 class MovePallets extends ConditionalActivity {
 	
 	static ElectronicsProject model; // For referencing the model
-	List<int[]> palletsMove;
+	int[][] palletsMove;
 	static boolean wait = false; 
 	
     public static boolean precondition() {
-    	List<int[]> pallets = PalletsReadyToMove();
-    	
-    	return pallets.size() > 0 && wait == false;
+    	return udpCanMovePallets() == true && wait == false;
     }
     
    	@Override
@@ -25,14 +23,14 @@ class MovePallets extends ConditionalActivity {
 	
 	@Override
 	public void startingEvent() {
-		palletsMove = PalletsReadyToMove();
+		palletsMove = udpGetPalletsToMove();
     	
 		wait = true;
 		
 		// set isMoving to true for all pallets that can move
-    	for(int i = 0; i < palletsMove.size(); i++) {
-    		int cellid = palletsMove.get(i)[0];
-    		int pos = palletsMove.get(i)[1];
+    	for(int i = 0; i < palletsMove.length; i++) {
+    		int cellid = palletsMove[i][0];
+    		int pos = palletsMove[i][1];
     		int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
     		
     		model.rcPallet[pid].isMoving = true;
@@ -56,9 +54,9 @@ class MovePallets extends ConditionalActivity {
 	protected void terminatingEvent() {
 		// MovePallets Activity Terminating Event SCS 
 		
-		for(int i = 0; i < palletsMove.size(); i++) {
-			int cellid = palletsMove.get(i)[0];
-			int pos = palletsMove.get(i)[1];
+		for(int i = 0; i < palletsMove.length; i++) {
+			int cellid = palletsMove[i][0];
+			int pos = palletsMove[i][1];
 			int pid = model.rqPowerAndFreeConveyor[cellid].position[pos];
 			
 			if(pid != Pallet.NO_PALLET_ID) {
@@ -100,10 +98,40 @@ class MovePallets extends ConditionalActivity {
 		wait = false;
 	}
 	
+	static boolean udpCanMovePallets() {
+		for(int i = 0; i < model.rqPowerAndFreeConveyor.length; i++) {
+			for(int j = 0; j < model.rqPowerAndFreeConveyor[i].position.length; j++) {
+				int nextPid;
+				
+				if(j < model.rqPowerAndFreeConveyor[i].position.length -1) {
+					nextPid = model.rqPowerAndFreeConveyor[i].position[j+1];
+					
+				}else {
+					if(j < model.rqPowerAndFreeConveyor.length -1) {
+						nextPid = model.rqPowerAndFreeConveyor[i+1].position[0];
+					}else {
+						nextPid = model.rqPowerAndFreeConveyor[0].position[0];
+					}
+				}
+				
+				if(nextPid == Pallet.NO_PALLET_ID) {
+					// found empty position
+					return true;
+				}else if(nextPid != Pallet.NO_PALLET_ID && model.rcPallet[nextPid].isMoving == true) {
+					// found a moving pallet
+					return true;
+				}
+			}
+		}
+		//int[][] arr = udpGetPalletsToMove();
+		
+		return false;
+	}
+	
 	// UDP
 	// returns all pallets that are ready to move
-	static List<int[]> PalletsReadyToMove(){
-		List<int[]> pallets = new ArrayList<int[]>();
+	static int[][] udpGetPalletsToMove(){
+		ArrayList<int[]> pallets = new ArrayList<int[]>();
 		int pidStop = -2; // used to exit loop 
 		
 		// reverse scan power-and-free conveyors
@@ -224,7 +252,8 @@ class MovePallets extends ConditionalActivity {
 			}
 		}
 		
-		return pallets;
+		int[][] pallets2D = convertTo2DArray(pallets);
+		return pallets2D;
 	}
 	
 	// helper method which returns whether a pallet is contained in a list of pallets
@@ -237,6 +266,16 @@ class MovePallets extends ConditionalActivity {
 		}
 		
 		return false;
+	}
+	
+	private static int[][] convertTo2DArray(ArrayList<int[]> arr){
+		int[][] new_arr = new int[arr.size()][];
+		for (int i = 0; i < arr.size(); i++) {
+		    int[] row = arr.get(i);
+		    new_arr[i] = row;
+		}
+		
+		return new_arr;
 	}
 	        
 }
