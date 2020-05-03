@@ -11,37 +11,25 @@ class Processing extends ConditionalActivity {
 	
 	static ElectronicsProject model; // For referencing the model
 	int cellID; // Identifier for Cell and PowerAndFreeConveyors
-	PartType uType;
     int pid;
-    static int NONE = -1;
+    static final int NONE = -1;
     static final int[][] SETUP_TIME = {{0, 37, 0, 39, 41, 33, 31, 0}, 
 							           {0, 46, 0, 27, 38, 41, 24, 0},
 							           {0, 39, 0, 23, 47, 35, 51, 0}};
 
 	public static boolean precondition()
 	{
-		int[] result = udpCellReadyForProcessing();
-		int cellID = result[0];
-		
-		return cellID != NONE;
+		return udpCellReadyForProcessing() != NONE;
 	}
 	
 	  
 	@Override
 	public void startingEvent() {
 		
-		int[] result = udpCellReadyForProcessing();
+		cellID = udpCellReadyForProcessing();
 		
-		cellID = result[0];
-		pid = result[1];
-		
-		if (result[2] == 0) {
-			uType = Part.PartType.A;
-		}else if(result[2] == 1) {
-			uType = Part.PartType.B;
-		}else {
-			uType = Part.PartType.C;
-		}  
+		int LAST_CONV_POS = model.rqPowerAndFreeConveyor[cellID].position.length - 1; 
+		pid = model.rqPowerAndFreeConveyor[cellID].position[LAST_CONV_POS];
 		
         // Update Cell busy status
         model.rCell[cellID].busy = true;
@@ -52,7 +40,7 @@ class Processing extends ConditionalActivity {
 	        s += "C" + Cell.CellID.values()[cellID].getInt();
 	        s += "; busy: " + model.rCell[cellID].busy;
 	        s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
-	        s += "; previousPartType: " + uType + "\n\n";
+	        s += "; previousPartType: " + model.rcPallet[pid].part.uType + "\n\n";
 			
 	        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
         }
@@ -81,14 +69,14 @@ class Processing extends ConditionalActivity {
 	        s += "C" + Cell.CellID.values()[cellID].getInt();
 	        s += "; busy: " + model.rCell[cellID].busy;
 	        s += "; isProcessed: " + model.rcPallet[pid].isProcessed;
-	        s += "; new previousPartType: " + uType;
+	        s += "; new previousPartType: " + model.rcPallet[pid].part.uType;
 	        s += "; old previousPartType: " + model.rCell[cellID].previousPartType + "\n\n";
 	        
 	        Trace.write(s, "traceProcessing.txt", this.getClass().getName());
 		}
         
         // Update Cell previousPartType status
-        model.rCell[cellID].previousPartType = uType;
+        model.rCell[cellID].previousPartType = model.rcPallet[pid].part.uType;
 	}
 
 	static TriangularVariate PROC_TIME_C2_A;
@@ -117,7 +105,7 @@ class Processing extends ConditionalActivity {
 							    {0, 20, PROC_TIME_C2_B.next(), 21, 22, 14, 19, PROC_TIME_C2_B.next()},
 					      	    {0, 17, PROC_TIME_C2_C.next(), 34, 24, 37, 17, PROC_TIME_C2_C.next()}};
 	    
-	    uType = model.rcPallet[pid].part.uType;
+	    PartType uType = model.rcPallet[pid].part.uType;
 	    
 		double serviceTime = 0.0; // an arbitrary default value
 		int partType;
@@ -143,16 +131,16 @@ class Processing extends ConditionalActivity {
 	
 	// UDP
 	// Returns a vector containing the cell id (C1 to C7) that is ready for processing
-	static protected int[] udpCellReadyForProcessing() {
-		int[] output = {NONE, NONE, NONE};
+	static protected int udpCellReadyForProcessing() {
 		
-		CellID[] cID = Cell.CellID.values();
+		// cID contains all the cells identifiers and string representations
+		CellID[] cID = Cell.CellID.values(); 
 		
 		// Check all cells from cell 1 to 7
 		for(int i = 1; i < cID.length ; i++) {
 			int cid = cID[i].getInt();
-			int last = model.rqPowerAndFreeConveyor[cid].position.length - 1; 
-			int pid = model.rqPowerAndFreeConveyor[cid].position[last];
+			int LAST_CONV_POS = model.rqPowerAndFreeConveyor[cid].position.length - 1; 
+			int pid = model.rqPowerAndFreeConveyor[cid].position[LAST_CONV_POS];
 			
 			
 			if (pid != Pallet.NO_PALLET_ID  &&
@@ -160,24 +148,12 @@ class Processing extends ConditionalActivity {
 				model.rCell[cid].busy == false  &&
 		        model.rcPallet[pid].isProcessed == false)
 			{
-				output[0] = cid;
-				output[1] = pid;
-				
-				PartType partType = model.rcPallet[pid].part.uType;
-				if (partType == Part.PartType.A) {
-					output[2] = 0;
-				}else if(partType == Part.PartType.B) {
-					output[2] = 1;
-				}else {
-					output[2] = 2;
-				}  
-
-				return output;
+				return cid;
 			}
 					
 		}
 		
-		return output;			      
+		return NONE;			      
 	}
 		
 }

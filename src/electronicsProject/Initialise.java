@@ -65,7 +65,7 @@ class Initialise extends ScheduledAction
 		int pid = 0;
 		int cellid = Cell.CellID.C8.getInt();
 		int pos = model.rqPowerAndFreeConveyor[cellid].position.length -1;
-		int last = model.rqPowerAndFreeConveyor[cellid].position.length -1;
+		int LAST_CONV_POS = model.rqPowerAndFreeConveyor[cellid].position.length -1;
 		
 		// create and initialise pallets
 		for(int id = 0; id < model.numPallets; id++) {
@@ -78,7 +78,7 @@ class Initialise extends ScheduledAction
 			model.rqPowerAndFreeConveyor[cellid].position[pos] = pid;
 			
 			if(pos == 0) {
-				pos = last;
+				pos = LAST_CONV_POS;
 				if(cellid == Cell.CellID.C8.getInt()) {
 					cellid = Cell.CellID.C7.getInt();
 				}else {
