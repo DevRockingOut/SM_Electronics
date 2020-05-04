@@ -17,72 +17,41 @@ public class Experimentation {
 	public static void main(String[] args) {
 		
 		double endTime = NUM_WEEKS * WEEK;
-		double ObservationTimeInWeek = NUM_WEEKS- (WARM_UP_PERIOD/WEEK);
 	    Seeds [] sds = new Seeds[numPallets*BatchSize.length];
 	    RandomSeedGenerator rsg = new RandomSeedGenerator();
 	     
 	    for(int i = 0; i < numPallets*BatchSize.length; i++) { sds[i] = new Seeds(rsg); }
-
-		//for(int i = 40; i <= numPallets; i++)
-		//{
 		
 	    int pallet = 40;
 	    int batchSize = 0;
 	    int count = 0;
 	    
 	    /*******************   The code below for printing pallets with NO batchSize   *************************/
-	    //batchSize = 5;
-	    /*ElectronicsProject model = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false, 0);
+	    /*ElectronicsProject model = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false);
 	    model.setTimef(WARM_UP_PERIOD);
 	    model.runSimulation();
-	    //System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
-	    //model.clearLostCost();
-	    
 	    model.setTimef(endTime);
 	    model.runSimulation();
 	    lostCost_step2[pallet] = model.getLostCost()/NUM_WEEKS;
 	    System.out.println("this one: " + model.getLostCost()/NUM_WEEKS);
 	    model.clearLostCost();
-	    count++;*/
+	    count++;
 		    
 		/*******************   The code below for printing pallets with batchSize   *************************/
 	    pallet = 40;
-	    batchSize = 6;
-	    count = 0;
+	    batchSize = 1;
+	    count = 33;
 		ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, batchSize, sds[count], false);
 		model1.setTimef(WARM_UP_PERIOD);
 		model1.runSimulation();
-		//model1.clearLostCost(); 
 		model1.setTimef(endTime);
 		model1.runSimulation();             
 		lostCost_step3AND4[pallet][batchSize] = model1.getLostCost()/NUM_WEEKS;
 		model1.clearLostCost(); 
 		count++;
 		    
-		//}
-		   // System.out.println("ADD_PALLET_NUMBER: " + addPallet);
-		 //   System.out.println("NO_BATCHLEAST");
-		   //     System.out.println(lostCost_step2[addPallet]);
-		
-		    
-		    /*for(int batch = 0; batch < BatchSize.length; batch++)
-		    {    
-				 ElectronicsProject model1 = new ElectronicsProject(endTime, pallet, BatchSize[batch], sds[count], false, 0);
-				 model1.setTimef(WARM_UP_PERIOD);
-				 model1.runSimulation();
-			     //model1.clearLostCost(); 
-			     model1.setTimef(endTime);
-			     model1.runSimulation();             
-			     lostCost_step3AND4[pallet][batch] = model1.getLostCost()/NUM_WEEKS;
-			     model1.clearLostCost(); 
-			     count++;
-		 //    System.out.println("ADD_PALLET_NUMBER: " + addPallet);
-		   //  System.out.println("batchLeast: " + batch);
-		   //      System.out.println(lostCost_step3AND4[addPallet][batch]);
-		    }*/
-		//}
 		displayTable(lostCost_step3AND4);     
-		}
+	 }
 	
 	 private static void displayTable(double [][]lostCost)
 	 {

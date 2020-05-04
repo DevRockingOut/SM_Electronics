@@ -12,8 +12,8 @@ public class ElectronicsExpe2 {
 		public static final int NUMRUNS = 200;   // for exploring number of runs
 		public static final int [] NUM_WEEKS_ARR = { 2, 4, 8 };
 	    public static final double HOUR = 60*60;
-	    public static final double WEEK = 5.0 * 16.0 * HOUR;  // 7 day week, 24 hours/day
-	    public static final double WARM_UP_PERIOD = 1 * WEEK;  // 5 week warm up period for tanker waiting times - see PortV1Warm    
+	    public static final double WEEK = 5.0 * 16.0 * HOUR;  // 5 day/week, 16 hours/day
+	    public static final double WARM_UP_PERIOD = 1 * WEEK;  // 1 week warm up period
      
 	    // Some arrays to collect experimental data
 		public static double [][] lostCost1 = new double[NUM_WEEKS_ARR.length][NUMRUNS];
@@ -27,9 +27,8 @@ public class ElectronicsExpe2 {
 	   {
 			int i, ixNWeeks;
 		    double endTime;  
-		    double ObservationTimeInWeek;
+		    double observationInterval;
 		    Seeds [] sds = new Seeds[NUM_WEEKS_ARR.length*NUMRUNS];
-		    //double[]lostCost = new double [NUMRUNS];
 		    
 		    // Lets get a set of uncorrelated seeds
 		    RandomSeedGenerator rsg = new RandomSeedGenerator();
@@ -39,7 +38,7 @@ public class ElectronicsExpe2 {
 		    for(ixNWeeks = 0; ixNWeeks < NUM_WEEKS_ARR.length; ixNWeeks++)
 	 	    {
 	 	      endTime=NUM_WEEKS_ARR[ixNWeeks] * WEEK;
-	 	      ObservationTimeInWeek = (NUM_WEEKS_ARR[ixNWeeks]- WARM_UP_PERIOD/WEEK)*2.75;
+	 	      observationInterval = (NUM_WEEKS_ARR[ixNWeeks]- WARM_UP_PERIOD/WEEK)*2.75;
 	 	       
 	 	       
 	 	       System.out.println("End Time = "+NUM_WEEKS_ARR[ixNWeeks]+" weeks ("+endTime+" seconds), TimeStamp: "+
@@ -56,7 +55,7 @@ public class ElectronicsExpe2 {
 	 	    	model.setTimef(endTime);
 	 	    	model.runSimulation();
                 // Save the results in the arrays
-		        lostCost1 [ixNWeeks][i] = model.getLostCost()/ObservationTimeInWeek;
+		        lostCost1 [ixNWeeks][i] = model.getLostCost()/observationInterval;
 		        model.clearLostCost();
 		       }
 	 	    }

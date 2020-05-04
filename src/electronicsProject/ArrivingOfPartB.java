@@ -11,7 +11,7 @@ class ArrivingOfPartB extends ScheduledAction {
 	@Override
 	protected double timeSequence()
 	{
-		return rvpDuArrB(); // Update_CM
+		return rvpDuArrB();
 	}
 
 	@Override
